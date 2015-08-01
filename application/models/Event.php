@@ -13,6 +13,7 @@ class Event extends OaModel {
   );
 
   static $has_many = array (
+    array ('polylines', 'class_name' => 'Polyline', 'order' => 'id ASC')
   );
 
   static $belongs_to = array (
@@ -22,5 +23,10 @@ class Event extends OaModel {
     parent::__construct ($attributes, $guard_attributes, $instantiating_via_find, $new_record);
 
     OrmImageUploader::bind ('cover', 'EventCoverImageUploader');
+  }
+
+  public function destroy () {
+    Polyline::delete_all (array ('conditions' => array ('event_id = ?', $this->id)));
+    return $this->cover->cleanAllFiles () && $this->delete ();
   }
 }

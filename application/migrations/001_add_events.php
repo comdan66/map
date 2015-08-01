@@ -10,8 +10,8 @@ class Migration_Add_events extends CI_Migration {
     $this->db->query (
       "CREATE TABLE `events` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
-        `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL COMMENT '名稱',
-        `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL COMMENT '敘述',
+        `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '名稱',
+        `description` text  COMMENT '敘述',
         `cover` varchar(100) COLLATE utf8_unicode_ci NOT NULL COMMENT '封面',
         `updated_at` datetime NOT NULL DEFAULT '" . date ('Y-m-d H:i:s') . "' COMMENT '更新時間',
         `created_at` datetime NOT NULL DEFAULT '" . date ('Y-m-d H:i:s') . "' COMMENT '新增時間',

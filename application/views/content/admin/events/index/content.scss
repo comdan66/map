@@ -1,0 +1,59 @@
+/**
+ * @author      OA Wu <comdan66@gmail.com>
+ * @copyright   Copyright (c) 2015 OA Wu Design
+ */
+
+@import "_oa";
+
+#container {
+
+  .info {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(255, 0, 0, .3);
+    @include alert('info');
+  }
+
+  @include admin-index-search-form();
+
+  .search_feature {
+    @include button('indigo');
+    @media screen and (min-width: #{$mediaTabletWidth}) {
+      display: none;
+    }
+    width: 100%;
+    margin-top: 5px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .table-list-rwd {
+    @include table-list-rwd();
+    margin-top: 20px;
+
+    a {
+      @include a(rgba(50, 50, 50, 0.7), rgba(50, 50, 50, 0.9), false);
+      font-size: 22px;
+      cursor: pointer;
+
+      &.fancybox_view {
+        font-size: 16px;
+      }
+    }
+    .pic {
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      display: inline-block;
+      margin: 3px;
+      border: 1px solid rgba(39, 40, 34, .2);
+      background-color: rgba(255, 255, 255, 1);
+      @include border-radius(3px);
+      @include box-shadow(0 0 5px rgba(39, 40, 34, .1));
+
+      &:hover {
+        @include box-shadow(0 0 5px rgba(39, 40, 34, .2));
+      }
+    }
+  }
+}
