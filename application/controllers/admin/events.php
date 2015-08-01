@@ -11,6 +11,19 @@ class Events extends Admin_controller {
     parent::__construct ();
   }
 
+  public function map ($id = 0) {
+    if (!($event = Event::find_by_id ($id)))
+      return redirect (array ('admin', 'events'));
+
+    $message  = identity ()->get_session ('_flash_message', true);
+    $polylines = identity ()->get_session ('polylines', true);
+
+    $this->load_view (array (
+        'event' => $event,
+        'message' => $message,
+        'polylines' => $polylines
+      ));
+  }
   public function destroy ($id = 0) {
     if (!($event = Event::find_by_id ($id)))
       return redirect (array ('admin', 'events'));

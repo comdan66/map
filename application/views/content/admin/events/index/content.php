@@ -1,6 +1,6 @@
 <?php echo render_cell ('admin_frame_cell', 'header'); ?>
 
-<div id='container' class='<?php echo !$frame_sides ? 'no_sides': '';?>'>
+<div id='container'>
   <?php
   if (isset ($message) && $message) { ?>
     <div class='info'><?php echo $message;?></div>
@@ -25,7 +25,9 @@
             <td data-title='ID' width='100'><?php echo $event->id;?></td>
             <td data-title='名稱' width='200'><?php echo $event->name;?></td>
             <td data-title='敘述'><?php echo $event->description;?></td>
-            <td data-title='編輯' width='120' class='middle'>
+            <td data-title='編輯' width='150' class='middle'>
+              <a href='<?php echo base_url ('admin', 'events', 'map', $event->id);?>' class='icon-location'></a>
+              /
               <a href='<?php echo base_url ('admin', 'events', 'edit', $event->id);?>' class='icon-pencil2'></a>
               /
               <a href='<?php echo base_url ('admin', 'events', 'destroy', $event->id);?>' class='icon-bin'></a>
