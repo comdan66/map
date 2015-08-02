@@ -13,6 +13,7 @@
       <div class='add'>新增照片</div>
     </div>
   </div>
+
   <div id='marker_context_menu' class='context_menu'>
     <div class='container'>
       <div class='del'>刪除節點</div>
