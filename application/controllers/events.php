@@ -12,7 +12,7 @@ class Events extends Site_controller {
   }
 
   public function show ($id = 0) {
-    if (!($event = Event::find_by_id ($id)))
+    if (!($event = Event::find_by_id ($id, array ('conditions' => array ('is_visibled = ?', 1)))))
       return redirect ('');
 
     $this->load_view (array (

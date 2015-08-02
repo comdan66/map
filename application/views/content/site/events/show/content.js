@@ -46,7 +46,7 @@ $(function () {
         draggable: false,
         position: position,
         icon: {
-            path: circlePath (10),
+            path: circlePath (6),
             strokeColor: 'rgba(50, 60, 140, .4)',
             strokeWeight: 1,
             fillColor: 'rgba(68, 77, 145, .95)',
