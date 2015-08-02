@@ -29,4 +29,11 @@ class Event extends OaModel {
     Polyline::delete_all (array ('conditions' => array ('event_id = ?', $this->id)));
     return $this->cover->cleanAllFiles () && $this->delete ();
   }
+  public function put_cover () {
+    return $this->cover->put_url ($this->picture ('1200x1200', 'server_key'));
+  }
+  public function picture ($size = '60x60', $type = 'client_key', $color = 'red') {
+    $path = implode ('|', array_map (function ($t) { return $t->latitude . ',' . $t->longitude; }, $this->polylines));
+    return 'https://maps.googleapis.com/maps/api/staticmap?path=color:' . $color . '|weight:5|' . $path . '&size=' . $size . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
+  }
 }

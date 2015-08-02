@@ -25,10 +25,11 @@ class Events extends Admin_controller {
           'altitude' => '0',
           'accuracy_horizontal' => '0',
           'accuracy_vertical' => '0',
-          'speed' => '0',
-          'pic' => ''
+          'speed' => '0'
         ));
     }
+
+    $event->put_cover ();
 
     return identity ()->set_session ('_flash_message', '修改成功！', true)
                       && redirect (array ('admin', 'events'), 'refresh');
@@ -63,12 +64,14 @@ class Events extends Admin_controller {
 
     $name = trim (identity ()->get_session ('name', true));
     $description = trim (identity ()->get_session ('description', true));
+    $is_visibled = trim (identity ()->get_session ('is_visibled', true));
 
     $this->load_view (array (
         'event' => $event,
         'message' => $message,
         'name' => $name,
-        'description' => $description
+        'description' => $description,
+        'is_visibled' => $is_visibled
       ));
   }
 
@@ -81,8 +84,9 @@ class Events extends Admin_controller {
 
     $name = trim ($this->input_post ('name'));
     $description = trim ($this->input_post ('description'));
+    $is_visibled = trim ($this->input_post ('is_visibled'));
 
-    if (!$name)
+    if (!($name && is_numeric ($is_visibled)))
       return identity ()->set_session ('_flash_message', '填寫資訊有少！', true)
                         ->set_session ('name', $name, true)
                         ->set_session ('description', $description, true)
@@ -90,11 +94,13 @@ class Events extends Admin_controller {
 
     $event->name = $name;
     $event->description = $description;
+    $event->is_visibled = $is_visibled;
 
     if (!$event->save ())
       return identity ()->set_session ('_flash_message', '修改失敗！', true)
                         ->set_session ('name', $name, true)
                         ->set_session ('description', $description, true)
+                        ->set_session ('is_visibled', $is_visibled, true)
                         && redirect (array ('admin', 'events', 'edit', $event->id), 'refresh');
 
     return identity ()->set_session ('_flash_message', '修改成功！', true)
@@ -106,11 +112,13 @@ class Events extends Admin_controller {
     
     $name = trim (identity ()->get_session ('name', true));
     $description = trim (identity ()->get_session ('description', true));
+    $is_visibled = trim (identity ()->get_session ('is_visibled', true));
 
     $this->load_view (array (
         'message' => $message,
         'name' => $name,
         'description' => $description,
+        'is_visibled' => $is_visibled,
       ));
   }
   public function create () {
@@ -119,23 +127,27 @@ class Events extends Admin_controller {
 
     $name = trim ($this->input_post ('name'));
     $description = trim ($this->input_post ('description'));
+    $is_visibled = trim ($this->input_post ('is_visibled'));
 
-    if (!$name)
+    if (!($name && is_numeric ($is_visibled)))
       return identity ()->set_session ('_flash_message', '填寫資訊有少！', true)
                         ->set_session ('name', $name, true)
                         ->set_session ('description', $description, true)
+                        ->set_session ('is_visibled', $is_visibled, true)
                         && redirect (array ('admin', 'events', 'add'), 'refresh');
 
     $params = array (
         'name' => $name,
         'description' => $description,
-        'cover' => ''
+        'cover' => '',
+        'is_visibled' => $is_visibled
       );
 
     if (!verifyCreateOrm ($event = Event::create ($params)))
       return identity ()->set_session ('_flash_message', '新增失敗！', true)
                         ->set_session ('name', $name, true)
                         ->set_session ('description', $description, true)
+                        ->set_session ('is_visibled', $is_visibled, true)
                         && redirect (array ('admin', 'events', 'add'), 'refresh');
 
     // if (!$event->put_pic () && ($event->destroy () || true))

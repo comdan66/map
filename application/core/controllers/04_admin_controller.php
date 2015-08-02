@@ -33,12 +33,20 @@ class Admin_controller extends Oa_controller {
   private function _add_css () {
     return $this->add_css ('http://fonts.googleapis.com/css?family=Gafata', false)
                 ->add_css ('http://fonts.googleapis.com/css?family=Comfortaa', false)
+                ->add_css (base_url ('resource', 'css', 'fancyBox_v2.1.5', 'jquery.fancybox.css'))
+                ->add_css (base_url ('resource', 'css', 'fancyBox_v2.1.5', 'jquery.fancybox-buttons.css'))
+                ->add_css (base_url ('resource', 'css', 'fancyBox_v2.1.5', 'jquery.fancybox-thumbs.css'))
+                ->add_css (base_url ('resource', 'css', 'fancyBox_v2.1.5', 'my.css'));
                 ;
   }
 
   private function _add_js () {
     return $this->add_js (Cfg::setting ('google', 'client_js_url'), false)
                 ->add_js (base_url ('resource', 'javascript', 'jquery_v1.10.2', 'jquery-1.10.2.min.js'))
+                ->add_js (base_url ('resource', 'javascript', 'fancyBox_v2.1.5', 'jquery.fancybox.js'))
+                ->add_js (base_url ('resource', 'javascript', 'fancyBox_v2.1.5', 'jquery.fancybox-buttons.js'))
+                ->add_js (base_url ('resource', 'javascript', 'fancyBox_v2.1.5', 'jquery.fancybox-thumbs.js'))
+                ->add_js (base_url ('resource', 'javascript', 'fancyBox_v2.1.5', 'jquery.fancybox-media.js'))
                 ;
   }
 }

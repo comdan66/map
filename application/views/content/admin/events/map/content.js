@@ -132,6 +132,12 @@ $(function () {
       initMarker (new google.maps.LatLng ($(this).data ('lat'), $(this).data ('lng')), 0);
     });
 
+    var bounds = new google.maps.LatLngBounds ();
+    for (i = 0; i< _markers.length; i++)
+     bounds.extend (_markers[i].getPosition ());
+    _map.fitBounds (bounds);
+
+
     google.maps.event.addListener (_map, 'zoom_changed', setLastPosition.bind (this, 'oas_maps_admin_last', _map));
     google.maps.event.addListener (_map, 'idle', setLastPosition.bind (this, 'oas_maps_admin_last', _map));
     google.maps.event.addListener (_map, 'zoom_changed',setPolyline);

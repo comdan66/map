@@ -18,8 +18,6 @@ class Migration_Add_polylines extends CI_Migration {
         `accuracy_horizontal` DOUBLE NOT NULL COMMENT '水平準確度(公尺)',
         `accuracy_vertical` DOUBLE NOT NULL COMMENT '垂直準確度(公尺)',
         `speed` DOUBLE NOT NULL COMMENT '移動速度(公尺/秒)',
-        
-        `pic` varchar(100) COLLATE utf8_unicode_ci NOT NULL COMMENT '靜態圖檔',
 
         `updated_at` datetime NOT NULL DEFAULT '" . date ('Y-m-d H:i:s') . "' COMMENT '更新時間',
         `created_at` datetime NOT NULL DEFAULT '" . date ('Y-m-d H:i:s') . "' COMMENT '新增時間',

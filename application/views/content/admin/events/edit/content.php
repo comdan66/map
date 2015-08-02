@@ -22,6 +22,15 @@
           </td>
         </tr>
         <tr>
+          <th>開啟</th>
+          <td>
+            <select id='is_visibled' name='is_visibled' >
+              <option value='0' <?php echo ($is_visibled ? $is_visibled : $event->is_visibled) == 0 ? ' selected' : '';?>>關閉</option>
+              <option value='1' <?php echo ($is_visibled ? $is_visibled : $event->is_visibled) == 1 ? ' selected' : '';?>>開啟</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
           <td colspan='2'>
             <a href='<?php echo base_url ('admin', 'events');?>'>回列表</a>
             <button type='reset' class='button'>重填</button>

@@ -25,6 +25,10 @@
             <td data-title='ID' width='100'><?php echo $event->id;?></td>
             <td data-title='名稱' width='200'><?php echo $event->name;?></td>
             <td data-title='敘述'><?php echo $event->description;?></td>
+            <td data-title='狀態' width='100'><?php echo $event->is_visibled ? '開啟' : '關閉';?></td>
+            <td data-title='地點' width='70'>
+              <img src='<?php echo $event->cover->url ('50x50c');?>' data-fancybox-group='group_icon' title='<?php echo $event->name;?>' href='<?php echo $event->cover->url ();?>' class='pic' />
+            </td>
             <td data-title='編輯' width='150' class='middle'>
               <a href='<?php echo base_url ('admin', 'events', 'map', $event->id);?>' class='icon-location'></a>
               /

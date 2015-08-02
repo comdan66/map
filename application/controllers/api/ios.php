@@ -11,7 +11,7 @@ class Ios extends Api_controller {
     parent::__construct ();
   }
 
-  public function update_markers () {
+  public function update_polylines () {
     $event_id  = trim ($this->input_post ('event_id'));
 
     if (!($event_id && ($event = Event::find_by_id ($event_id))))
@@ -19,22 +19,26 @@ class Ios extends Api_controller {
     
     $polylines = $this->input_post ('polylines');
     
-    usort ($polylines, function ($a, $b) { return $a['count'] > $b['count']; });
+    usort ($polylines, function ($a, $b) { return $a['id'] > $b['id']; });
+    array_filter ($polylines, function ($polyline) { return $polyline['accuracy_h'] < 100; });
+    $ids = array_filter (array_map (function ($polyline) use ($event) {
+          if (verifyCreateOrm (Polyline::create (array (
+                          'event_id' => $event->id,
+                          'latitude' => $polyline['lat'],
+                          'longitude' => $polyline['lng'],
+                          'altitude' => $polyline['altitude'],
+                          'accuracy_horizontal' => $polyline['accuracy_h'],
+                          'accuracy_vertical' => $polyline['accuracy_v'],
+                          'speed' => $polyline['speed']
+                        ))))
+            return $polyline['id'];
+          else
+            return null;
+        }, $polylines));
+    
+    $event->put_cover ();
 
-    foreach ($polylines as $polyline) {
-      Polyline::create (array (
-          'event_id' => $event->id,
-          'latitude' => $polyline['lat'],
-          'longitude' => $polyline['lng'],
-          'altitude' => $polyline['altitude'],
-          'accuracy_horizontal' => $polyline['accuracy_h'],
-          'accuracy_vertical' => $polyline['accuracy_v'],
-          'speed' => $polyline['speed'],
-          'pic' => ''
-        ));
-    }
-
-    return $this->output_json (array ('status' => true));
+    return $this->output_json (array ('status' => true, 'ids' => $ids));
   }
 
   // public function update_marker () {
@@ -63,7 +67,8 @@ class Ios extends Api_controller {
     if (verifyCreateOrm ($event = Event::create (array (
         'name' => $name,
         'description' => '',
-        'cover' => ''
+        'cover' => '',
+        'is_visibled' => 0
       ))))
       return $this->output_json (array ('status' => true, 'id' => $event->id));
     else
