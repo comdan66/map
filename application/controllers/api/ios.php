@@ -55,12 +55,16 @@ class Ios extends Api_controller {
   //   return $this->output_json (array ('status' => true));
   // }
   public function create_event () {
-    $title  = trim ($this->input_post ('title'));
+    $name  = trim ($this->input_post ('name'));
 
-    if (!$title)
+    if (!$name)
       return $this->output_json (array ('status' => false));
 
-    if (verifyCreateOrm ($event = Event::create (array ('title' => $title))))
+    if (verifyCreateOrm ($event = Event::create (array (
+        'name' => $name,
+        'description' => '',
+        'cover' => ''
+      ))))
       return $this->output_json (array ('status' => true, 'id' => $event->id));
     else
       return $this->output_json (array ('status' => false, 'id' => 0));
