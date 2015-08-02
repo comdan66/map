@@ -75,7 +75,7 @@ $(function () {
       _markers[i].polyline.drawPath ();
     }
   }
-  function initMarker (position, index) {
+  function initMarker (position, index, id) {
     var marker = new google.maps.Marker ({
         map: _map,
         draggable: true,
@@ -129,14 +129,15 @@ $(function () {
     setMapPosition (_map, 'oas_maps_admin_last');
 
     $fm.find ('[name="polylines"]').each (function () {
-      initMarker (new google.maps.LatLng ($(this).data ('lat'), $(this).data ('lng')), 0);
+      initMarker (new google.maps.LatLng ($(this).data ('lat'), $(this).data ('lng')), 0, $(this).val ());
     });
 
-    var bounds = new google.maps.LatLngBounds ();
-    for (i = 0; i< _markers.length; i++)
-     bounds.extend (_markers[i].getPosition ());
-    _map.fitBounds (bounds);
-
+    if (_markers.length > 0) {
+      var bounds = new google.maps.LatLngBounds ();
+      for (i = 0; i< _markers.length; i++)
+       bounds.extend (_markers[i].getPosition ());
+      _map.fitBounds (bounds);
+    }
 
     google.maps.event.addListener (_map, 'zoom_changed', setLastPosition.bind (this, 'oas_maps_admin_last', _map));
     google.maps.event.addListener (_map, 'idle', setLastPosition.bind (this, 'oas_maps_admin_last', _map));

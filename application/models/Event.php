@@ -30,10 +30,22 @@ class Event extends OaModel {
     return $this->cover->cleanAllFiles () && $this->delete ();
   }
   public function put_cover () {
-    return $this->cover->put_url ($this->picture ('1200x1200', 'server_key'));
+    if ($url = $this->picture ('1200x1200', 'server_key'))
+      return $this->cover->put_url ();
+    else
+      return true;
   }
   public function picture ($size = '60x60', $type = 'client_key', $color = 'red') {
-    $path = implode ('|', array_map (function ($t) { return $t->latitude . ',' . $t->longitude; }, $this->polylines));
-    return 'https://maps.googleapis.com/maps/api/staticmap?path=color:' . $color . '|weight:5|' . $path . '&size=' . $size . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
+    $u = round (Polyline::count (array ('conditions' => array ('event_id = ?', $this->id))) / 50);
+    
+    $paths = array ();
+    foreach ($this->polylines as $i => $polyline)
+      if ($i % $u == 0)
+        array_push ($paths, $polyline->latitude . ',' . $polyline->longitude);
+    
+    if ($paths)
+      return 'https://maps.googleapis.com/maps/api/staticmap?path=color:' . $color . '|weight:5|' . implode ('|', $paths) . '&size=' . $size . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
+    else
+      return '';
   }
 }
