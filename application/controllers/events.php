@@ -15,7 +15,8 @@ class Events extends Site_controller {
     if (!($event = Event::find_by_id ($id, array ('conditions' => array ('is_visibled = ?', 1)))))
       return redirect ('');
 
-    $this->load_view (array (
+    $this->add_meta (array ('property' => 'og:image', 'content' => $event->cover->url ('1200x630c'), 'alt' =>  "OA's Maps"))
+         ->load_view (array (
         'event' => $event
       ));
   }
