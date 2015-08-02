@@ -101,13 +101,20 @@ window.ajaxError = function (result) {
 $(function () {
   window.mainLoading = $('<div />').attr ('id', 'main_loading').append ($('<div />')).appendTo ('body');
 
-  window.closeLoading = function (callback) {
+  window.hideLoading = function (callback) {
     this.mainLoading.fadeOut (function () {
       $(this).hide (function () {
         if (callback)
           callback ();
-        $(this).remove ();
       });
+    });
+  };
+
+  window.closeLoading = function (callback) {
+    window.hideLoading (function  () {
+      if (callback)
+        callback ();
+        window.mainLoading.remove ();
     });
   };
 

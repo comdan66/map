@@ -11,6 +11,28 @@ class Events extends Admin_controller {
     parent::__construct ();
   }
 
+  public function map_create ($id = 0) {
+    if (!($event = Event::find_by_id ($id)))
+      return redirect (array ('admin', 'events'));
+
+    Polyline::delete_all (array ('conditions' => array ('event_id = ?', $event->id)));
+
+    foreach ($this->input_post ('polylines') ? $this->input_post ('polylines') : array () as $polyline) {
+      Polyline::create (array (
+          'event_id' => $event->id,
+          'latitude' => $polyline['lat'],
+          'longitude' => $polyline['lng'],
+          'altitude' => '0',
+          'accuracy_horizontal' => '0',
+          'accuracy_vertical' => '0',
+          'speed' => '0',
+          'pic' => ''
+        ));
+    }
+
+    return identity ()->set_session ('_flash_message', '修改成功！', true)
+                      && redirect (array ('admin', 'events'), 'refresh');
+  }
   public function map ($id = 0) {
     if (!($event = Event::find_by_id ($id)))
       return redirect (array ('admin', 'events'));
