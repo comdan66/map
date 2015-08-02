@@ -36,8 +36,8 @@ class Ios extends Api_controller {
             return null;
         }, $polylines));
     
-    // $event->put_cover ();
-
+    delay_job ('main', 'event', array ('id' => $event->id));
+    
     return $this->output_json (array ('status' => true, 'ids' => $ids));
   }
 

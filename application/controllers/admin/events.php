@@ -29,7 +29,7 @@ class Events extends Admin_controller {
         ));
     }
 
-    $event->put_cover ();
+    delay_job ('main', 'event', array ('id' => $event->id));
 
     return identity ()->set_session ('_flash_message', '修改成功！', true)
                       && redirect (array ('admin', 'events'), 'refresh');

@@ -31,7 +31,7 @@ class Event extends OaModel {
   }
   public function put_cover () {
     if ($url = $this->picture ('1200x1200', 'server_key'))
-      return $this->cover->put_url ();
+      return $this->cover->put_url ($url);
     else
       return true;
   }
