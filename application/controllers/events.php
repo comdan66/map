@@ -12,7 +12,7 @@ class Events extends Site_controller {
   }
 
   public function show ($id = 0) {
-    if (!($event = Event::find_by_id ($id, array ('conditions' => array ('is_visibled = ?', 1)))))
+    if (!($event = Event::find ('one', array ('conditions' => array ('id = ? AND is_visibled = ?', $id, 1)))))
       return redirect ('');
 
     if (!($u = round (Polyline::count (array ('conditions' => array ('event_id = ?', $event->id))) / 150)))
