@@ -15,13 +15,17 @@ class Events extends Site_controller {
     if (!($event = Event::find_by_id ($id, array ('conditions' => array ('is_visibled = ?', 1)))))
       return redirect ('');
 
-    $u = round (Polyline::count (array ('conditions' => array ('event_id = ?', $event->id))) / 150);
+    if (!($u = round (Polyline::count (array ('conditions' => array ('event_id = ?', $event->id))) / 150)))
+      return redirect ('');
 
     $polylines = array ();
     foreach ($event->polylines as $i => $polyline)
       if ($i % $u == 0)
         array_push ($polylines, $polyline);
     
+    if (!$polylines)
+      return redirect ('');
+
     $this->add_meta (array ('property' => 'og:image', 'content' => $event->cover->url ('1200x630c'), 'alt' =>  "OA's Maps"))
          ->load_view (array (
         'event' => $event,
