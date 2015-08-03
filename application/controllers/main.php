@@ -17,9 +17,9 @@ class Main extends Site_controller {
 // var_dump (gmdate ('H:i:s', 3190));
 // exit ();
 // exit();
-    foreach (Event::all () as $key => $e) {
-      delay_job ('main', 'event', array ('id' => $e->id));
-    }
+    // foreach (Event::all () as $key => $e) {
+    //   delay_job ('main', 'event', array ('id' => $e->id));
+    // }
     // $this->load->library ('SphericalGeometry');
     // $e = Event::find_by_id (5);
     // echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
