@@ -15,6 +15,7 @@ class Main extends Delay_controller {
       return;
 
     $event->length = $event->compute_length ();
+    $event->run_time = $event->compute_run_time ();
     $event->put_cover ();
   }
 }

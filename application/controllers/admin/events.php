@@ -119,6 +119,7 @@ class Events extends Admin_controller {
         'name' => $name,
         'description' => $description,
         'length' => 0,
+        'run_time' => 0,
         'is_visibled' => $is_visibled,
       ));
   }

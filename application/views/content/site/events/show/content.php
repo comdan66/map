@@ -7,7 +7,12 @@
   <i></i>
   <div id='map'></div>
   <div id='length'><?php echo round ($event->length / 1000, 2);?></div>
-  <div id='colors'>
+  <div id='colors'></div>
+  <div id='run_time'>
+    <?php echo (gmdate ('j', $event->run_time) - 1 ? gmdate ('j', $event->run_time) - 1 . '天 ' : '') . 
+    (gmdate ('G', $event->run_time) ? gmdate ('G', $event->run_time) . '小時 ' : '') . 
+    (gmdate ('i', $event->run_time) * 1 ? gmdate ('i', $event->run_time) * 1 . '分 ' : '') . 
+    (gmdate ('s', $event->run_time) * 1 ? gmdate ('s', $event->run_time) * 1 . '秒' : ''); ?>
   </div>
 </div>
 

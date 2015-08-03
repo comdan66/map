@@ -25,6 +25,12 @@ class Event extends OaModel {
     OrmImageUploader::bind ('cover', 'EventCoverImageUploader');
   }
 
+  public function compute_run_time () {
+    if (!(($first = Polyline::first (array ('select' => 'created_at', 'conditions' => array ('event_id = ?', $this->id)))) && ($last = Polyline::last (array ('select' => 'created_at', 'conditions' => array ('event_id = ?', $this->id))))))
+      return 0;
+
+    return strtotime ($last->created_at->format ('Y-m-d H:i:s')) - strtotime ($first->created_at->format ('Y-m-d H:i:s'));
+  }
   public function compute_length () {
     if (!isset ($this->length))
       return;
