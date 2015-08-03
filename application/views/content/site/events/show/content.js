@@ -5,57 +5,40 @@
 
 $(function () {
   var $map = $('#map');
+  var $length = $('#length');
   var $polylines = $('input[type="hidden"][name="polylines"]');
+
   var _map = null;
   var _markers = [];
-
+  var colors = ['#CCDDFF', '#99BBFF', '#5599FF', '#0066FF', '#0044BB', '#003C9D', '#003377'];
   function circlePath (r) {
     return 'M 0 0 m -' + r + ', 0 '+
            'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' +
            'a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0';
   }
-  function setPolyline () {
-    for (var i = 0; i < _markers.length; i++) {
-      if (!_markers[i].polyline) {
-        _markers[i].polyline = new google.maps.Polyline ({
-          map: _map,
-          strokeColor: 'rgba(68, 77, 145, .6)',
-          strokeWeight: 6,
-          drawPath: function () {
-            var prevPosition = this.prevMarker.getPosition ();
-            var nextPosition = this.nextMarker.getPosition ();
-            this.setPath ([prevPosition, nextPosition]);
-              if (!this.prevMarker.map)
-                this.prevMarker.setMap (_map);
-              if (!this.nextMarker.map)
-                this.nextMarker.setMap (_map);
-              if (!this.map)
-                this.setMap (_map);
-          }
-        });
-      }
-      
-      _markers[i].polyline.prevMarker = _markers[i - 1] ? _markers[i - 1] : _markers[i];
-      _markers[i].polyline.nextMarker = _markers[i];
-      _markers[i].polyline.drawPath ();
-    }
+  function color (speed) {
+    speed = parseInt ((speed < 0 ? 0 : speed * 3.6) / 10, 10);
+    return colors[speed] ? colors[speed] : colors[colors.length - 1];
   }
-  function initMarker (position, index, id) {
-    var marker = new google.maps.Marker ({
+  function setPolyline () {
+    for (var i = 1; i < _markers.length; i++) {
+        new google.maps.Polyline ({
+          map: _map,
+          strokeColor: color(_markers[i - 1].$obj.data ('speed')),
+          strokeWeight: 6,
+          path: [_markers[i - 1].getPosition (), _markers[i].getPosition ()]
+        });
+    }
+    
+  }
+  function initMarker ($obj) {
+    return new google.maps.Marker ({
         map: _map,
         draggable: false,
-        position: position,
-        icon: {
-            path: circlePath (6),
-            strokeColor: 'rgba(50, 60, 140, .4)',
-            strokeWeight: 1,
-            fillColor: 'rgba(68, 77, 145, .95)',
-            fillOpacity: 0.5
-          }
+        position: new google.maps.LatLng ($obj.data ('lat'), $obj.data ('lng')),
+        icon: { path: 'M 0 0' },
+        $obj: $obj
       });
-    _markers.push (marker);
-    
-    setPolyline ();
   }
   function initialize () {
     _map = new google.maps.Map ($map.get (0), {
@@ -70,9 +53,11 @@ $(function () {
         center: new google.maps.LatLng (25.04, 121.55),
       });
 
-    $polylines.each (function () {
-      initMarker (new google.maps.LatLng ($(this).data ('lat'), $(this).data ('lng')), 0, $(this).val ());
+    _markers = $polylines.map (function () {
+      return initMarker ($(this));
     });
+
+    setPolyline ();
 
     if (_markers.length > 0) {
       var bounds = new google.maps.LatLngBounds ();

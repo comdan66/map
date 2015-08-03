@@ -25,6 +25,19 @@ class Event extends OaModel {
     OrmImageUploader::bind ('cover', 'EventCoverImageUploader');
   }
 
+  public function compute_length () {
+    if (!isset ($this->length))
+      return;
+
+    $this->CI->load->library ('SphericalGeometry');
+    
+    return SphericalGeometry::computeLength (array_map (function ($polyline) {
+          return new LatLng (
+              $polyline->latitude,
+              $polyline->longitude
+            );
+        }, Polyline::find ('all', array ('select' => 'latitude, longitude', 'conditions' => array ('event_id = ?', $this->id)))));
+  }
   public function destroy () {
     Polyline::delete_all (array ('conditions' => array ('event_id = ?', $this->id)));
     return $this->cover->cleanAllFiles () && $this->delete ();

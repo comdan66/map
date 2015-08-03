@@ -11,7 +11,10 @@ class Main extends Delay_controller {
   }
 
   public function event () {
-    if (($id = $this->input_post ('id')) && ($event = Event::find_by_id ($id)))
-      $event->put_cover ();
+    if (!(($id = $this->input_post ('id')) && ($event = Event::find_by_id ($id))))
+      return;
+
+    $event->length = $event->compute_length ();
+    $event->put_cover ();
   }
 }

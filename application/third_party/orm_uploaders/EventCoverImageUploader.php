@@ -15,7 +15,7 @@ class EventCoverImageUploader extends OrmImageUploader {
         '200x200c' => array ('adaptiveResizeQuadrant', 200, 200, 'c'),
         '400x400c' => array ('adaptiveResizeQuadrant', 400, 400, 'c'),
         '800x800c' => array ('adaptiveResizeQuadrant', 800, 800, 'c'),
-        '1200x630c' => array ('adaptiveResizeQuadrant', 1200, 630, 't'),
+        '1200x630c' => array ('adaptiveResizeQuadrant', 1200, 630, 'c'),
       );
   }
 }
