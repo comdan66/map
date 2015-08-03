@@ -5,12 +5,13 @@
 
 $(function () {
   var $map = $('#map');
+  var $colors = $('#colors');
   var $length = $('#length');
   var $polylines = $('input[type="hidden"][name="polylines"]');
 
   var _map = null;
   var _markers = [];
-  var colors = ['#CCDDFF', '#99BBFF', '#5599FF', '#0066FF', '#0044BB', '#003C9D', '#003377'];
+  var colors = ['#CCDDFF', '#99BBFF', '#5599FF', '#0066FF', '#0044BB', '#003C9D', '#003377', '#550088', '#770077'];
   function circlePath (r) {
     return 'M 0 0 m -' + r + ', 0 '+
            'a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 ' +
@@ -66,6 +67,11 @@ $(function () {
       _map.fitBounds (bounds);
     }
 
+    $colors.append (colors.map (function (c, i) {
+      return $('<div />').text ((i ? i : '') + '0 ~ ' + (i + 1) + '0 ').css ({
+        'background-color': c
+      });
+    }));
     window.closeLoading ();
   }
   google.maps.event.addDomListener (window, 'load', initialize);

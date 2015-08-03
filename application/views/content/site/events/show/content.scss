@@ -36,6 +36,33 @@ html {
         &:nth-child(3) { bottom: -4px; left: 0; height: 5px; border: 1px solid rgba(255, 255, 255, .9); @include box-shadow(0 0 10px rgba(0, 0, 0, 0.2)); }
         &:nth-child(4) { border: 1px solid rgba(255, 255, 255, .5); top: 0; left: -5px; width: 5px; }
       }
+      #colors {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        display: inline-block;
+        border: 1px solid rgba(39, 40, 34, .4);
+        background-color: rgba(255, 255, 255, .8);
+        color: white;
+        font-weight: bolder;
+        @include border-radius(2px);
+        @include box-shadow(0 0 15px 1px rgba(0, 0, 0, 0.2));
+        div {
+          padding: 3px 15px;
+          &:after {
+            content: '(Km/h)';
+          }
+        }
+        @media screen and (min-width: 0px) and (max-width: #{$mediaTabletWidth - 1px}) {
+          font-size: 12px;
+          div {
+            padding: 5px;
+            &:after {
+              content: 'km/h';
+            }
+          }
+        }
+      }
       #length {
         position: absolute;
         top: 10px;

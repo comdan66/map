@@ -7,6 +7,8 @@
   <i></i>
   <div id='map'></div>
   <div id='length'><?php echo round ($event->length / 1000, 2);?></div>
+  <div id='colors'>
+  </div>
 </div>
 
 <?php
