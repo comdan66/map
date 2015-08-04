@@ -12,7 +12,7 @@ class Main extends Site_controller {
   }
 
   public function index () {
-    $events = Event::find ('all', array ('conditions' => array ('is_visibled = ?', 1)));
+    $events = Event::find ('all', array ('order' => 'id DESC', 'conditions' => array ('is_visibled = ?', 1)));
     $this->add_js (base_url ('resource', 'javascript', 'imgLiquid_v0.9.944', 'imgLiquid-min.js'))
          ->load_view (array (
           'events' => $events
