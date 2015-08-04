@@ -4,5 +4,6 @@
  */
 
 $(function () {
+  $('.unit').imgLiquid ({verticalAlign: 'center'});
   window.closeLoading ();
 });

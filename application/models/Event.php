@@ -36,7 +36,7 @@ class Event extends OaModel {
       return;
 
     $this->CI->load->library ('SphericalGeometry');
-    
+
     return SphericalGeometry::computeLength (array_map (function ($polyline) {
           return new LatLng (
               $polyline->latitude,
@@ -56,15 +56,21 @@ class Event extends OaModel {
   }
   public function picture ($size = '60x60', $type = 'client_key', $color = 'red') {
     $u = round (Polyline::count (array ('conditions' => array ('event_id = ?', $this->id))) / 50);
-    
+
     $paths = array ();
     foreach ($this->polylines as $i => $polyline)
       if ($i % $u == 0)
         array_push ($paths, $polyline->latitude . ',' . $polyline->longitude);
-    
+
     if ($paths)
       return 'https://maps.googleapis.com/maps/api/staticmap?path=color:' . $color . '|weight:5|' . implode ('|', $paths) . '&size=' . $size . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
     else
       return '';
+  }
+  public function run_time_str () {
+    return (gmdate ('j', $this->run_time) - 1 ? gmdate ('j', $this->run_time) - 1 . '天 ' : '') .
+           (gmdate ('G', $this->run_time) ? gmdate ('G', $this->run_time) . '小時 ' : '') .
+           (gmdate ('i', $this->run_time) * 1 ? gmdate ('i', $this->run_time) * 1 . '分 ' : '') .
+           (gmdate ('s', $this->run_time) * 1 ? gmdate ('s', $this->run_time) * 1 . '秒' : '');
   }
 }
