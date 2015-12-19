@@ -70,7 +70,7 @@ class Ios extends Api_controller {
         'cover' => '',
         'length' => 0,
         'run_time' => 0,
-        'is_visibled' => 0
+        'is_visibled' => 1
       ))))
       return $this->output_json (array ('status' => true, 'id' => $event->id));
     else

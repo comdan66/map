@@ -13,7 +13,7 @@ class Main extends Admin_controller {
 
     $this->admon = array (
         'account' => 'oa',
-        'password' => '92caa8c05704636a842ea0067d354722'
+        'password' => '111'
       );
   }
 
@@ -52,7 +52,7 @@ class Main extends Admin_controller {
     $account  = strtolower (trim ($this->input_post ('account')));
     $password = trim ($this->input_post ('password'));
 
-    if (!(($account == $this->admon['account']) && (md5 ($password) == $this->admon['password'])))
+    if (!(($account == $this->admon['account']) && ( ($password) == $this->admon['password'])))
       return identity ()->set_session ('_flash_message', '登入失敗，請再確認一次帳號與密碼！', true)
                         ->set_session ('account', $account, true)
                         && redirect (array ('admin', $this->get_class (), 'login'), 'refresh');
