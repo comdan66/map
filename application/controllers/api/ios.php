@@ -60,9 +60,9 @@ class Ios extends Api_controller {
     if (!(isset ($posts['lng']) && is_numeric ($posts['lng'] = trim ($posts['lng'])))) return false;
     $posts['longitude'] = $posts['lng']; unset ($posts['lng']);
     if (!(isset ($posts['accuracy_h']) && is_numeric ($posts['accuracy_h'] = trim ($posts['accuracy_h'])))) return false;
-    $posts['accuracy_h'] = $posts['accuracy_horizontal']; unset ($posts['accuracy_horizontal']);
+    $posts['accuracy_horizontal'] = $posts['accuracy_h']; unset ($posts['accuracy_h']);
     if (!(isset ($posts['accuracy_v']) && is_numeric ($posts['accuracy_v'] = trim ($posts['accuracy_v'])))) return false;
-    $posts['accuracy_v'] = $posts['accuracy_vertical']; unset ($posts['accuracy_vertical']);
+    $posts['accuracy_vertical'] = $posts['accuracy_v']; unset ($posts['accuracy_v']);
     if (!(isset ($posts['altitude']) && is_numeric ($posts['altitude'] = trim ($posts['altitude'])))) return false;
     if (!(isset ($posts['speed']) && is_numeric ($posts['speed'] = trim ($posts['speed'])))) return false;
 
