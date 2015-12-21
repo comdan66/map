@@ -65,6 +65,12 @@ class Main extends Site_controller {
       ));
 
     $user->avatar->put_url ('https://scontent-tpe1-1.xx.fbcdn.net/hphotos-xft1/v/t1.0-9/11048657_1080777421935599_5837445915403701082_n.jpg?oh=bda6562f0231dd37b7bcc05a2b454d22&oe=572035AC');
+
+    $user = User::create (array (
+        'name' => '泰瑞',
+      ));
+
+    $user->avatar->put (FCPATH . 'resource/image/avatar.png');
   }
 
   public function index ($offset = 0) {
