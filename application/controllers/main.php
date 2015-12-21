@@ -66,9 +66,9 @@ class Main extends Site_controller {
     $conditions = array (implode (' AND ', conditions ($columns, $configs, 'polyline', OAInput::get ())));
 
     $limit = 12;
-    $total = polyline::count (array ('conditions' => $conditions));
+    $total = Polyline::count (array ('conditions' => $conditions));
     $offset = $offset < $total ? $offset : 0;
-    $polylines = polyline::find ('all', array (
+    $polylines = Polyline::find ('all', array (
         'order' => 'id DESC',
         'limit' => $limit,
         'offset' => $offset,
