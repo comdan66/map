@@ -59,12 +59,37 @@ class Main extends Site_controller {
       sleep (1);
     }
   }
-  public function load_polylines () {
+  public function user () {
+    $user = User::create (array (
+        'name' => 'OA',
+      ));
 
+    $user->avatar->put_url ('https://scontent-tpe1-1.xx.fbcdn.net/hphotos-xft1/v/t1.0-9/11048657_1080777421935599_5837445915403701082_n.jpg?oh=bda6562f0231dd37b7bcc05a2b454d22&oe=572035AC');
   }
-  public function index () {
-    $this->add_js (Cfg::setting ('google', 'client_js_url'), false)
-         ->add_hidden (array ('id' => 'polyline_url', 'value' => base_url ('api', 'f2e', 'polyline')))
-         ->load_view ();
+
+  public function index ($offset = 0) {
+    $columns = array ();
+    $configs = array ('%s');
+    $conditions = array (implode (' AND ', conditions ($columns, $configs, 'polyline', OAInput::get ())));
+
+    $limit = 12;
+    $total = polyline::count (array ('conditions' => $conditions));
+    $offset = $offset < $total ? $offset : 0;
+    $polylines = polyline::find ('all', array (
+        'order' => 'id DESC',
+        'limit' => $limit,
+        'offset' => $offset,
+        'include' => array ('user'),
+        'conditions' => $conditions
+      ));
+
+    $this->load->library ('pagination');
+    $configs['uri_segment'] = 1;
+    $pagination = $this->pagination->initialize (array_merge (array ('total_rows' => $total, 'num_links' => 3, 'per_page' => $limit, 'uri_segment' => 0, 'page_query_string' => false, 'first_link' => '第一頁', 'last_link' => '最後頁', 'prev_link' => '上一頁', 'next_link' => '下一頁', 'full_tag_open' => '<ul class="pagination">', 'full_tag_close' => '</ul>', 'first_tag_open' => '<li class="f">', 'first_tag_close' => '</li>', 'prev_tag_open' => '<li class="p">', 'prev_tag_close' => '</li>', 'num_tag_open' => '<li>', 'num_tag_close' => '</li>', 'cur_tag_open' => '<li class="active"><a href="#">', 'cur_tag_close' => '</a></li>', 'next_tag_open' => '<li class="n">', 'next_tag_close' => '</li>', 'last_tag_open' => '<li class="l">', 'last_tag_close' => '</li>'), $configs))->create_links ();
+
+    return $this->load_view (array (
+                    'polylines' => $polylines,
+                    'pagination' => $pagination
+                  ));
   }
 }

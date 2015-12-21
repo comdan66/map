@@ -301,7 +301,7 @@ class CI_URI {
 
 			if ($val != '')
 			{
-				$this->segments[] = $val;
+				$this->segments[] = urldecode ($val);
 			}
 		}
 	}
@@ -647,6 +647,11 @@ class CI_URI {
 		return '/'.implode('/', $this->rsegment_array());
 	}
 
+	
+	function rsegments($n, $no_result = FALSE)
+	{
+		return ( ! isset($this->rsegments[$n])) ? $no_result : $this->rsegments[$n];
+	}
 }
 // END URI Class
 

@@ -7,54 +7,65 @@
 
 class Ios extends Api_controller {
 
-  public function update_polylines () {
-    $event_id  = trim (OAInput::post ('event_id'));
+  public function create_polyline () {
+    $post  = OAInput::post ();
 
-    if (!($event_id && ($event = Event::find_by_id ($event_id))))
-      return $this->output_json (array ('status' => false));
-    
-    $polylines = OAInput::post ('polylines');
-    
-    usort ($polylines, function ($a, $b) { return $a['id'] > $b['id']; });
+    if ($msg = $this->_validation_polyline_posts ($posts))
+      return $this->output_json (array ('status' => false, 'id' => 0, 'message' => $msg));
 
-    array_filter ($polylines, function ($polyline) { return $polyline['accuracy_h'] < 100; });
+    $polyline = null;
+    $create = Polyline::transaction (function () use ($posts, &$polyline) {
+      if (!(verifyCreateOrm ($polyline = Polyline::create (array_intersect_key ($posts, Polyline::table ()->columns)))))
+        return false;
 
-    $ids = array_filter (array_map (function ($polyline) use ($event) {
-          if (verifyCreateOrm (Polyline::create (array (
-                          'event_id' => $event->id,
-                          'latitude' => $polyline['lat'],
-                          'longitude' => $polyline['lng'],
-                          'altitude' => $polyline['altitude'],
-                          'accuracy_horizontal' => $polyline['accuracy_h'],
-                          'accuracy_vertical' => $polyline['accuracy_v'],
-                          'speed' => $polyline['speed']
-                        ))))
-            return $polyline['id'];
-          else
-            return null;
-        }, $polylines));
-    
-    // delay_job ('main', 'event', array ('id' => $event->id));
-    
-    return $this->output_json (array ('status' => true, 'ids' => $ids));
-  }
+      return true;
+    });
 
-  public function create_event () {
-    $name  = OAInput::post ('name');
-
-    if (!$name)
-      return $this->output_json (array ('status' => false));
-
-    if (verifyCreateOrm ($event = Event::create (array (
-        'name' => $name,
-        'description' => '',
-        'cover' => '',
-        'length' => 0,
-        'run_time' => 0,
-        'is_visibled' => 1
-      ))))
-      return $this->output_json (array ('status' => true, 'id' => $event->id));
+    if ($create)
+      return $this->output_json (array ('status' => true, 'id' => $polyline->id));
     else
       return $this->output_json (array ('status' => false, 'id' => 0));
+  }
+  public function create_paths ($polyline_id = 0) {
+    if (!($polyline_id && ($polyline = Polyline::find_by_id ($polyline_id))))
+      return $this->output_json (array ('status' => false));
+    
+    $paths = ($paths = OAInput::post ('paths')) ? $paths : array ();
+    usort ($paths, function ($a, $b) { return $a['id'] > $b['id']; });
+    array_filter ($paths, array ($this, '_validation_path_posts'));
+    
+    $path_ids = column_array (array_filter ($paths, function (&$path) use ($polyline_id) {
+      $create = Path::transaction (function () use (&$path, $polyline_id) {
+        if (!(verifyCreateOrm ($path = Path::create (array_intersect_key (array_merge ($path, array ('polyline_id' => $polyline_id)), Path::table ()->columns)))))
+          return false;
+        return true;
+      });
+      return $create;
+    }), 'id');
+
+    // delay_job ('main', 'event', array ('id' => $event->id));
+
+    return $this->output_json (array ('status' => true, 'path_ids' => $path_ids));
+  }
+  private function _validation_polyline_posts (&$posts) {
+    if (!(isset ($posts['name']) && ($posts['name'] = trim ($posts['name'])))) $posts['name'] = date ('Y-m-d H:i:s');
+    if (!(isset ($posts['user_id']) && is_numeric ($posts['user_id'] = trim ($posts['user_id'])))) $posts['user_id'] = 1;
+
+    return '';
+  }
+  private function _validation_path_posts (&$posts) {
+    if ((isset ($posts['id']) && is_numeric ($posts['id'] = trim ($posts['id'])))) unset ($posts['id']);
+    if (!(isset ($posts['lat']) && is_numeric ($posts['lat'] = trim ($posts['lat'])))) return false;
+    $posts['latitude'] = $posts['lat']; unset ($posts['lat']);
+    if (!(isset ($posts['lng']) && is_numeric ($posts['lng'] = trim ($posts['lng'])))) return false;
+    $posts['longitude'] = $posts['lng']; unset ($posts['lng']);
+    if (!(isset ($posts['accuracy_h']) && is_numeric ($posts['accuracy_h'] = trim ($posts['accuracy_h'])))) return false;
+    $posts['accuracy_h'] = $posts['accuracy_horizontal']; unset ($posts['accuracy_horizontal']);
+    if (!(isset ($posts['accuracy_v']) && is_numeric ($posts['accuracy_v'] = trim ($posts['accuracy_v'])))) return false;
+    $posts['accuracy_v'] = $posts['accuracy_vertical']; unset ($posts['accuracy_vertical']);
+    if (!(isset ($posts['altitude']) && is_numeric ($posts['altitude'] = trim ($posts['altitude'])))) return false;
+    if (!(isset ($posts['speed']) && is_numeric ($posts['speed'] = trim ($posts['speed'])))) return false;
+
+    return true;
   }
 }

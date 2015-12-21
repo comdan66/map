@@ -1,12 +1,15 @@
-<nav>
-  <div>
-    <a href=''>首頁</a>
-    <a href='' r>登出</a>
-  </div>
-</nav>
 
-<div class='map'>
-  <i></i><i></i><i></i><i></i>
-  <div id='map'></div>
-  <div id='colors'></div>
+<div id='container'>
+  <div id='polylines'>
+    <?php
+    foreach ($polylines as $polyline) { ?>
+      <a class='polyline' href='<?php echo base_url ('polylines', $polyline->id);?>'>
+        <img src='<?php echo $polyline->cover->url ('640x640c');?>' />
+        <div><?php echo $polyline->name;?></div>
+        <img src="<?php echo $polyline->user->avatar->url ('40x40c');?>" />
+      </a>
+    <?php
+    } ?>
+  </div>
+  <?php echo render_cell ('frame_cell', 'pagination', $pagination);?>
 </div>

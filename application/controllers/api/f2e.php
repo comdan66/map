@@ -7,26 +7,26 @@
 
 class F2e extends Api_controller {
 
-  public function polyline () {
-    if (!($event = Event::last (array ('conditions' => array ('is_visibled = ?', 1)))))
-      return $this->output_json (array ('status' => true, 'markers' => array ()));
+  public function polyline ($id = 0) {
+    if (!($polyline = Polyline::last (array ('conditions' => $id ? array ('id = ?', $id) : array ('is_visibled = ?', 1)))))
+      return $this->output_json (array ('status' => true, 'paths' => array ()));
 
-    if (!($all_polyline_ids = column_array (Polyline::find ('all', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array (
-                    'event_id' => $event->id
+    if (!($all_path_ids = column_array (Path::find ('all', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array (
+                    'polyline_id' => $polyline->id
                   ))), 'id')))
-      return $this->output_json (array ('status' => true, 'markers' => array ()));
+      return $this->output_json (array ('status' => true, 'paths' => array ()));
 
     $is_GS = true;
-    $polyline_ids = array ();
-    for ($i = 0; ($key = $is_GS ? round (($i * (2 + ($i - 1) * 0.25)) / 2) : $i) < $all_polyline_ids[0]; $i++)
-      if ($temp = array_slice ($all_polyline_ids, $key, 1))
-        array_push ($polyline_ids, array_shift ($temp));
+    $path_ids = array ();
+    for ($i = 0; ($key = $is_GS ? round (($i * (2 + ($i - 1) * 0.25)) / 2) : $i) < $all_path_ids[0]; $i++)
+      if ($temp = array_slice ($all_path_ids, $key, 1))
+        array_push ($path_ids, array_shift ($temp));
 
-    if (!($polylines = Polyline::find ('all', array ('select' => 'id, latitude AS lat, longitude AS lng, speed AS s', 'order' => 'id DESC', 'conditions' => array ('id IN (?)', $polyline_ids)))))
-      return $this->output_json (array ('status' => true, 'markers' => array ()));
+    if (!($paths = Path::find ('all', array ('select' => 'id, latitude AS lat, longitude AS lng, speed AS s', 'order' => 'id DESC', 'conditions' => array ('id IN (?)', $path_ids)))))
+      return $this->output_json (array ('status' => true, 'paths' => array ()));
 
-    return $this->output_json (array ('status' => true, 'markers' => array_map (function ($polyline) {
-      return $polyline->to_array ();
-    }, $polylines)));
+    return $this->output_json (array ('status' => true, 'paths' => array_map (function ($path) {
+      return $path->to_array ();
+    }, $paths)));
   }
 }

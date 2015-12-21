@@ -5,13 +5,12 @@
  * @copyright   Copyright (c) 2015 OA Wu Design
  */
 
-class EventCoverImageUploader extends OrmImageUploader {
+class UserAvatarImageUploader extends OrmImageUploader {
 
   public function getVersions () {
     return array (
         '' => array (),
-        '100w' => array ('resize', 100, 100, 'width'),
-        '120x80c' => array ('adaptiveResizeQuadrant', 120, 80, 'c')
+        '40x40c' => array ('adaptiveResizeQuadrant', 40, 40, 'c'),
       );
   }
 }
