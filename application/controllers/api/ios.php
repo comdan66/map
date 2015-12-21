@@ -8,7 +8,7 @@
 class Ios extends Api_controller {
 
   public function create_polyline () {
-    $post  = OAInput::post ();
+    $posts = OAInput::post ();
 
     if ($msg = $this->_validation_polyline_posts ($posts))
       return $this->output_json (array ('status' => false, 'id' => 0, 'message' => $msg));
