@@ -114,6 +114,21 @@ $(function () {
     setPolyline ();
   }
   function initialize () {
+    var styledMapType = new google.maps.StyledMapType ([
+      { featureType: 'transit.station.bus',
+        stylers: [{ visibility: 'off' }]
+      }, {
+        featureType: 'poi',
+        stylers: [{ visibility: 'off' }]
+      }, {
+        featureType: 'poi.attraction',
+        stylers: [{ visibility: 'on' }]
+      }, {
+        featureType: 'poi.school',
+        stylers: [{ visibility: 'on' }]
+      }
+    ]);
+    
     _map = new google.maps.Map ($map.get (0), {
         zoom: 14,
         zoomControl: true,
@@ -125,6 +140,8 @@ $(function () {
         disableDoubleClickZoom: true,
         center: new google.maps.LatLng (25.04, 121.55),
       });
+    _map.mapTypes.set ('map_style', styledMapType);
+    _map.setMapTypeId ('map_style');
 
     setMapPosition (_map, 'oas_maps_admin_last');
 

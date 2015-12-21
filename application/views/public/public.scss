@@ -50,12 +50,14 @@ html {
       display: block;
       margin: 0 auto;
       max-width: $mainWidth;
-
-      padding: 0 10px;
-
-      @media screen and (min-width: #{$mainWidth}) {
-        padding: 0;
-      }
     }
   }
+}
+
+a[href^="http://maps.google.com/maps"], a[href^="https://maps.google.com/maps"] {
+  display: none !important;
+}
+
+.gm-style-cc {
+  display: none;
 }
