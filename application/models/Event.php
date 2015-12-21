@@ -7,7 +7,7 @@
 
 class Event extends OaModel {
 
-  static $table_name = 'Events';
+  static $table_name = 'events';
 
   static $has_one = array (
   );
