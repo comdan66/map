@@ -82,7 +82,7 @@ $(function () {
           borderWidth: 1, shadowStyle: 3, borderRadius: '50', minWidth: 'auto',
           maxWidth: 'auto', minHeight: 'auto', maxHeight: 'auto',
           borderColor: 'rgba(39, 40, 34, .7)', backgroundClassName: '',
-          content: '<div class="info_bubble"><div class="img"><img src="https://scontent-tpe1-1.xx.fbcdn.net/hphotos-xft1/v/t1.0-9/11048657_1080777421935599_5837445915403701082_n.jpg?oh=bda6562f0231dd37b7bcc05a2b454d22&oe=572035AC" /><div class="title"></div></div></div>'
+          content: '<div class="info_bubble"><div class="img"><img src="' + result.avatar + '" /><div class="title"></div></div></div>'
         });
 
         _now.open (_map, new google.maps.Marker ({
