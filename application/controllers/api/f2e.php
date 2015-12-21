@@ -7,8 +7,8 @@
 
 class F2e extends Api_controller {
 
-  public function polyline ($id = 0) {
-    if (!($event = Event::find ('one', array ('conditions' => array ('id = ? AND is_visibled = ?', $id, 1)))))
+  public function polyline () {
+    if (!($event = Event::first (array ('conditions' => array ('is_visibled = ?', 1)))))
       return $this->output_json (array ('status' => true, 'markers' => array ()));
 
     if (!($all_polyline_ids = column_array (Polyline::find ('all', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array (
