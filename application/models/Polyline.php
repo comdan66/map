@@ -7,7 +7,7 @@
 
 class Polyline extends OaModel {
 
-  static $table_name = 'Polylines';
+  static $table_name = 'polylines';
 
   static $has_one = array (
   );

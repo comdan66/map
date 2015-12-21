@@ -7,7 +7,7 @@
 
 class Path extends OaModel {
 
-  static $table_name = 'Paths';
+  static $table_name = 'paths';
 
   static $has_one = array (
   );
