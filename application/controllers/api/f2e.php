@@ -8,9 +8,9 @@
 class F2e extends Api_controller {
 
   private function _paths ($polyline) {
-    if (!($all_path_ids = column_array (Path::find ('all', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array (
-                    'polyline_id = ? AND accuracy_horizontal < ?', $polyline->id, 100
-                  ))), 'id')))
+    if (!($polyline && ($all_path_ids = column_array (Path::find ('all', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array (
+                        'polyline_id = ? AND accuracy_horizontal < ?', $polyline->id, 100
+                      ))), 'id'))))
       return false;
 
     $is_GS = true;
@@ -34,11 +34,13 @@ class F2e extends Api_controller {
     $user_ids = array (1, 2);
     $users = User::find ('all', array ('conditions' => array ('id IN (?)', $user_ids)));
     $that = $this;
-    $units = array_map (function ($user) use ($that) {
+    $units = array_filter (array_map (function ($user) use ($that) {
       $polyline = Polyline::find ('one', array ('order' => 'id DESC', 'conditions' => array ('user_id = ?', $user->id)));
-      return $that->_paths ($polyline);
-    }, $users);
+      $paths = $that->_paths ($polyline);
+      return $paths ? array_merge (array ('user_id' => $user->id), $paths) : null;
+    }, $users));
 
+    return $this->output_json (array_merge (array ('status' => true), array ('units' => $units)));
   }
   public function polyline ($id = 0) {
     if (!($polyline = Polyline::last (array ('conditions' => $id ? array ('id = ?', $id) : array ('is_visibled = ?', 1)))))

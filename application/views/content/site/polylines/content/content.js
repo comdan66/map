@@ -32,8 +32,6 @@ $(function () {
     return colors[speed] ? colors[speed] : colors[colors.length - 1];
   }
   function drawPolyline (paths) {
-    if (_now) _now.setMap (null);
-
     _polylines.map (function (t) { t.setMap (null); });
     _polylines = [];
 
@@ -75,25 +73,28 @@ $(function () {
       adds.map (function (t) { t.pathMarker.setMap (_map); });
 
       if (paths.length) {
-        _now = new google.maps.Marker ({
-          map: _map,
-          draggable: false,
-          position: paths[0].pathMarker.getPosition (),
-          // icon: { path: 'M 0 0' }
-        });
+        if (!_now) {
+          _now = new MarkerWithLabel ({
+            map: _map,
+            position: paths[0].pathMarker.getPosition (),
+            draggable: false,
+            raiseOnDrag: false,
+            clickable: true,
+            labelContent: '<div class="avatar"><img src="' + result.avatar + '" /></div><div class="cover"></div><div class="arrow1"></div><div class="arrow2"></div>',
+            labelAnchor: new google.maps.Point (60, 110),
+            labelClass: "marker_label",
+            icon: { path: 'M 0 0' }
+          });
 
-
-        var markerWithLabel = new MarkerWithLabel ({
-          map: _map,
-          position: paths[0].pathMarker.getPosition (),
-          draggable: false,
-          raiseOnDrag: false,
-          clickable: true,
-          labelContent: 'saddddasdasdadasd',
-          // labelAnchor: new google.maps.Point (50, 50),
-          labelClass: "marker_label",
-          icon: { path: 'M 0 0' }
-        });
+          var bounds = new google.maps.LatLngBounds ();
+          paths.slice (0, 20).forEach (function (t) { bounds.extend (t.pathMarker.getPosition ()); });
+          _map.fitBounds (bounds);
+          mapGo (_map, paths[0].pathMarker.getPosition ());
+        } else {
+          markerGo (_now, paths[0].pathMarker.getPosition (), function () {
+            mapGo (_map, paths[0].pathMarker.getPosition ());
+          });
+        }
       }
 
       _paths = _paths.filter (function (t) { return $.inArray (t.id, delete_ids) == -1; }).concat (paths.filter (function (t) { return $.inArray (t.id, add_ids) != -1; }));

@@ -11,7 +11,7 @@ class Migration_Add_paths extends CI_Migration {
       "CREATE TABLE `paths` (
         `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
         `polyline_id` int(11) unsigned NOT NULL COMMENT 'Polyline ID',
-        `sqlite_id` int(11) unsigned NOT NULL COMMENT 'APP SQLite ID',
+        `sqlite_id` int(11) unsigned NOT NULL DEFAULT 0 COMMENT 'APP SQLite ID',
 
         `latitude` DOUBLE NOT NULL DEFAULT -1 COMMENT '緯度',
         `longitude` DOUBLE NOT NULL DEFAULT -1 COMMENT '經度',

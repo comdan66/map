@@ -71,7 +71,66 @@
 }
 
 .marker_label {
+  $d: 14px;
+  $w: 5px;
+  $shadow: 0 0 3px rgba(53, 53, 53, 0.5), 0 0 1px rgba(53, 53, 53, 0.5);
+  position: relative;
   width: 120px;
-  height: 120px;
-  border: 1px solid rgba(255, 0, 0, .3);
+  height: 110px;
+  padding: 10px;
+
+  .avatar {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border: $w solid rgba(255, 255, 255, 1);
+    overflow: hidden;
+    z-index: 2;
+
+    @include border-radius(50%);
+    @include box-shadow(0 0 3px rgba(53, 53, 53, 0.5));
+    img {
+      width: 100%;
+    }
+  }
+  .cover {
+    position: absolute;
+    top: 5px;
+    left: 15px;
+    display: inline-block;
+    width: 90px;
+    height: 90px;
+    z-index: 4;
+    @include border-radius(50%);
+    @include box-shadow($shadow);
+    @include background-image(
+                  linear-gradient(
+                      135deg,
+                      rgba(255, 255, 255, .4) 5%,
+                      rgba(255, 255, 255, 0) 55%,
+                      rgba(0, 0, 0, 0) 55%,
+                      rgba(0, 0, 0, .5) 100%
+                  ));
+  }
+  .arrow1, .arrow2 {
+    position: absolute;
+    bottom: 4px;
+    left: calc((120px - #{$d}) / 2);
+    display: inline-block;
+    width: $d;
+    height: $d;
+    border: #{$d/2} solid rgba(255, 255, 255, 1);
+    z-index: 1;
+    border-left-color: rgba(255, 0, 0, 0);
+    border-top-color: rgba(255, 0, 0, 0);
+    @include transform(rotate(45deg));
+    @include box-shadow($shadow);
+  }
+  .arrow2 {
+    z-index: 3;
+    @include box-shadow(none);
+  }
 }
