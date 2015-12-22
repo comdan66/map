@@ -13,12 +13,15 @@ application/logs/*
 
 application/config/database.php
 application/config/setting/google.php
+application/config/setting/parse.php
 
 temp/*
 
 upload/*
 
 assets/*
+
+vendor/*
 
 /cmd
 
