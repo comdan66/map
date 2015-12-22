@@ -57,49 +57,49 @@ $(function () {
     return paths;
   }
   function loadPolyline () {
-    // $.ajax ({
-    //   url: $('#polyline_url').val (),
-    //   data: { },
-    //   async: true, cache: false, dataType: 'json', type: 'GET',
-    //   beforeSend: function () {}
-    // })
-    // .done (function (result) {
-    //   if (!result.status) return;
+    $.ajax ({
+      url: $('#polyline_url').val (),
+      data: { },
+      async: true, cache: false, dataType: 'json', type: 'GET',
+      beforeSend: function () {}
+    })
+    .done (function (result) {
+      if (!result.status) return;
 
-    //   var paths = drawPolyline (result.paths);
+      var paths = drawPolyline (result.paths);
 
-    //   var deletes = _paths.diff (paths, 'id');
-    //   var adds = paths.diff (_paths, 'id');
-    //   var delete_ids = deletes.column ('id');
-    //   var add_ids = adds.column ('id');
+      var deletes = _paths.diff (paths, 'id');
+      var adds = paths.diff (_paths, 'id');
+      var delete_ids = deletes.column ('id');
+      var add_ids = adds.column ('id');
 
-    //   deletes.map (function (t) { t.pathMarker.setMap (null); });
-    //   adds.map (function (t) { t.pathMarker.setMap (_map); });
+      deletes.map (function (t) { t.pathMarker.setMap (null); });
+      adds.map (function (t) { t.pathMarker.setMap (_map); });
 
-    //   if (paths.length) {
-    //     _now = new InfoBubble ({
-    //       margin: 0, padding: 0, arrowStyle: 0,
-    //       borderWidth: 1, shadowStyle: 3, borderRadius: '50', minWidth: 'auto',
-    //       maxWidth: 'auto', minHeight: 'auto', maxHeight: 'auto',
-    //       borderColor: 'rgba(39, 40, 34, .7)', backgroundClassName: '',
-    //       content: '<div class="info_bubble"><div class="img"><img src="' + result.avatar + '" /><div class="title"></div></div></div>'
-    //     });
+      if (paths.length) {
+        _now = new InfoBubble ({
+          margin: 0, padding: 0, arrowStyle: 0,
+          borderWidth: 1, shadowStyle: 3, borderRadius: '50', minWidth: 'auto',
+          maxWidth: 'auto', minHeight: 'auto', maxHeight: 'auto',
+          borderColor: 'rgba(39, 40, 34, .7)', backgroundClassName: '',
+          content: '<div class="info_bubble"><div class="img"><img src="' + result.avatar + '" /><div class="title"></div></div></div>'
+        });
 
-    //     _now.open (_map, new google.maps.Marker ({
-    //       map: _map,
-    //       draggable: false,
-    //       position: paths[0].pathMarker.getPosition (),
-    //       icon: { path: 'M 0 0' }
-    //     }));
-    //   }
+        _now.open (_map, new google.maps.Marker ({
+          map: _map,
+          draggable: false,
+          position: paths[0].pathMarker.getPosition (),
+          icon: { path: 'M 0 0' }
+        }));
+      }
 
-    //   _paths = _paths.filter (function (t) { return $.inArray (t.id, delete_ids) == -1; }).concat (paths.filter (function (t) { return $.inArray (t.id, add_ids) != -1; }));
+      _paths = _paths.filter (function (t) { return $.inArray (t.id, delete_ids) == -1; }).concat (paths.filter (function (t) { return $.inArray (t.id, add_ids) != -1; }));
 
-    //   if (_timer) clearTimeout (_timer);
-    //   if (!result.is_finished) _timer = setTimeout (loadPolyline, 5000);
-    // })
-    // .fail (window.ajaxError)
-    // .complete (function (result) {});
+      if (_timer) clearTimeout (_timer);
+      if (!result.is_finished) _timer = setTimeout (loadPolyline, 5000);
+    })
+    .fail (window.ajaxError)
+    .complete (function (result) {});
   }
   function initialize () {
     _map = new google.maps.Map ($map.get (0), {

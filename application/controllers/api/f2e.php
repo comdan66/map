@@ -25,7 +25,7 @@ class F2e extends Api_controller {
     if (!($paths = Path::find ('all', array ('select' => 'id, latitude AS lat, longitude AS lng, speed AS s', 'order' => 'id DESC', 'conditions' => array ('id IN (?)', $path_ids)))))
       return $this->output_json (array ('status' => true, 'paths' => array ()));
 
-    return $this->output_json (array ('status' => true, 'avatar' => $polyline->user->avatar->url ('100x100c'), 'paths' => array_map (function ($path) {
+    return $this->output_json (array ('status' => true, 'avatar' => $polyline->user->avatar->url ('100x100c'), 'is_finished' => $polyline->is_finished, 'paths' => array_map (function ($path) {
       return $path->to_array ();
     }, $paths)));
   }

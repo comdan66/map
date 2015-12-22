@@ -28,6 +28,10 @@ nav {
       @include a(1px, false, rgba(255, 255, 255, .8), rgba(255, 255, 255, 1));
       font-size: 18px;
 
+      + a {
+        margin-left: 10px;
+      }
+
       &[r] {
         float: right;
       }

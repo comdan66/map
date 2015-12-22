@@ -45,7 +45,7 @@ Route::root ('main');
 // $route['admin'] = "admin/main";
 // Route::get ('admin', 'admin/main@index');
 Route::get ('/(:num)', 'main@index($1)');
-Route::get ('polylines/(:num)', 'polylines@index($1)');
+Route::get ('polylines/(:num)', 'polylines@content($1)');
 
 // $route['main/index/(:num)/(:num)'] = "main/aaa/$1/$2";
 // Route::get ('main/index/(:num)/(:num)', 'main@aaa($1, $2)');

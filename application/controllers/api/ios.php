@@ -27,17 +27,22 @@ class Ios extends Api_controller {
       return $this->output_json (array ('status' => false, 'id' => 0));
   }
   public function create_paths ($polyline_id = 0) {
-    if (!($polyline_id && ($polyline = Polyline::find_by_id ($polyline_id))))
+    if (!($polyline_id && ($polyline = Polyline::find_by_id ($polyline_id, array ('id, is_finished, updated_at')))))
       return $this->output_json (array ('status' => false));
     
     $paths = ($paths = OAInput::post ('paths')) ? $paths : array ();
     usort ($paths, function ($a, $b) { return $a['id'] > $b['id']; });
     array_filter ($paths, array ($this, '_validation_path_posts'));
     
-    $path_ids = column_array (array_filter ($paths, function (&$path) use ($polyline_id) {
-      $create = Path::transaction (function () use (&$path, $polyline_id) {
-        if (!(verifyCreateOrm ($path = Path::create (array_intersect_key (array_merge ($path, array ('polyline_id' => $polyline_id)), Path::table ()->columns)))))
+    $path_ids = column_array (array_filter ($paths, function (&$path) use ($polyline) {
+      $create = Path::transaction (function () use (&$path, $polyline) {
+        if (!(verifyCreateOrm ($path = Path::create (array_intersect_key (array_merge ($path, array ('polyline_id' => $polyline->id)), Path::table ()->columns)))))
           return false;
+
+        $polyline->is_finished = 0;
+        if (!$polyline->save ())
+          return false;
+
         return true;
       });
       return $create;
