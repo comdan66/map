@@ -26,6 +26,7 @@ class Polylines extends Site_controller {
         ));
 
     $this->add_js (Cfg::setting ('google', 'client_js_url'), false)
+         ->add_js (base_url ('resource', 'javascript', 'markerwithlabel', 'markerwithlabel_packed.js'))
          ->add_hidden (array ('id' => 'polyline_url', 'value' => base_url ('api', 'f2e', 'polyline', $polyline->id)))
          ->load_view ();
   }

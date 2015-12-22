@@ -7,14 +7,11 @@
 
 class F2e extends Api_controller {
 
-  public function polyline ($id = 0) {
-    if (!($polyline = Polyline::last (array ('conditions' => $id ? array ('id = ?', $id) : array ('is_visibled = ?', 1)))))
-      return $this->output_json (array ('status' => true, 'paths' => array ()));
-
+  private function _paths ($polyline) {
     if (!($all_path_ids = column_array (Path::find ('all', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array (
-                    'polyline_id' => $polyline->id
+                    'polyline_id = ? AND accuracy_horizontal < ?', $polyline->id, 100
                   ))), 'id')))
-      return $this->output_json (array ('status' => true, 'paths' => array ()));
+      return false;
 
     $is_GS = true;
     $path_ids = array ();
@@ -23,10 +20,33 @@ class F2e extends Api_controller {
         array_push ($path_ids, array_shift ($temp));
 
     if (!($paths = Path::find ('all', array ('select' => 'id, latitude AS lat, longitude AS lng, speed AS s', 'order' => 'id DESC', 'conditions' => array ('id IN (?)', $path_ids)))))
-      return $this->output_json (array ('status' => true, 'paths' => array ()));
+      return false;
 
-    return $this->output_json (array ('status' => true, 'avatar' => $polyline->user->avatar->url ('100x100c'), 'is_finished' => $polyline->is_finished, 'paths' => array_map (function ($path) {
-      return $path->to_array ();
-    }, $paths)));
+    return array (
+        'avatar' => $polyline->user->avatar->url ('100x100c'),
+        'is_finished' => $polyline->is_finished,
+        'paths' => array_map (function ($path) {
+            return $path->to_array ();
+          }, $paths)
+        );
+  }
+  public function polylines () {
+    $user_ids = array (1, 2);
+    $users = User::find ('all', array ('conditions' => array ('id IN (?)', $user_ids)));
+    $that = $this;
+    $units = array_map (function ($user) use ($that) {
+      $polyline = Polyline::find ('one', array ('order' => 'id DESC', 'conditions' => array ('user_id = ?', $user->id)));
+      return $that->_paths ($polyline);
+    }, $users);
+
+  }
+  public function polyline ($id = 0) {
+    if (!($polyline = Polyline::last (array ('conditions' => $id ? array ('id = ?', $id) : array ('is_visibled = ?', 1)))))
+      return $this->output_json (array ('status' => false, 'paths' => array ()));
+
+    if (!($paths = $this->_paths ($polyline)))
+      return $this->output_json (array ('status' => false, 'paths' => array ()));
+
+    return $this->output_json (array_merge (array ('status' => true), $paths));
   }
 }

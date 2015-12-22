@@ -44,10 +44,10 @@ class Main extends Site_controller {
             'id' => $w,
             'lat' => $s[0],
             'lng' => $s[1],
-            'altitude' => $s[2],
-            'accuracy_h' => $s[3],
-            'accuracy_v' => $s[4],
-            'speed' => $s[5],
+            'al' => $s[2],
+            'a_h' => $s[3],
+            'a_v' => $s[4],
+            'sd' => $s[5],
           );
       }, $t = array_slice ($p, $i, 15), range (1, count ($t)));
 
@@ -58,6 +58,19 @@ class Main extends Site_controller {
       echo $i . "\n";
       sleep (1);
     }
+  }
+  public function user () {
+    $user = User::create (array (
+        'name' => 'OA',
+      ));
+
+    $user->avatar->put_url ('https://scontent-tpe1-1.xx.fbcdn.net/hphotos-xft1/v/t1.0-9/11048657_1080777421935599_5837445915403701082_n.jpg?oh=bda6562f0231dd37b7bcc05a2b454d22&oe=572035AC');
+
+    $user = User::create (array (
+        'name' => '泰瑞',
+      ));
+
+    $user->avatar->put (FCPATH . 'resource/image/avatar.png');
   }
 
   public function index ($offset = 0) {
