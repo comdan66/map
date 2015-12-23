@@ -39,6 +39,16 @@ class Ios extends Api_controller {
 
     return $this->output_json (array_merge (array ('status' => true), $paths));
   }
+  public function finish_polyline ($polyline_id = 0) {
+    if (!($polyline_id && ($polyline = Polyline::find_by_id ($polyline_id, array ('id, is_finished, updated_at')))))
+      return $this->output_json (array ('status' => false));
+    
+    $update = Path::transaction (function () use ($polyline) {
+      $polyline->is_finished = 1;
+      return $polyline->save ();
+    });
+    return $this->output_json (array ('status' => $update ? true : false));
+  }
   public function create_polyline () {
     $posts = OAInput::post ();
 
@@ -62,6 +72,10 @@ class Ios extends Api_controller {
     if (!($polyline_id && ($polyline = Polyline::find_by_id ($polyline_id, array ('id, is_finished, updated_at')))))
       return $this->output_json (array ('status' => false));
     
+    // if ($area = OAInput::post ('area')) {
+    //   // push nav
+    // }
+
     $paths = ($paths = OAInput::post ('paths')) ? $paths : array ();
     array_filter ($paths, array ($this, '_validation_path_posts'));
     usort ($paths, function ($a, $b) { return $a['sqlite_id'] > $b['sqlite_id']; });
@@ -71,9 +85,8 @@ class Ios extends Api_controller {
         if (!(verifyCreateOrm ($path = Path::create (array_intersect_key (array_merge ($path, array ('polyline_id' => $polyline->id)), Path::table ()->columns)))))
           return false;
 
-        $polyline->is_finished = 0;
-        if (!$polyline->save ())
-          return false;
+        if ($polyline->is_finished && !($polyline->is_finished = 0))
+          $polyline->save ();
 
         return true;
       });
@@ -91,26 +104,13 @@ class Ios extends Api_controller {
     return '';
   }
   private function _validation_path_posts (&$posts) {
-    if (!(isset ($posts['id']) && is_numeric ($posts['id'] = trim ($posts['id'])))) return false;
-    $posts['sqlite_id'] = $posts['id']; unset ($posts['id']);
-    
-    if (!(isset ($posts['lat']) && is_numeric ($posts['lat'] = trim ($posts['lat'])))) return false;
-    $posts['latitude'] = $posts['lat']; unset ($posts['lat']);
-
-    if (!(isset ($posts['lng']) && is_numeric ($posts['lng'] = trim ($posts['lng'])))) return false;
-    $posts['longitude'] = $posts['lng']; unset ($posts['lng']);
-    
-    if (!(isset ($posts['a_h']) && is_numeric ($posts['a_h'] = trim ($posts['a_h'])))) return false;
-    $posts['accuracy_horizontal'] = $posts['a_h']; unset ($posts['a_h']);
-
-    if (!(isset ($posts['a_v']) && is_numeric ($posts['a_v'] = trim ($posts['a_v'])))) return false;
-    $posts['accuracy_vertical'] = $posts['a_v']; unset ($posts['a_v']);
-
-    if (!(isset ($posts['al']) && is_numeric ($posts['al'] = trim ($posts['al'])))) return false;
-    $posts['altitude'] = $posts['al']; unset ($posts['al']);
-
-    if (!(isset ($posts['sd']) && is_numeric ($posts['sd'] = trim ($posts['sd'])))) return false;
-    $posts['speed'] = $posts['sd']; unset ($posts['sd']);
+    if (!(isset ($posts['id']) && is_numeric ($posts['id'] = trim ($posts['id'])))) return false; $posts['sqlite_id'] = $posts['id']; unset ($posts['id']);    
+    if (!(isset ($posts['lat']) && is_numeric ($posts['lat'] = trim ($posts['lat'])))) return false; $posts['latitude'] = $posts['lat']; unset ($posts['lat']);
+    if (!(isset ($posts['lng']) && is_numeric ($posts['lng'] = trim ($posts['lng'])))) return false; $posts['longitude'] = $posts['lng']; unset ($posts['lng']);
+    if (!(isset ($posts['a_h']) && is_numeric ($posts['a_h'] = trim ($posts['a_h'])))) return false; $posts['accuracy_horizontal'] = $posts['a_h']; unset ($posts['a_h']);
+    if (!(isset ($posts['a_v']) && is_numeric ($posts['a_v'] = trim ($posts['a_v'])))) return false; $posts['accuracy_vertical'] = $posts['a_v']; unset ($posts['a_v']);
+    if (!(isset ($posts['al']) && is_numeric ($posts['al'] = trim ($posts['al'])))) return false; $posts['altitude'] = $posts['al']; unset ($posts['al']);
+    if (!(isset ($posts['sd']) && is_numeric ($posts['sd'] = trim ($posts['sd'])))) return false; $posts['speed'] = $posts['sd']; unset ($posts['sd']);
 
     return true;
   }
