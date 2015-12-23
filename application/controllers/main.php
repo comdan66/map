@@ -1,17 +1,4 @@
-<?php
-use Parse\ParseObject;
-use Parse\ParseQuery;
-use Parse\ParseACL;
-use Parse\ParsePush;
-use Parse\ParseUser;
-use Parse\ParseInstallation;
-use Parse\ParseException;
-use Parse\ParseAnalytics;
-use Parse\ParseFile;
-use Parse\ParseCloud;
-use Parse\ParseClient;
-
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
  * @author      OA Wu <comdan66@gmail.com>
@@ -21,23 +8,8 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Main extends Site_controller {
 
   public function x () {
-    require FCPATH . 'vendor/autoload.php';
-
-    ParseClient::initialize (Cfg::setting ('parse', ENVIRONMENT, 'app_id'), Cfg::setting ('parse', ENVIRONMENT, 'rest_key'), Cfg::setting ('parse', ENVIRONMENT, 'master_key'));
-
-    $data = array (
-            "sound" => "default",
-            'alert' => '歐Ａ人現在在永和喲！',
-            'badge' => 0
-            // 'launch-image' => 'http://www.imageshop.com.tw/pic/shop/home/women-world.jpg'
-        );
-    // $query = ParseInstallation::query();
-
-    ParsePush::send (array (
-        // 'where' => $query,
-        "channels" => ["user_1"],
-        "data" => $data
-    ));
+    $this->load->library ('PushToParse');
+    PushToParse::send ('asd');
 
   }
   private function _post ($url, $fields = array ()) {

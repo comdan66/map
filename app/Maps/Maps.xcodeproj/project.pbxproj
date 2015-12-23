@@ -24,6 +24,11 @@
 		0EF05EBB1C29843800243BB9 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF05EB81C29843800243BB9 /* Parse.framework */; };
 		0EF05EBC1C29843800243BB9 /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF05EB91C29843800243BB9 /* ParseFacebookUtils.framework */; };
 		0EF05EBE1C2984D800243BB9 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF05EBD1C2984D800243BB9 /* libsqlite3.dylib */; };
+		0EF05F181C2A405800243BB9 /* GpsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F171C2A405800243BB9 /* GpsViewController.m */; };
+		0EF05F1B1C2A7BA300243BB9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF05F1A1C2A7BA300243BB9 /* MapKit.framework */; };
+		0EF05F1E1C2A8F0200243BB9 /* MyUITabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F1D1C2A8F0200243BB9 /* MyUITabBar.m */; };
+		0EF05F221C2A8F7F00243BB9 /* MyUITabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F211C2A8F7F00243BB9 /* MyUITabBarController.m */; };
+		0EF05F251C2A989100243BB9 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F241C2A989100243BB9 /* MapViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +74,15 @@
 		0EF05EB81C29843800243BB9 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		0EF05EB91C29843800243BB9 /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
 		0EF05EBD1C2984D800243BB9 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = ../../../../../../usr/lib/libsqlite3.dylib; sourceTree = "<group>"; };
+		0EF05F161C2A405800243BB9 /* GpsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GpsViewController.h; sourceTree = "<group>"; };
+		0EF05F171C2A405800243BB9 /* GpsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GpsViewController.m; sourceTree = "<group>"; };
+		0EF05F1A1C2A7BA300243BB9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		0EF05F1C1C2A8F0200243BB9 /* MyUITabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyUITabBar.h; sourceTree = "<group>"; };
+		0EF05F1D1C2A8F0200243BB9 /* MyUITabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyUITabBar.m; sourceTree = "<group>"; };
+		0EF05F201C2A8F7F00243BB9 /* MyUITabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyUITabBarController.h; sourceTree = "<group>"; };
+		0EF05F211C2A8F7F00243BB9 /* MyUITabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyUITabBarController.m; sourceTree = "<group>"; };
+		0EF05F231C2A989100243BB9 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		0EF05F241C2A989100243BB9 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EF05F1B1C2A7BA300243BB9 /* MapKit.framework in Frameworks */,
 				0EF05EBE1C2984D800243BB9 /* libsqlite3.dylib in Frameworks */,
 				0EF05EBC1C29843800243BB9 /* ParseFacebookUtils.framework in Frameworks */,
 				0EF05EBA1C29843800243BB9 /* Bolts.framework in Frameworks */,
@@ -107,6 +122,7 @@
 		0EF05E171C29467A00243BB9 = {
 			isa = PBXGroup;
 			children = (
+				0EF05F1A1C2A7BA300243BB9 /* MapKit.framework */,
 				0EF05EBD1C2984D800243BB9 /* libsqlite3.dylib */,
 				0EF05EB71C29843800243BB9 /* Bolts.framework */,
 				0EF05EB81C29843800243BB9 /* Parse.framework */,
@@ -135,6 +151,9 @@
 		0EF05E221C29467A00243BB9 /* Maps */ = {
 			isa = PBXGroup;
 			children = (
+				0EF05F261C2A989500243BB9 /* Map */,
+				0EF05F1F1C2A8F0800243BB9 /* TabBar */,
+				0EF05F191C2A405F00243BB9 /* Gps */,
 				0EF05E261C29467A00243BB9 /* AppDelegate.h */,
 				0EF05E271C29467A00243BB9 /* AppDelegate.m */,
 				0EF05E291C29467A00243BB9 /* ViewController.h */,
@@ -173,6 +192,35 @@
 				0EF05E4D1C29467A00243BB9 /* Info.plist */,
 			);
 			path = MapsUITests;
+			sourceTree = "<group>";
+		};
+		0EF05F191C2A405F00243BB9 /* Gps */ = {
+			isa = PBXGroup;
+			children = (
+				0EF05F161C2A405800243BB9 /* GpsViewController.h */,
+				0EF05F171C2A405800243BB9 /* GpsViewController.m */,
+			);
+			name = Gps;
+			sourceTree = "<group>";
+		};
+		0EF05F1F1C2A8F0800243BB9 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				0EF05F1C1C2A8F0200243BB9 /* MyUITabBar.h */,
+				0EF05F1D1C2A8F0200243BB9 /* MyUITabBar.m */,
+				0EF05F201C2A8F7F00243BB9 /* MyUITabBarController.h */,
+				0EF05F211C2A8F7F00243BB9 /* MyUITabBarController.m */,
+			);
+			name = TabBar;
+			sourceTree = "<group>";
+		};
+		0EF05F261C2A989500243BB9 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				0EF05F231C2A989100243BB9 /* MapViewController.h */,
+				0EF05F241C2A989100243BB9 /* MapViewController.m */,
+			);
+			name = Map;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -315,9 +363,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EF05E2B1C29467A00243BB9 /* ViewController.m in Sources */,
+				0EF05F1E1C2A8F0200243BB9 /* MyUITabBar.m in Sources */,
 				0EF05E281C29467A00243BB9 /* AppDelegate.m in Sources */,
+				0EF05F251C2A989100243BB9 /* MapViewController.m in Sources */,
+				0EF05F181C2A405800243BB9 /* GpsViewController.m in Sources */,
 				0EF05E311C29467A00243BB9 /* Maps.xcdatamodeld in Sources */,
 				0EF05E251C29467A00243BB9 /* main.m in Sources */,
+				0EF05F221C2A8F7F00243BB9 /* MyUITabBarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
