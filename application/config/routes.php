@@ -42,18 +42,8 @@
 // $route['default_controller'] = "main";
 Route::root ('main');
 
-// $route['admin'] = "admin/main";
-// Route::get ('admin', 'admin/main@index');
 Route::get ('/(:num)', 'main@index($1)');
 Route::get ('polylines/(:num)', 'polylines@content($1)');
 
-// $route['main/index/(:num)/(:num)'] = "main/aaa/$1/$2";
-// Route::get ('main/index/(:num)/(:num)', 'main@aaa($1, $2)');
-// Route::post ('main/index/(:num)/(:num)', 'main@aaa($1, $2)');
-// Route::put ('main/index/(:num)/(:num)', 'main@aaa($1, $2)');
-// Route::delete ('main/index/(:num)/(:num)', 'main@aaa($1, $2)');
-// Route::controller ('main', 'main');
-  // whit get、post、put、delete prefix
-
-/* End of file routes.php */
-/* Location: ./application/config/routes.php */
+Route::post ('api/v2/polylines/', 'ios_api_v2/polylines@create');
+Route::post ('api/v2/polylines/(:id)/paths', 'ios_api_v2/polyline_paths@create($0)');
