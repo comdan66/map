@@ -7,6 +7,38 @@
 
 class Ios extends Api_controller {
 
+  private function _paths ($polyline) {
+    if (!($polyline && ($all_path_ids = column_array (Path::find ('all', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array (
+                        'polyline_id = ? AND accuracy_horizontal < ?', $polyline->id, 100
+                      ))), 'id'))))
+      return false;
+
+    $is_GS = true;
+    $path_ids = array ();
+    for ($i = 0; ($key = $is_GS ? round (($i * (2 + ($i - 1) * 0.25)) / 2) : $i) < $all_path_ids[0]; $i++)
+      if ($temp = array_slice ($all_path_ids, $key, 1))
+        array_push ($path_ids, array_shift ($temp));
+
+    if (!($paths = Path::find ('all', array ('select' => 'id, latitude AS lat, longitude AS lng', 'order' => 'id DESC', 'conditions' => array ('id IN (?)', $path_ids)))))
+      return false;
+
+    return array (
+        'avatar' => $polyline->user->avatar->url ('100x100c'),
+        'is_finished' => $polyline->is_finished,
+        'paths' => array_map (function ($path) {
+            return $path->to_array ();
+          }, $paths)
+        );
+  }
+  public function paths ($polyline_id = 0) {
+    if (!($polyline_id && ($polyline = Polyline::find_by_id ($polyline_id, array ('id, is_finished, updated_at')))))
+      return $this->output_json (array ('status' => false));
+
+    if (!($paths = $this->_paths ($polyline)))
+      return $this->output_json (array ('status' => false));
+
+    return $this->output_json (array_merge (array ('status' => true), $paths));
+  }
   public function create_polyline () {
     $posts = OAInput::post ();
 
