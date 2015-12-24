@@ -142,11 +142,12 @@
         self.isLoadData = YES;
         [self.timer invalidate];
         self.timer = nil;
+        if (DEV) NSLog(@"------->Finish!");
     }
 }
 - (void)failure:(UIAlertController *)alert {
     
-    if (DEV) NSLog(@"------->failure!");
+    if (DEV) NSLog(@"------->Failure!");
 
     UIAlertController *error = [UIAlertController
                                 alertControllerWithTitle:@"錯誤"
