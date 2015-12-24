@@ -18,6 +18,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [USER_DEFAULTS setValue:nil forKey:@"polylineId"];
+    
     [Parse setApplicationId:@"6UQIIXqs8JSQPI8qisC1YPUrHQ4gviLXVB7DFDQR" clientKey:@"WM8dOONFyXtGs1VuGHdVqAeWp8lIkJhOv8PIySOC"];
     
     UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |

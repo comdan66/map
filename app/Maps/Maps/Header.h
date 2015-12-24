@@ -11,11 +11,14 @@
 
 #define API_URL @"http://maps.ioa.tw/api/v2/"
 
-#define DEV NO
+#define DEV YES
 #define USER_ID 1
+#define FOLLOW_USER_ID 1
 #define MAP_TIMER 5
 
 #define API_GET_USER_NEWEST_POLYLINE (API_URL @"users/%d/polylines/newest")
 #define API_GET_POLYLINE_PATHS (API_URL @"polylines/%d/paths")
+
+#define USER_DEFAULTS [NSUserDefaults standardUserDefaults]
 
 #endif /* Header_h */

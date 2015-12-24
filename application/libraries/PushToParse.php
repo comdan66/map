@@ -32,8 +32,8 @@ class PushToParse {
     $data = array (
             'sound' => 'default',
             'alert' => $msg,
-            // 'url' => 'http://www.avupload.com/',
-            'badge' => 1234
+            'url' => 'http://tinyurl.com/qjqt7l5/',
+            'badge' => 2028
             // 'launch-image' => 'http://www.imageshop.com.tw/pic/shop/home/women-world.jpg'
         );
 

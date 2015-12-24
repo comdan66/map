@@ -20,7 +20,10 @@
 @property MKPointAnnotation *user;
 @property MKPolyline *line;
 @property BOOL isLoadData;
-@property BOOL isAlert;
+
 @property NSTimer *timer;
+//@property BOOL isAlert;
+//@property NSInteger *polylineId;
+
 
 @end

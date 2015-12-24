@@ -47,44 +47,79 @@
 
     self.isLoadData = NO;
 
-    self.alert = [UIAlertController
-                  alertControllerWithTitle:@"取得資料中"
-                  message:@"請稍候..."
-                  preferredStyle:UIAlertControllerStyleAlert];
-    [self presentViewController:self.alert animated:YES completion:^{
-        self.isAlert = YES;
-        if (self.timer) {
-            [self.timer invalidate];
-            self.timer = nil;
-        }
-            
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:MAP_TIMER target:self selector:@selector(loadData) userInfo:nil repeats:YES];
-    }];
+    [self loadData];
+    if (self.timer) { [self.timer invalidate]; self.timer = nil; }
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:MAP_TIMER target:self selector:@selector(loadData) userInfo:nil repeats:YES];
 }
+
 - (void)loadData {
-    if (!self.isLoadData) {
-        self.isLoadData = YES;
+    if (self.isLoadData) return;
+
+    self.isLoadData = YES;
+    
+    if (DEV) NSLog(@"------->Load Data!");
+
+
+    if (![USER_DEFAULTS objectForKey:@"polylineId"]) {
         
-        NSMutableDictionary *data = [NSMutableDictionary new];
-        AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
-        [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
-        [httpManager GET:[NSString stringWithFormat:@"http://maps.ioa.tw/api/v2/polylines/11/paths"]
-              parameters:data
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     if ([[responseObject objectForKey:@"status"] boolValue]) {
-                         [self success: [responseObject objectForKey:@"paths"] isFinish: [[responseObject objectForKey:@"is_finished"] boolValue]];
-                     } else {
-                         [self failure];
-                     }
-                 }
-                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     [self failure];
-                 }
-         ];
+        if (DEV) NSLog(@"------->NO polylineId!");
+
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"取得資料中" message:@"請稍候..." preferredStyle:UIAlertControllerStyleAlert];
+        [self presentViewController:alert animated:YES completion:^{
+            [self loadNewest:^(AFHTTPRequestOperation *operation, id responseObject) {
+                if ([[responseObject objectForKey:@"status"] boolValue]) {
+                    [USER_DEFAULTS setValue:[responseObject objectForKey:@"id"] forKey:@"polylineId"];
+                    [self loadPaths:alert];
+                } else {
+                    [self failure:alert];
+                }
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                [self failure:alert];
+            }];
+        }];
+    } else {
+        if (DEV) NSLog(@"------->Has polylineId!");
+        [self loadPaths:nil];
     }
 }
+- (void)loadNewest:(void (^)(AFHTTPRequestOperation *operation, id responseObject))callbackBlock failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
+    
+    NSMutableDictionary *data = [NSMutableDictionary new];
+    AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
+    [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
+    [httpManager GET:[NSString stringWithFormat:API_GET_USER_NEWEST_POLYLINE, FOLLOW_USER_ID]
+          parameters:data
+             success:callbackBlock
+             failure:failure
+     ];
+}
+- (void)loadPaths:(UIAlertController *)alert {
+    NSMutableDictionary *data = [NSMutableDictionary new];
+    AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
+    [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
+    [httpManager GET:[NSString stringWithFormat:API_GET_POLYLINE_PATHS, (int)[[USER_DEFAULTS objectForKey:@"polylineId"] integerValue]]
+          parameters:data
+             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 if ([[responseObject objectForKey:@"status"] boolValue]) {
+                    [self setMap:[responseObject objectForKey:@"paths"] isFinish: [[responseObject objectForKey:@"is_finished"] boolValue]];
+                     if (alert) [alert dismissViewControllerAnimated:YES completion:nil];
+                 } else {
+                    [self failure:alert];
+                 }
+             }
+             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 [self failure:alert];
+             }
+     ];
+}
+
 - (void)setMap:(NSMutableDictionary*)paths isFinish:(BOOL)isFinish {
     if (paths.count > 0) {
+        if (self.line)
+            [self.mapView removeOverlay:self.line];
+        if (self.user)
+            [self.mapView removeAnnotation:self.user];
+        
         CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * paths.count);
 
         int caIndex = 0;
@@ -109,33 +144,28 @@
         self.timer = nil;
     }
 }
-- (void)success:(NSMutableDictionary*)paths isFinish:(BOOL)isFinish {
-    if (self.isAlert)
-        [self.alert dismissViewControllerAnimated:YES completion:^{
-            [self setMap:paths isFinish: isFinish];
-            self.isAlert = NO;
+- (void)failure:(UIAlertController *)alert {
+    
+    if (DEV) NSLog(@"------->failure!");
+
+    UIAlertController *error = [UIAlertController
+                                alertControllerWithTitle:@"錯誤"
+                                message:@"地圖模式錯誤！"
+                                preferredStyle:UIAlertControllerStyleAlert];
+    [error addAction:[UIAlertAction
+                      actionWithTitle:@"確定"
+                      style:UIAlertActionStyleDefault
+                      handler:^(UIAlertAction * action)
+                      {
+                          [[NSNotificationCenter defaultCenter] postNotificationName:@"goToTabIndex0" object:nil];
+                          [error dismissViewControllerAnimated:YES completion:nil];
+                      }]];
+    if (alert)
+        [alert dismissViewControllerAnimated:YES completion:^{
+            [self presentViewController:error animated:YES completion:nil];
         }];
     else
-        [self setMap:paths isFinish: isFinish];
-}
-- (void)failure {
-    [self.alert dismissViewControllerAnimated:YES completion:^{
-        UIAlertController *error = [UIAlertController
-                                    alertControllerWithTitle:@"錯誤"
-                                    message:@"地圖模式錯誤！"
-                                    preferredStyle:UIAlertControllerStyleAlert];
-        
-        [error addAction:[UIAlertAction
-                          actionWithTitle:@"確定"
-                          style:UIAlertActionStyleDefault
-                          handler:^(UIAlertAction * action)
-                          {
-                              [[NSNotificationCenter defaultCenter] postNotificationName:@"goToTabIndex0" object:nil];
-                              [error dismissViewControllerAnimated:YES completion:nil];
-                              
-                          }]];
-        [self presentViewController:error animated:YES completion:nil];
-    }];
+        self.isLoadData = NO;
 }
 - (void)clean {
     [self.mapView removeOverlay:self.line];
@@ -146,6 +176,7 @@
         [self.timer invalidate];
         self.timer = nil;
     }
+    if (DEV) NSLog(@"------->Clean!");
 }
 
 -(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay{
