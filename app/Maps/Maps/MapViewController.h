@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import <MapKit/MapKit.h>
 #import "OAHUD.h"
+#import "AFHTTPRequestOperationManager.h"
 
 @interface MapViewController : ViewController
 

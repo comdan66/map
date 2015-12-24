@@ -19,15 +19,15 @@
 //    [OAHUD show];
     [self initUI];
     
-    [self performSelector:@selector(look) withObject:nil afterDelay:2.0f];
+//    [self performSelector:@selector(look) withObject:nil afterDelay:2.0f];
 //    [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(look) userInfo:nil repeats:YES];
 }
 
-- (void)look {
+//- (void)look {
 //    [OAHUD hide];
-    NSLog(@"=");
+//    NSLog(@"=");
 //    [self performSelector:@selector(look) withObject:nil afterDelay:2.0f];
-}
+//}
 - (void)initUI {
     [self initMapView];
 }
@@ -53,9 +53,26 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-//    進來
-    NSLog(@"2");
-
+    [OAHUD show];
+    
+    
+    NSMutableDictionary *data = [NSMutableDictionary new];
+    AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
+    [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
+    [httpManager POST:[NSString stringWithFormat:@"http://maps.ioa.tw/api/v2/users/1/polylines/12/finish"]
+           parameters:data
+              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                  
+                  if ([[responseObject objectForKey:@"status"] boolValue]) {
+                      NSLog(@"成功");
+                  }
+              }
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  NSLog(@"呼叫 update_polylines API 失敗!");
+              }
+     ];
+    
+    
 }
 -(void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
