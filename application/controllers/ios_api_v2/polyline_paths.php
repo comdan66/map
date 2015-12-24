@@ -31,7 +31,7 @@ class Polyline_paths extends Api_controller {
 
     return array (
         'avatar' => $polyline->user->avatar->url ('100x100c'),
-        'is_finished' => $polyline->is_finished,
+        'is_finished' => $polyline->is_finished ? true : false,
         'paths' => array_map (function ($path) {
             return $path->to_array ();
           }, $paths)

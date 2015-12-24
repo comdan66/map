@@ -39,6 +39,9 @@
 		0EF05F451C2B950E00243BB9 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F3A1C2B950E00243BB9 /* AFURLRequestSerialization.m */; };
 		0EF05F461C2B950E00243BB9 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F3C1C2B950E00243BB9 /* AFURLResponseSerialization.m */; };
 		0EF05F471C2B950E00243BB9 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F3E1C2B950E00243BB9 /* AFURLSessionManager.m */; };
+		0EF05F4F1C2B968E00243BB9 /* RIButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F4A1C2B968E00243BB9 /* RIButtonItem.m */; };
+		0EF05F501C2B968E00243BB9 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F4C1C2B968E00243BB9 /* UIActionSheet+Blocks.m */; };
+		0EF05F511C2B968E00243BB9 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F4E1C2B968E00243BB9 /* UIAlertView+Blocks.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +117,12 @@
 		0EF05F3C1C2B950E00243BB9 /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		0EF05F3D1C2B950E00243BB9 /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		0EF05F3E1C2B950E00243BB9 /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		0EF05F491C2B968E00243BB9 /* RIButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIButtonItem.h; sourceTree = "<group>"; };
+		0EF05F4A1C2B968E00243BB9 /* RIButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIButtonItem.m; sourceTree = "<group>"; };
+		0EF05F4B1C2B968E00243BB9 /* UIActionSheet+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Blocks.h"; sourceTree = "<group>"; };
+		0EF05F4C1C2B968E00243BB9 /* UIActionSheet+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Blocks.m"; sourceTree = "<group>"; };
+		0EF05F4D1C2B968E00243BB9 /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
+		0EF05F4E1C2B968E00243BB9 /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +162,7 @@
 		0EF05E171C29467A00243BB9 = {
 			isa = PBXGroup;
 			children = (
+				0EF05F481C2B966500243BB9 /* Library */,
 				0EF05F1A1C2A7BA300243BB9 /* MapKit.framework */,
 				0EF05EBD1C2984D800243BB9 /* libsqlite3.dylib */,
 				0EF05EB71C29843800243BB9 /* Bolts.framework */,
@@ -182,8 +192,6 @@
 		0EF05E221C29467A00243BB9 /* Maps */ = {
 			isa = PBXGroup;
 			children = (
-				0EF05F2B1C2B950400243BB9 /* AFNetworking */,
-				0EF05F2A1C2B87C300243BB9 /* OAHUD */,
 				0EF05F261C2A989500243BB9 /* Map */,
 				0EF05F1F1C2A8F0800243BB9 /* TabBar */,
 				0EF05F191C2A405F00243BB9 /* Gps */,
@@ -289,6 +297,30 @@
 				0EF05F3E1C2B950E00243BB9 /* AFURLSessionManager.m */,
 			);
 			name = AFNetworking;
+			sourceTree = "<group>";
+		};
+		0EF05F481C2B966500243BB9 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				0EF05F521C2B969B00243BB9 /* UIAlertView-Blocks */,
+				0EF05F2B1C2B950400243BB9 /* AFNetworking */,
+				0EF05F2A1C2B87C300243BB9 /* OAHUD */,
+			);
+			name = Library;
+			path = Maps;
+			sourceTree = "<group>";
+		};
+		0EF05F521C2B969B00243BB9 /* UIAlertView-Blocks */ = {
+			isa = PBXGroup;
+			children = (
+				0EF05F491C2B968E00243BB9 /* RIButtonItem.h */,
+				0EF05F4A1C2B968E00243BB9 /* RIButtonItem.m */,
+				0EF05F4B1C2B968E00243BB9 /* UIActionSheet+Blocks.h */,
+				0EF05F4C1C2B968E00243BB9 /* UIActionSheet+Blocks.m */,
+				0EF05F4D1C2B968E00243BB9 /* UIAlertView+Blocks.h */,
+				0EF05F4E1C2B968E00243BB9 /* UIAlertView+Blocks.m */,
+			);
+			name = "UIAlertView-Blocks";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -432,6 +464,8 @@
 			files = (
 				0EF05F431C2B950E00243BB9 /* AFSecurityPolicy.m in Sources */,
 				0EF05F291C2B87C000243BB9 /* OAHUD.m in Sources */,
+				0EF05F4F1C2B968E00243BB9 /* RIButtonItem.m in Sources */,
+				0EF05F501C2B968E00243BB9 /* UIActionSheet+Blocks.m in Sources */,
 				0EF05F421C2B950E00243BB9 /* AFNetworkReachabilityManager.m in Sources */,
 				0EF05E2B1C29467A00243BB9 /* ViewController.m in Sources */,
 				0EF05F441C2B950E00243BB9 /* AFURLConnectionOperation.m in Sources */,
@@ -446,6 +480,7 @@
 				0EF05F461C2B950E00243BB9 /* AFURLResponseSerialization.m in Sources */,
 				0EF05F181C2A405800243BB9 /* GpsViewController.m in Sources */,
 				0EF05E311C29467A00243BB9 /* Maps.xcdatamodeld in Sources */,
+				0EF05F511C2B968E00243BB9 /* UIAlertView+Blocks.m in Sources */,
 				0EF05E251C29467A00243BB9 /* main.m in Sources */,
 				0EF05F221C2A8F7F00243BB9 /* MyUITabBarController.m in Sources */,
 			);

@@ -33,7 +33,7 @@ class PushToParse {
             'sound' => 'default',
             'alert' => $msg,
             // 'url' => 'http://www.avupload.com/',
-            'badge' => 9999
+            'badge' => 1234
             // 'launch-image' => 'http://www.imageshop.com.tw/pic/shop/home/women-world.jpg'
         );
 

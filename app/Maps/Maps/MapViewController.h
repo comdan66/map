@@ -8,13 +8,17 @@
 
 #import "ViewController.h"
 #import <MapKit/MapKit.h>
-#import "OAHUD.h"
 #import "AFHTTPRequestOperationManager.h"
+#import "UIAlertView+Blocks.h"
 
-@interface MapViewController : ViewController
+@interface MapViewController : ViewController <MKMapViewDelegate>
 
 @property MKMapView *mapView;
 
-//@property OAHUD *oaHud;
+@property UIAlertController *alert;
+@property MKPointAnnotation *user;
+@property MKPolyline *line;
+@property BOOL isLoadData;
+@property BOOL isAlert;
 
 @end

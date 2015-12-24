@@ -18,7 +18,10 @@
     [super viewDidLoad];
 
     [(MyUITabBar *)self.tabBar initUI];
-    // Do any additional setup after loading the view.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToTabIndex0:) name:@"goToTabIndex0" object:nil];
+}
+- (void)goToTabIndex0:(NSNotification*)sender {
+    [self setSelectedIndex:0];
 }
 - (void)viewWillLayoutSubviews
 {
