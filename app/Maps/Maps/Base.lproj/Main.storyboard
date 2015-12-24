@@ -85,7 +85,6 @@
         <!--個人設定-->
         <scene sceneID="XLC-Av-UrY">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="X2B-LM-UdN" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="gxk-ab-qlp" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yoT-fD-o8d"/>
@@ -98,6 +97,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="個人設定" id="VOI-cU-aFl"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X2B-LM-UdN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1731" y="61"/>
         </scene>

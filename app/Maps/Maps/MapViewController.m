@@ -16,17 +16,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //    [OAHUD show];
     [self initUI];
-    
-    //    [self performSelector:@selector(look) withObject:nil afterDelay:2.0f];
-    
 }
 
-- (void)look {
-    NSLog(@"=");
-//    [self performSelector:@selector(look) withObject:nil afterDelay:2.0f];
-}
 - (void)initUI {
     [self initMapView];
 }
@@ -61,14 +53,17 @@
                   preferredStyle:UIAlertControllerStyleAlert];
     [self presentViewController:self.alert animated:YES completion:^{
         self.isAlert = YES;
-        [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(loadData) userInfo:nil repeats:YES];
+        if (self.timer) {
+            [self.timer invalidate];
+            self.timer = nil;
+        }
+            
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:MAP_TIMER target:self selector:@selector(loadData) userInfo:nil repeats:YES];
     }];
 }
 - (void)loadData {
-    
     if (!self.isLoadData) {
         self.isLoadData = YES;
-        NSLog(@">> 123");
         
         NSMutableDictionary *data = [NSMutableDictionary new];
         AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
@@ -77,7 +72,7 @@
               parameters:data
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
                      if ([[responseObject objectForKey:@"status"] boolValue]) {
-                         [self success: [responseObject objectForKey:@"paths"] isFinish: [responseObject objectForKey:@"is_finished"]];
+                         [self success: [responseObject objectForKey:@"paths"] isFinish: [[responseObject objectForKey:@"is_finished"] boolValue]];
                      } else {
                          [self failure];
                      }
@@ -88,32 +83,40 @@
          ];
     }
 }
-- (void)setMap:(NSMutableDictionary*)paths {
-    CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * paths.count);
-    
-    int caIndex = 0;
-    for (NSMutableDictionary *path in paths)
-        coordinateArray[caIndex++] = CLLocationCoordinate2DMake([[path objectForKey:@"lat"] doubleValue], [[path objectForKey:@"lng"] doubleValue]);
-    
-    [self.mapView setRegion:MKCoordinateRegionMake(coordinateArray[0], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
-    
-    self.user = [MKPointAnnotation new];
-    [self.user setCoordinate:coordinateArray[0]];
-    [self.mapView addAnnotation:self.user];
-    
-    self.line = [MKPolyline polylineWithCoordinates:coordinateArray count:paths.count];
-    [self.mapView addOverlay:self.line];
-    
+- (void)setMap:(NSMutableDictionary*)paths isFinish:(BOOL)isFinish {
+    if (paths.count > 0) {
+        CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * paths.count);
+
+        int caIndex = 0;
+        for (NSMutableDictionary *path in paths)
+            coordinateArray[caIndex++] = CLLocationCoordinate2DMake([[path objectForKey:@"lat"] doubleValue], [[path objectForKey:@"lng"] doubleValue]);
+        
+        [self.mapView setRegion:MKCoordinateRegionMake(coordinateArray[0], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
+        
+        self.user = [MKPointAnnotation new];
+        [self.user setCoordinate:coordinateArray[0]];
+        [self.mapView addAnnotation:self.user];
+        
+        self.line = [MKPolyline polylineWithCoordinates:coordinateArray count:paths.count];
+        [self.mapView addOverlay:self.line];
+    }
+
     self.isLoadData = NO;
+
+    if (isFinish && self.timer) {
+        self.isLoadData = YES;
+        [self.timer invalidate];
+        self.timer = nil;
+    }
 }
-- (void)success:(NSMutableDictionary*)paths {
+- (void)success:(NSMutableDictionary*)paths isFinish:(BOOL)isFinish {
     if (self.isAlert)
         [self.alert dismissViewControllerAnimated:YES completion:^{
-            [self setMap:paths];
+            [self setMap:paths isFinish: isFinish];
             self.isAlert = NO;
         }];
     else
-        [self setMap:paths];
+        [self setMap:paths isFinish: isFinish];
 }
 - (void)failure {
     [self.alert dismissViewControllerAnimated:YES completion:^{
@@ -138,7 +141,11 @@
     [self.mapView removeOverlay:self.line];
     [self.mapView removeAnnotation:self.user];
     self.isLoadData = YES;
-    NSLog(@"1");
+
+    if (self.timer) {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
 }
 
 -(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay{

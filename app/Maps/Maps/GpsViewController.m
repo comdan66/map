@@ -13,12 +13,13 @@
 @end
 
 @implementation GpsViewController
-+ (BOOL) isDebug {
-    return NO;
-}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initUI];
+      //  NSLog(@"%@", [NSString stringWithFormat:API_GET_POLYLINE_PATHS, USER_ID]);
+
+//    NSLog(@"%@", @"sad");
     // Do any additional setup after loading the view.
 }
 
@@ -80,8 +81,8 @@
     
     [self.switchLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.switchLabel setText:@"關閉"];
-    
-    if ([GpsViewController isDebug]) {
+
+    if (DEV) {
         [self.switchLabel.layer setBorderColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1].CGColor];
         [self.switchLabel.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
     }
@@ -112,10 +113,11 @@
     [self.stepperLabel setText:@"0 公尺"];
     [self.stepperLabel setTextAlignment:NSTextAlignmentRight];
     
-    if ([GpsViewController isDebug]) {
+    if (DEV) {
         [self.stepperLabel.layer setBorderColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1].CGColor];
         [self.stepperLabel.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
     }
+    
     [self.view addSubview:self.stepperLabel];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.stepperLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:40.0]];
@@ -182,7 +184,7 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.mapView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.horizontalDivider2 attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
 }
 - (void)switchChangeAction:(UISwitch *)sender {
-    NSLog(@"xxxx");
+//    NSLog(@"xxxx");
 }
 - (void)stepperChangedAction:(UIStepper*)sender {
     double value = [sender value];
@@ -192,7 +194,7 @@
 }
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
 {
-    NSLog(@"xxx");
+//    NSLog(@"xxx");
     // Image creation code here
     
 }

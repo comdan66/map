@@ -10,6 +10,7 @@
 #import <MapKit/MapKit.h>
 #import "AFHTTPRequestOperationManager.h"
 #import "UIAlertView+Blocks.h"
+#import "Header.h"
 
 @interface MapViewController : ViewController <MKMapViewDelegate>
 
@@ -20,5 +21,6 @@
 @property MKPolyline *line;
 @property BOOL isLoadData;
 @property BOOL isAlert;
+@property NSTimer *timer;
 
 @end

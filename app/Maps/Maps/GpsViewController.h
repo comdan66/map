@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "Header.h"
 
 @interface GpsViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
 

@@ -20,6 +20,7 @@
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 
-
++ (int)userId;
++ (int)mapScheduledTimer;
 @end
 

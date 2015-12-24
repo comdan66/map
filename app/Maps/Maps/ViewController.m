@@ -17,18 +17,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.locationManager = [CLLocationManager new];
-    [self.locationManager setDelegate:self];
-    [self.locationManager setDistanceFilter:0];
-    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
-    self.locationManager.allowsBackgroundLocationUpdates = YES;
-    // Do any additional setup after loading the view, typically from a nib.
-    [self.locationManager requestAlwaysAuthorization];
-    [self.locationManager startUpdatingLocation];
+//    self.locationManager = [CLLocationManager new];
+//    [self.locationManager setDelegate:self];
+//    [self.locationManager setDistanceFilter:0];
+//    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+//    self.locationManager.allowsBackgroundLocationUpdates = YES;
+//    // Do any additional setup after loading the view, typically from a nib.
+//    [self.locationManager requestAlwaysAuthorization];
+//    [self.locationManager startUpdatingLocation];
 }
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     CLLocation *location = [locations firstObject];
-    NSLog(@"%@", location);
+//    NSLog(@"%@", location);
     [self.locationManager stopUpdatingLocation];
     
     CLGeocoder *geocoder = [CLGeocoder new];
