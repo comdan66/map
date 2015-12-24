@@ -16,7 +16,7 @@ class User_polylines extends Api_controller {
     if (!(($id = $this->uri->rsegments (6, 0)) && ($this->user = User::find_by_id ($id))))
       return $this->disable ($this->output_json (array ('status' => false)));
 
-    if (in_array ($this->uri->rsegments (9, 0), array ('finish')))
+    if ($this->uri->rsegments (9, 0) && in_array ($this->uri->rsegments (9, 0), array ('finish')))
       if (!(($id = $this->uri->rsegments (8, 0)) && ($this->polyline = Polyline::find_by_id_and_user_id ($id, $this->user->id))))
         return $this->disable ($this->output_json (array ('status' => false)));
   }
