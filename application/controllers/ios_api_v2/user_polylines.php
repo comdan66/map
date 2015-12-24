@@ -8,14 +8,29 @@
 class User_polylines extends Api_controller {
 
   private $user = null;
+  private $polyline = null;
 
   public function __construct () {
     parent::__construct ();
 
     if (!(($id = $this->uri->rsegments (6, 0)) && ($this->user = User::find_by_id ($id))))
       return $this->output_json (array ('status' => false));
+
+    if (in_array ($this->uri->rsegments (9, 0), array ('finish')))
+      if (!(($id = $this->uri->rsegments (8, 0)) && ($this->polyline = Polyline::find_by_id ($id))))
+        return $this->output_json (array ('status' => false));
   }
 
+  public function finish () {
+    $polyline = $this->polyline;
+    $polyline->is_finished = 1;
+
+    $update = Polyline::transaction (function () use ($polyline) {
+      return $polyline->save ();
+    });
+
+    return $this->output_json (array ('status' => $update ? true : false));
+  }
   public function newest () {
     if (!($polyline = Polyline::find ('one', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array ('user_id = ?', $this->user->id)))))
       return $this->output_json (array ('status' => false));
