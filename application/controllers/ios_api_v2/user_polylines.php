@@ -5,10 +5,21 @@
  * @copyright   Copyright (c) 2015 OA Wu Design
  */
 
-class Polylines extends Api_controller {
+class User_polylines extends Api_controller {
 
-  public function first () {
-    
+  private $user = null;
+
+  public function __construct () {
+    parent::__construct ();
+
+    if (!(($id = $this->uri->rsegments (6, 0)) && ($this->user = User::find_by_id ($id))))
+      return $this->output_json (array ('status' => false));
+  }
+
+  public function newest () {
+    if (!($polyline = Polyline::find ('one', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array ('user_id = ?', $this->user->id)))))
+      return $this->output_json (array ('status' => false));
+    return $this->output_json (array ('status' => true, 'id' => $polyline->id));
   }
   public function create () {
     $posts = OAInput::post ();
@@ -31,7 +42,7 @@ class Polylines extends Api_controller {
   }
   private function _validation_polyline_posts (&$posts) {
     if (!(isset ($posts['name']) && ($posts['name'] = trim ($posts['name'])))) $posts['name'] = date ('Y-m-d H:i:s');
-    if (!(isset ($posts['user_id']) && is_numeric ($posts['user_id'] = trim ($posts['user_id'])))) $posts['user_id'] = 1;
+    if (!(isset ($posts['user_id']) && is_numeric ($posts['user_id'] = trim ($posts['user_id'])))) $posts['user_id'] = $this->user->id;
 
     return '';
   }

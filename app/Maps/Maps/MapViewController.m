@@ -16,14 +16,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+//    [OAHUD show];
     [self initUI];
     
-//    [self performSelector:@selector(look) withObject:nil afterDelay:2.0f];
+    [self performSelector:@selector(look) withObject:nil afterDelay:2.0f];
 //    [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(look) userInfo:nil repeats:YES];
-
 }
+
 - (void)look {
+//    [OAHUD hide];
     NSLog(@"=");
 //    [self performSelector:@selector(look) withObject:nil afterDelay:2.0f];
 }
@@ -49,6 +50,18 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.mapView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.mapView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.mapView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+//    進來
+    NSLog(@"2");
+
+}
+-(void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+//    離開
+    NSLog(@"1");
+
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -29,6 +29,7 @@
 		0EF05F1E1C2A8F0200243BB9 /* MyUITabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F1D1C2A8F0200243BB9 /* MyUITabBar.m */; };
 		0EF05F221C2A8F7F00243BB9 /* MyUITabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F211C2A8F7F00243BB9 /* MyUITabBarController.m */; };
 		0EF05F251C2A989100243BB9 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F241C2A989100243BB9 /* MapViewController.m */; };
+		0EF05F291C2B87C000243BB9 /* OAHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F281C2B87C000243BB9 /* OAHUD.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,8 @@
 		0EF05F211C2A8F7F00243BB9 /* MyUITabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyUITabBarController.m; sourceTree = "<group>"; };
 		0EF05F231C2A989100243BB9 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		0EF05F241C2A989100243BB9 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		0EF05F271C2B87C000243BB9 /* OAHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAHUD.h; sourceTree = "<group>"; };
+		0EF05F281C2B87C000243BB9 /* OAHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAHUD.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +154,7 @@
 		0EF05E221C29467A00243BB9 /* Maps */ = {
 			isa = PBXGroup;
 			children = (
+				0EF05F2A1C2B87C300243BB9 /* OAHUD */,
 				0EF05F261C2A989500243BB9 /* Map */,
 				0EF05F1F1C2A8F0800243BB9 /* TabBar */,
 				0EF05F191C2A405F00243BB9 /* Gps */,
@@ -221,6 +225,15 @@
 				0EF05F241C2A989100243BB9 /* MapViewController.m */,
 			);
 			name = Map;
+			sourceTree = "<group>";
+		};
+		0EF05F2A1C2B87C300243BB9 /* OAHUD */ = {
+			isa = PBXGroup;
+			children = (
+				0EF05F271C2B87C000243BB9 /* OAHUD.h */,
+				0EF05F281C2B87C000243BB9 /* OAHUD.m */,
+			);
+			name = OAHUD;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -362,6 +375,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EF05F291C2B87C000243BB9 /* OAHUD.m in Sources */,
 				0EF05E2B1C29467A00243BB9 /* ViewController.m in Sources */,
 				0EF05F1E1C2A8F0200243BB9 /* MyUITabBar.m in Sources */,
 				0EF05E281C29467A00243BB9 /* AppDelegate.m in Sources */,

@@ -8,9 +8,12 @@
 
 #import "ViewController.h"
 #import <MapKit/MapKit.h>
+#import "OAHUD.h"
 
 @interface MapViewController : ViewController
 
 @property MKMapView *mapView;
+
+//@property OAHUD *oaHud;
 
 @end
