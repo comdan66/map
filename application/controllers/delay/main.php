@@ -10,12 +10,23 @@ class Main extends Delay_controller {
     parent::__construct ();
   }
 
-  public function event () {
-    if (!(($id = $this->input_post ('id')) && ($event = Event::find_by_id ($id))))
+  public function compute_polyline () {
+    if (!(($id = OAInput::post ('id')) && ($polyline = Polyline::find_by_id ($id, array ('select' => 'id, length, run_time')))))
       return;
 
-    $event->length = $event->compute_length ();
-    $event->run_time = $event->compute_run_time ();
-    $event->put_cover ();
+    $polyline->length = $polyline->compute_length ();
+    $polyline->run_time = $polyline->compute_run_time ();
+    
+    Polyline::transaction (function () use ($polyline) {
+      return $polyline->save ();
+    });
   }
+  // public function event () {
+  //   if (!(($id = $this->input_post ('id')) && ($event = Event::find_by_id ($id))))
+  //     return;
+
+  //   $event->length = $event->compute_length ();
+  //   $event->run_time = $event->compute_run_time ();
+  //   $event->put_cover ();
+  // }
 }

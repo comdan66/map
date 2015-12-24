@@ -8,8 +8,12 @@
 class Main extends Site_controller {
 
   public function x () {
-    $this->load->library ('PushToParse');
-    PushToParse::send ('>"<', array ('user_2', 'user_1'));
+    delay_job ('main', 'compute_polyline', array ('id' => 2));
+    // $p = Polyline::find(6);
+    // echo $p->compute_run_time ();
+
+    // $this->load->library ('PushToParse');
+    // PushToParse::send ('>"<', array ('user_2', 'user_1'));
   }
 
   private function _post ($url, $fields = array ()) {

@@ -44,6 +44,7 @@ Route::root ('main');
 
 Route::get ('/(:num)', 'main@index($1)');
 Route::get ('polylines/(:num)', 'polylines@content($1)');
+// Route::post ('/delay/main/compute_polyline', '/delay/main@compute_polyline');
 
 // iOS API
   $ios_api_uri = 'api/v2/'; $ios_api_path = 'ios_api_v2/';

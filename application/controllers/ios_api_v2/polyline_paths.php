@@ -62,8 +62,8 @@ class Polyline_paths extends Api_controller {
       });
       return $create;
     }), 'sqlite_id');
-
-    // delay_job ('main', 'event', array ('id' => $event->id));
+    
+    delay_job ('main', 'compute_polyline', array ('id' => $polyline->id));
 
     return $this->output_json (array ('status' => true, 'ids' => $sqlite_ids));
   }
