@@ -12,7 +12,7 @@ class Polyline_paths extends Api_controller {
     parent::__construct ();
 
     if (!(($id = $this->uri->rsegments (6, 0)) && ($this->polyline = Polyline::find_by_id ($id))))
-      return $this->output_json (array ('status' => false));
+      return $this->disable ($this->output_json (array ('status' => false)));
   }
   private function _paths ($polyline) {
     if (!($polyline && ($all_path_ids = column_array (Path::find ('all', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array (

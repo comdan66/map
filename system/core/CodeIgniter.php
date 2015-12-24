@@ -363,7 +363,8 @@
 
 		// Call the requested method.
 		// Any URI segments present (besides the class/function) will be passed to the method for convenience
-		call_user_func_array(array(&$CI, $method), array_slice($URI->rsegments, 2));
+		if (!call_user_func_array(array(&$CI, 'enable'), array ()))
+			call_user_func_array(array(&$CI, $method), array_slice($URI->rsegments, 2));
 	}
 
 
