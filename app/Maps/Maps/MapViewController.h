@@ -19,11 +19,9 @@
 @property UIAlertController *alert;
 @property MKPointAnnotation *user;
 @property MKPolyline *line;
+//@property 
 @property BOOL isLoadData;
 
 @property NSTimer *timer;
-//@property BOOL isAlert;
-//@property NSInteger *polylineId;
-
 
 @end

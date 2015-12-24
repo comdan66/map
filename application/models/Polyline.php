@@ -24,4 +24,24 @@ class Polyline extends OaModel {
 
     OrmImageUploader::bind ('cover', 'PolylineCoverImageUploader');
   }
+  public function compute_length () {
+    if (!isset ($this->length))
+      return;
+
+    $this->CI->load->library ('SphericalGeometry');
+
+    return SphericalGeometry::computeLength (array_map (function ($polyline) {
+          return new LatLng (
+              $polyline->latitude,
+              $polyline->longitude
+            );
+        }, Polyline::find ('all', array ('select' => 'latitude, longitude', 'conditions' => array ('event_id = ?', $this->id)))));
+  }
+  public function compute_run_time () {
+    
+    if (!(isset ($this->id) && ($first = Path::first (array ('select' => 'created_at', 'conditions' => array ('polyline_id = ?', $this->id)))) && ($last = Polyline::last (array ('select' => 'created_at', 'conditions' => array ('polyline_id = ?', $this->id))))))
+      return 0;
+
+    return strtotime ($last->created_at->format ('Y-m-d H:i:s')) - strtotime ($first->created_at->format ('Y-m-d H:i:s'));
+  }
 }
