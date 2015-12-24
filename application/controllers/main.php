@@ -9,9 +9,9 @@ class Main extends Site_controller {
 
   public function x () {
     $this->load->library ('PushToParse');
-    PushToParse::send ('asd');
-
+    PushToParse::send ('小公主，要睡覺了沒！？', array ('user_2', 'user_1'));
   }
+
   private function _post ($url, $fields = array ()) {
     $options = array (
       CURLOPT_URL => $url, CURLOPT_POST => true,

@@ -7,6 +7,9 @@
 
 class Polylines extends Api_controller {
 
+  public function first () {
+    
+  }
   public function create () {
     $posts = OAInput::post ();
 

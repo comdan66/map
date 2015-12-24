@@ -47,3 +47,4 @@ Route::get ('polylines/(:num)', 'polylines@content($1)');
 
 Route::post ('api/v2/polylines/', 'ios_api_v2/polylines@create');
 Route::post ('api/v2/polylines/(:id)/paths', 'ios_api_v2/polyline_paths@create($0)');
+Route::get ('api/v2/polylines/(:id)/paths', 'ios_api_v2/polyline_paths@index($0)');
