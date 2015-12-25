@@ -8,7 +8,7 @@
 class Main extends Site_controller {
 
   public function x () {
-    delay_job ('main', 'compute_polyline', array ('id' => 2));
+    delay_job ('main', 'compute_polyline', array ('id' => 7));
     // $p = Polyline::find(6);
     // echo $p->compute_run_time ();
 
