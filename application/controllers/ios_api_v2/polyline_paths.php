@@ -41,7 +41,10 @@ class Polyline_paths extends Api_controller {
     if (!($paths = $this->_paths ($this->polyline)))
       return $this->output_json (array ('status' => false));
 
-    return $this->output_json (array_merge (array ('status' => true), $paths));
+    return $this->output_json (array_merge (array ('status' => true), array (
+        'run_time' => $this->polyline->run_time,
+        'length' => $this->polyline->length,
+      ), $paths));
   }
   public function create () {
     $paths = ($paths = OAInput::post ('paths')) ? $paths : array ();
@@ -63,7 +66,7 @@ class Polyline_paths extends Api_controller {
       return $create;
     }), 'sqlite_id');
     
-    delay_job ('main', 'compute_polyline', array ('id' => $polyline->id));
+    // delay_job ('main', 'compute_polyline', array ('id' => $polyline->id));
 
     return $this->output_json (array ('status' => true, 'ids' => $sqlite_ids));
   }

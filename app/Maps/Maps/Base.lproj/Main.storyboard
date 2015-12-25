@@ -22,7 +22,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cQe-TG-VGP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-305" y="95"/>
+            <point key="canvasLocation" x="257" y="75"/>
         </scene>
         <!--活動紀錄-->
         <scene sceneID="kNK-cq-dbG">
@@ -41,7 +41,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R4f-1F-uoE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1071" y="357"/>
+            <point key="canvasLocation" x="999" y="91"/>
         </scene>
         <!--MyUI Tab Bar Controller-->
         <scene sceneID="xdW-Ve-jgE">
@@ -54,7 +54,6 @@
                     </tabBar>
                     <connections>
                         <segue destination="b8C-7l-O70" kind="relationship" relationship="viewControllers" id="9uZ-Cw-ZLp"/>
-                        <segue destination="YN9-D7-TbF" kind="relationship" relationship="viewControllers" id="E7u-Ns-dFT"/>
                         <segue destination="Co2-Lu-Huk" kind="relationship" relationship="viewControllers" id="6yA-Lw-7jA"/>
                         <segue destination="gxk-ab-qlp" kind="relationship" relationship="viewControllers" id="rqf-iP-9Ui"/>
                     </connections>
@@ -66,6 +65,7 @@
         <!--地圖模式-->
         <scene sceneID="qun-Rp-Z2K">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7P7-kW-rF6" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="YN9-D7-TbF" customClass="MapViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Rhr-YN-Egu"/>
@@ -78,9 +78,8 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="地圖模式" id="Fbb-hA-ZUV"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7P7-kW-rF6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="384" y="357"/>
+            <point key="canvasLocation" x="338" y="719"/>
         </scene>
         <!--個人設定-->
         <scene sceneID="XLC-Av-UrY">

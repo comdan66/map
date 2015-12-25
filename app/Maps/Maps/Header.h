@@ -12,6 +12,7 @@
 #define API_URL @"http://maps.ioa.tw/api/v2/"
 
 #define DEV YES
+#define LAY NO
 #define USER_ID 1
 #define FOLLOW_USER_ID 1
 #define MAP_TIMER 5

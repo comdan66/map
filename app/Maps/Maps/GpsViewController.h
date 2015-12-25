@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "Header.h"
+#import "AFHTTPRequestOperationManager.h"
+#import "MemoView.h"
 
 @interface GpsViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
 
@@ -19,8 +21,16 @@
 @property UILabel *horizontalDivider1;
 @property UILabel *horizontalDivider2;
 @property MKMapView *mapView;
+@property MemoView *memo;
+//@property MyUILabel *length;
 @property MKPointAnnotation *point;
 
+
+
+@property MKPointAnnotation *user;
+@property MKPolyline *line;
+@property BOOL isLoadData;
+@property NSTimer *timer;
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLLocation* currentLocation;

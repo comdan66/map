@@ -194,7 +194,6 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    //    離開
     [self clean];
     
 }
