@@ -40,4 +40,17 @@ class Polyline extends OaModel {
 
     return strtotime ($last->created_at->format ('Y-m-d H:i:s')) - strtotime ($first->created_at->format ('Y-m-d H:i:s'));
   }
+  public function run_time_units () {
+    if (!isset ($this->run_time))
+      return array ();
+
+    $units = array ();
+
+    array_push ($units, gmdate ('j', $this->run_time) - 1 ? gmdate ('j', $this->run_time) - 1 . '天' : null);
+    array_push ($units, gmdate ('G', $this->run_time) ? gmdate ('G', $this->run_time) . '小時' : null);
+    array_push ($units, gmdate ('i', $this->run_time) * 1 ? gmdate ('i', $this->run_time) * 1 . '分' : null);
+    array_push ($units, gmdate ('s', $this->run_time) * 1 ? gmdate ('s', $this->run_time) * 1 . '秒' : null);
+
+    return array_filter ($units);
+  }
 }

@@ -42,8 +42,8 @@ class Polyline_paths extends Api_controller {
       return $this->output_json (array ('status' => false));
 
     return $this->output_json (array_merge (array ('status' => true), array (
-        'run_time' => $this->polyline->run_time,
-        'length' => $this->polyline->length,
+        'run_time' => implode ('', $this->polyline->run_time_units ()),
+        'length' => $this->polyline->length > 0 ? round ($this->polyline->length / 1000, 2) . '公里' : '',
       ), $paths));
   }
   public function create () {
