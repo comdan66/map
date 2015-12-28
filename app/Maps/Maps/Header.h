@@ -21,5 +21,6 @@
 #define API_GET_POLYLINE_PATHS (API_URL @"polylines/%d/paths")
 
 #define USER_DEFAULTS [NSUserDefaults standardUserDefaults]
+#define DEGREES_TO_RADIANS(x) (M_PI * (x) / 180.0)
 
 #endif /* Header_h */

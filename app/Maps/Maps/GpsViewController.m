@@ -17,7 +17,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initUI];
+    //[self performSelector:@selector(hideClick1) withObject:nil afterDelay:5.0f];
 }
+//- (void)hideClick1 {
+//    if (self.user) {
+//        NSLog(@"------------------x");
+//        self.user.coordinate = CLLocationCoordinate2DMake(25.0435, 121.5751);
+//    }
+//    
+//
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -85,7 +94,12 @@
           parameters:data
              success:^(AFHTTPRequestOperation *operation, id responseObject) {
                  if ([[responseObject objectForKey:@"status"] boolValue]) {
-                     [self setMap:[responseObject objectForKey:@"paths"] isFinish: [[responseObject objectForKey:@"is_finished"] boolValue]];
+                     [self setMap:[responseObject objectForKey:@"paths"]
+                         isFinish: [[responseObject objectForKey:@"is_finished"] boolValue]
+                           length:[responseObject objectForKey:@"length"]
+                          runTime:[responseObject objectForKey:@"run_time"]
+                           avatar:[NSURL URLWithString:[responseObject objectForKey:@"avatar"]]
+                            alert:alert];
                      if (alert) [alert dismissViewControllerAnimated:YES completion:nil];
                  } else {
                      [self failure:alert];
@@ -96,12 +110,14 @@
              }
      ];
 }
-- (void)setMap:(NSMutableDictionary*)paths isFinish:(BOOL)isFinish {
+- (void)setMap:(NSMutableDictionary*)paths isFinish:(BOOL)isFinish length:(NSString *)length runTime:(NSString *)runTime avatar:(NSURL *)avatar alert:(UIAlertController *)alert {
     if (paths.count > 0) {
         if (self.line)
             [self.mapView removeOverlay:self.line];
-        if (self.user)
-            [self.mapView removeAnnotation:self.user];
+//        if (self.user)
+//            [self.mapView removeAnnotation:self.user];
+        
+        [self.memo setLeftText:length rightText:runTime];
         
         CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * paths.count);
         
@@ -109,11 +125,17 @@
         for (NSMutableDictionary *path in paths)
             coordinateArray[caIndex++] = CLLocationCoordinate2DMake([[path objectForKey:@"lat"] doubleValue], [[path objectForKey:@"lng"] doubleValue]);
         
-        [self.mapView setRegion:MKCoordinateRegionMake(coordinateArray[0], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
+        if (alert) {
+            [self.mapView setRegion:MKCoordinateRegionMake(coordinateArray[0], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
+        }
         
-        self.user = [MKPointAnnotation new];
-        [self.user setCoordinate:coordinateArray[0]];
-        [self.mapView addAnnotation:self.user];
+        if (!self.user) {
+            self.user = [[MyAnnotation alloc] initWithLocation:coordinateArray[0]];
+            [self.user setImageUrl:avatar];
+            [self.mapView addAnnotation:self.user];
+        } else {
+            [self.user setCoordinate:coordinateArray[0]];
+        }
         
         self.line = [MKPolyline polylineWithCoordinates:coordinateArray count:paths.count];
         [self.mapView addOverlay:self.line];
@@ -141,8 +163,10 @@
                       style:UIAlertActionStyleDefault
                       handler:^(UIAlertAction * action)
                       {
-                          [[NSNotificationCenter defaultCenter] postNotificationName:@"goToTabIndex0" object:nil];
-                          [error dismissViewControllerAnimated:YES completion:nil];
+//                          [[NSNotificationCenter defaultCenter] postNotificationName:@"goToTabIndex0" object:nil];
+                          [error dismissViewControllerAnimated:YES completion:^{
+                              self.isLoadData = NO;
+                          }];
                       }]];
     if (alert)
         [alert dismissViewControllerAnimated:YES completion:^{
@@ -271,7 +295,7 @@
 - (void)initHorizontalDivider1 {
     self.horizontalDivider1 = [UILabel new];
     [self.horizontalDivider1 setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.horizontalDivider1 setBackgroundColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.3f]];
+    [self.horizontalDivider1 setBackgroundColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.8f]];
     
 //    [self.horizontalDivider1.layer setShadowColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1].CGColor];
 //    [self.horizontalDivider1.layer setShadowOffset:CGSizeMake(0, 1)];
@@ -284,7 +308,7 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.horizontalDivider1 attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.switchButton attribute:NSLayoutAttributeBottom multiplier:1 constant:20.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.horizontalDivider1 attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.horizontalDivider1 attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:0.0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.horizontalDivider1 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:1]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.horizontalDivider1 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:1.0f / [UIScreen mainScreen].scale]];
     
 }
 - (void)initHorizontalDivider2 {
@@ -304,7 +328,7 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.horizontalDivider2 attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.horizontalDivider2 attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.horizontalDivider2 attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:0.0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.horizontalDivider2 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:1]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.horizontalDivider2 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:1.0f / [UIScreen mainScreen].scale]];
 }
 - (void)initMapView {
     self.mapView = [MKMapView new];
@@ -330,12 +354,14 @@
     
     [self.memo setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.memo setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
+
     
     [self.memo.layer setShadowColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1].CGColor];
     [self.memo.layer setShadowOffset:CGSizeMake(0, 2)];
     [self.memo.layer setShadowRadius:2.0f];
     [self.memo.layer setShadowOpacity:1.0f];
-
+    [self.memo.layer setOpacity:0.9f];
+    
     [self.mapView addSubview:self.memo];
     [self.mapView addConstraint:[NSLayoutConstraint constraintWithItem:self.memo attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.mapView attribute:NSLayoutAttributeTop multiplier:1 constant:-1]];
     [self.mapView addConstraint:[NSLayoutConstraint constraintWithItem:self.memo attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.mapView attribute:NSLayoutAttributeRight multiplier:1 constant:1]];
@@ -344,8 +370,33 @@
     [self.mapView addConstraint:self.memo.constraintHeight];
 }
 
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(MyAnnotation *)annotation
+{
+//    NSLog(@"---------------------------1-%@", [annotation isKindOfClass:[MyAnnotation class]] ? :);
+    
+    if (![annotation isKindOfClass:[MyAnnotation class]]) {
+        return nil;
+    }
+    
+    NSLog(@"---------------------------2");
+    MKAnnotationView *annView = (MKAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:@"aaa"];
+    if (annView == nil) {
+        NSLog(@"---------------------------3");
+        annView = [[MKAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:@"aaa"];
+        Marker *marker = [Marker create:annotation];
+        [annView addSubview:marker];
+
+        
+        [annView setFrame:CGRectMake(0, 0, 60, 70)];
+        [annView setCenterOffset:CGPointMake(0,-35)];
+        [annView setCanShowCallout:NO];
+        [annView setDraggable:NO];
+    }
+
+    return annView;
+}
 //
-//    
+//
 //    [self.memo.constraintHeight setConstant:35];
 //    [self.view updateConstraints];
 //    

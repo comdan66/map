@@ -11,6 +11,8 @@
 #import "Header.h"
 #import "AFHTTPRequestOperationManager.h"
 #import "MemoView.h"
+#import "MyAnnotation.h"
+#import "Marker.h"
 
 @interface GpsViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
 
@@ -27,7 +29,7 @@
 
 
 
-@property MKPointAnnotation *user;
+@property MyAnnotation *user;
 @property MKPolyline *line;
 @property BOOL isLoadData;
 @property NSTimer *timer;
