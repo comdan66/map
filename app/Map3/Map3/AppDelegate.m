@@ -1,13 +1,12 @@
 //
 //  AppDelegate.m
-//  Maps
+//  Map3
 //
-//  Created by OA Wu on 2015/12/22.
+//  Created by OA Wu on 2015/12/28.
 //  Copyright © 2015年 OA Wu. All rights reserved.
 //
 
 #import "AppDelegate.h"
-#import <Parse/Parse.h>
 
 @interface AppDelegate ()
 
@@ -16,56 +15,13 @@
 @implementation AppDelegate
 
 
--(sqlite3 *)getDB {
-    return db;
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    [USER_DEFAULTS setValue:nil forKey:@"polylineId"];
     
-    [Parse setApplicationId:@"6UQIIXqs8JSQPI8qisC1YPUrHQ4gviLXVB7DFDQR" clientKey:@"WM8dOONFyXtGs1VuGHdVqAeWp8lIkJhOv8PIySOC"];
     
-    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
-                                                    UIUserNotificationTypeBadge |
-                                                    UIUserNotificationTypeSound);
-    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
-                                                                             categories:nil];
-    [application registerUserNotificationSettings:settings];
-    [application registerForRemoteNotifications];
+    [ORM initDB];
 
-    
-    if ([ORM initDB]) {
-//        UIAlertController *error = [UIAlertController
-//                                    alertControllerWithTitle:@"錯誤"
-//                                    message:@"無法產生 SQLite，請洽詢工程師！"
-//                                    preferredStyle:UIAlertControllerStyleAlert];
-//        [error addAction:[UIAlertAction
-//                          actionWithTitle:@"確定"
-//                          style:UIAlertActionStyleDefault
-//                          handler:^(UIAlertAction * action)
-//                          {
-//                              [error dismissViewControllerAnimated:YES completion:nil];
-//                          }]];
-//        
-//        [self presentViewController:error animated:YES completion:nil];
-    }
-        
-    
-    
-    
     return YES;
-}
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    // Store the deviceToken in the current installation and save it to Parse.
-    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
-    [currentInstallation setDeviceTokenFromData:deviceToken];
-    currentInstallation.channels = @[ @"global" ];
-    [currentInstallation saveInBackground];
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    [PFPush handlePush:userInfo];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -90,6 +46,7 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
+    [ORM closeDB];
 }
 
 #pragma mark - Core Data stack
@@ -99,7 +56,7 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
 - (NSURL *)applicationDocumentsDirectory {
-    // The directory the application uses to store the Core Data store file. This code uses a directory named "tw.ioa.Maps" in the application's documents directory.
+    // The directory the application uses to store the Core Data store file. This code uses a directory named "tw.ioa.Map3" in the application's documents directory.
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
@@ -108,7 +65,7 @@
     if (_managedObjectModel != nil) {
         return _managedObjectModel;
     }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Maps" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Map3" withExtension:@"momd"];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return _managedObjectModel;
 }
@@ -122,7 +79,7 @@
     // Create the coordinator and store
     
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Maps.sqlite"];
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Map3.sqlite"];
     NSError *error = nil;
     NSString *failureReason = @"There was an error creating or loading the application's saved data.";
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {

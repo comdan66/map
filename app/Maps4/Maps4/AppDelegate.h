@@ -1,15 +1,13 @@
 //
 //  AppDelegate.h
-//  Maps
+//  Maps4
 //
-//  Created by OA Wu on 2015/12/22.
+//  Created by OA Wu on 2015/12/29.
 //  Copyright © 2015年 OA Wu. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "Header.h"
-#import "ORM.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -22,6 +20,6 @@
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 
--(sqlite3 *)getDB;
+
 @end
 

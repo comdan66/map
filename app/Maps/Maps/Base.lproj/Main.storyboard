@@ -65,7 +65,6 @@
         <!--地圖模式-->
         <scene sceneID="qun-Rp-Z2K">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7P7-kW-rF6" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="YN9-D7-TbF" customClass="MapViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Rhr-YN-Egu"/>
@@ -78,6 +77,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="地圖模式" id="Fbb-hA-ZUV"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7P7-kW-rF6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="338" y="719"/>
         </scene>
