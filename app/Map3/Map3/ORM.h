@@ -20,14 +20,17 @@
 
 + (BOOL)initDB;
 + (BOOL)closeDB;
-+ (id)create: (NSDictionary *)params;
++ (NSMutableArray *)varList:(Class)class;
 
-+ (BOOL)updateAll:(NSDictionary *) params where:(NSString *) where;
-+ (BOOL)updateAll:(NSDictionary *) params;
+- (id)init:(NSDictionary *)params;
+- (id)initWithId:(long) id;
+- (id)initWithId:(long) id params:(NSDictionary *)params;
+- (id)initWithCount:(NSUInteger *)count;
+
++ (id)create: (NSDictionary *)params;
 
 + (NSArray *)findAll:(NSDictionary *)conditions;
 + (NSArray *)findAll;
-- (BOOL)save;
 
 + (id)findOne;
 + (id)findOne:(NSDictionary *)conditions;
@@ -40,11 +43,9 @@
 + (NSUInteger *)count;
 + (NSUInteger *)count:(NSDictionary *)conditions;
 
-+ (NSMutableArray *)varList:(Class)class;
-
-- (id)initWithId:(long) id;
-- (id)init:(NSDictionary *)params;
-- (id)initWithCount:(NSUInteger *)count;
++ (BOOL)updateAll:(NSDictionary *) params where:(NSString *) where;
++ (BOOL)updateAll:(NSDictionary *) params;
+- (BOOL)save;
 
 + (BOOL)deleteAll:(NSString *)where;
 + (BOOL)deleteAll;
