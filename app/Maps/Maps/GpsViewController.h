@@ -13,8 +13,11 @@
 #import "MemoView.h"
 #import "MyAnnotation.h"
 #import "Marker.h"
+#import "GPS.h"
 
-@interface GpsViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
+@interface GpsViewController : UIViewController <MKMapViewDelegate>
+
+@property NSString *polylineId;
 
 @property UISwitch *switchButton;
 @property UILabel *switchLabel;
@@ -24,10 +27,7 @@
 @property UILabel *horizontalDivider2;
 @property MKMapView *mapView;
 @property MemoView *memo;
-//@property MyUILabel *length;
 @property MKPointAnnotation *point;
-
-
 
 @property MyAnnotation *user;
 @property MKPolyline *line;

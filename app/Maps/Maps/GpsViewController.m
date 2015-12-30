@@ -30,7 +30,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -206,9 +205,63 @@
     
 }
 
+- (void) startGPS {
+    [self.switchLabel setText:@"開啟中.."];
 
+    NSMutableDictionary *data = [NSMutableDictionary new];
+    [data setValue:@"xxx" forKey:@"name"];
+
+    AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
+    [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
+    [httpManager POST:[NSString stringWithFormat:API_GET_USER_CREATE_POLYLINE, USER_ID]
+          parameters:data
+             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 if ([[responseObject objectForKey:@"status"] boolValue]) {
+                     self.polylineId = [NSString stringWithFormat:@"%@", [responseObject objectForKey:@"id"]];
+                     [self.switchLabel setText:@"開啟"];
+                     [GPS start];
+                 } else {
+                     [self stopGPS];
+                 }
+             }
+             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 [self stopGPS];
+             }
+     ];
+
+}
+- (void) stopGPS {
+    if (self.polylineId) {
+        [self finish:(int)[self.polylineId integerValue]
+             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 self.polylineId = nil;
+                 [self stopGPS];
+             }
+             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 self.polylineId = nil;
+                 [self stopGPS];
+             }];
+    } else {
+        [self.switchButton setOn:NO animated:YES];
+        [self.switchLabel setText:@"關閉"];
+        [GPS stop];
+    }
+}
+- (void)finish:(int)id success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure{
+    NSLog(@"%d", id);
+    AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
+    [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
+    [httpManager POST:[NSString stringWithFormat:API_GET_USER_FINISH_POLYLINE, USER_ID, id]
+           parameters:[NSMutableDictionary new]
+              success:success
+              failure:failure
+     ];
+}
 - (void)switchChangeAction:(UISwitch *)sender {
-//    NSLog(@"xxxx");
+    if ([sender isOn])
+        [self startGPS];
+    else
+        [self stopGPS];
 }
 - (void)stepperChangedAction:(UIStepper*)sender {
     double value = [sender value];

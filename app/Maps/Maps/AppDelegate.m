@@ -33,6 +33,7 @@
 
     
     [ORM initDB:@"Maps"];
+    [GPS initGPS];
         
     return YES;
 }

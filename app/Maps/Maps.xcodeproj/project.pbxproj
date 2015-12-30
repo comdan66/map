@@ -15,9 +15,9 @@
 		0E46EF081C33A4FA0000BE18 /* ActiveSupportInflector.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E46EF041C33A4FA0000BE18 /* ActiveSupportInflector.plist */; };
 		0E46EF091C33A4FA0000BE18 /* NSString+ActiveSupportInflector.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46EF061C33A4FA0000BE18 /* NSString+ActiveSupportInflector.m */; };
 		0E46EF0C1C33A5000000BE18 /* Path.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46EF0B1C33A5000000BE18 /* Path.m */; };
+		0E46EF131C33A8370000BE18 /* GPS.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46EF121C33A8370000BE18 /* GPS.m */; };
 		0EF05E251C29467A00243BB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05E241C29467A00243BB9 /* main.m */; };
 		0EF05E281C29467A00243BB9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05E271C29467A00243BB9 /* AppDelegate.m */; };
-		0EF05E2B1C29467A00243BB9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05E2A1C29467A00243BB9 /* ViewController.m */; };
 		0EF05E2E1C29467A00243BB9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EF05E2C1C29467A00243BB9 /* Main.storyboard */; };
 		0EF05E311C29467A00243BB9 /* Maps.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05E2F1C29467A00243BB9 /* Maps.xcdatamodeld */; };
 		0EF05E331C29467A00243BB9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0EF05E321C29467A00243BB9 /* Assets.xcassets */; };
@@ -101,12 +101,12 @@
 		0E46EF061C33A4FA0000BE18 /* NSString+ActiveSupportInflector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ActiveSupportInflector.m"; sourceTree = "<group>"; };
 		0E46EF0A1C33A5000000BE18 /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path.h; sourceTree = "<group>"; };
 		0E46EF0B1C33A5000000BE18 /* Path.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Path.m; sourceTree = "<group>"; };
+		0E46EF111C33A8370000BE18 /* GPS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPS.h; sourceTree = "<group>"; };
+		0E46EF121C33A8370000BE18 /* GPS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPS.m; sourceTree = "<group>"; };
 		0EF05E201C29467A00243BB9 /* Maps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Maps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EF05E241C29467A00243BB9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0EF05E261C29467A00243BB9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0EF05E271C29467A00243BB9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		0EF05E291C29467A00243BB9 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		0EF05E2A1C29467A00243BB9 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		0EF05E2D1C29467A00243BB9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0EF05E301C29467A00243BB9 /* Maps.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Maps.xcdatamodel; sourceTree = "<group>"; };
 		0EF05E321C29467A00243BB9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -278,6 +278,15 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		0E46EF101C33A8140000BE18 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				0E46EF111C33A8370000BE18 /* GPS.h */,
+				0E46EF121C33A8370000BE18 /* GPS.m */,
+			);
+			name = Location;
+			sourceTree = "<group>";
+		};
 		0EF05E171C29467A00243BB9 = {
 			isa = PBXGroup;
 			children = (
@@ -312,6 +321,7 @@
 		0EF05E221C29467A00243BB9 /* Maps */ = {
 			isa = PBXGroup;
 			children = (
+				0E46EF101C33A8140000BE18 /* Location */,
 				0EF05F531C2BC10800243BB9 /* Header.h */,
 				0E46EF0F1C33A51B0000BE18 /* Model */,
 				0EF05F261C2A989500243BB9 /* Map */,
@@ -319,8 +329,6 @@
 				0EF05F191C2A405F00243BB9 /* Gps */,
 				0EF05E261C29467A00243BB9 /* AppDelegate.h */,
 				0EF05E271C29467A00243BB9 /* AppDelegate.m */,
-				0EF05E291C29467A00243BB9 /* ViewController.h */,
-				0EF05E2A1C29467A00243BB9 /* ViewController.m */,
 				0EF05E2C1C29467A00243BB9 /* Main.storyboard */,
 				0EF05E321C29467A00243BB9 /* Assets.xcassets */,
 				0EF05E341C29467A00243BB9 /* LaunchScreen.storyboard */,
@@ -660,10 +668,10 @@
 				0EF05FFE1C2D465500243BB9 /* SDWebImageCompat.m in Sources */,
 				0EF060011C2D465500243BB9 /* SDWebImageDownloaderOperation.m in Sources */,
 				0EF05F421C2B950E00243BB9 /* AFNetworkReachabilityManager.m in Sources */,
-				0EF05E2B1C29467A00243BB9 /* ViewController.m in Sources */,
 				0EF060091C2D465500243BB9 /* UIImageView+WebCache.m in Sources */,
 				0EF05F441C2B950E00243BB9 /* AFURLConnectionOperation.m in Sources */,
 				0EF05F3F1C2B950E00243BB9 /* AFHTTPRequestOperation.m in Sources */,
+				0E46EF131C33A8370000BE18 /* GPS.m in Sources */,
 				0EF05F411C2B950E00243BB9 /* AFHTTPSessionManager.m in Sources */,
 				0EF060081C2D465500243BB9 /* UIImageView+HighlightedWebCache.m in Sources */,
 				0EF05F451C2B950E00243BB9 /* AFURLRequestSerialization.m in Sources */,

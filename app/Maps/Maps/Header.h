@@ -19,6 +19,9 @@
 
 #define API_GET_USER_NEWEST_POLYLINE (API_URL @"users/%d/polylines/newest")
 #define API_GET_POLYLINE_PATHS (API_URL @"polylines/%d/paths")
+#define API_GET_USER_CREATE_POLYLINE (API_URL @"users/%d/polylines")
+#define API_GET_USER_FINISH_POLYLINE (API_URL @"users/%d/polylines/%d/finish")
+
 
 #define USER_DEFAULTS [NSUserDefaults standardUserDefaults]
 #define DEGREES_TO_RADIANS(x) (M_PI * (x) / 180.0)

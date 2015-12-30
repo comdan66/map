@@ -6,13 +6,13 @@
 //  Copyright © 2015年 OA Wu. All rights reserved.
 //
 
-#import "ViewController.h"
+
 #import <MapKit/MapKit.h>
 #import "AFHTTPRequestOperationManager.h"
 #import "UIAlertView+Blocks.h"
 #import "Header.h"
 
-@interface MapViewController : ViewController <MKMapViewDelegate>
+@interface MapViewController : UIViewController <MKMapViewDelegate>
 
 @property MKMapView *mapView;
 
