@@ -128,7 +128,6 @@
 				0E46EE6C1C31208B0000BE18 /* AppDelegate.h */,
 				0E46EE6D1C31208B0000BE18 /* AppDelegate.m */,
 				0E46EE6F1C31208B0000BE18 /* ViewController.h */,
-				0E46EE701C31208B0000BE18 /* ViewController.m */,
 				0E46EE721C31208B0000BE18 /* Main.storyboard */,
 				0E46EE781C31208B0000BE18 /* Assets.xcassets */,
 				0E46EE7A1C31208B0000BE18 /* LaunchScreen.storyboard */,
@@ -173,6 +172,7 @@
 				0E46EEAF1C3224E30000BE18 /* Path.m */,
 				0E46EEAA1C32240A0000BE18 /* ORM.h */,
 				0E46EEAB1C32240A0000BE18 /* ORM.m */,
+				0E46EE701C31208B0000BE18 /* ViewController.m */,
 			);
 			name = ORM;
 			sourceTree = "<group>";

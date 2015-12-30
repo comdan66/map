@@ -20,11 +20,27 @@
 + (BOOL)initDB;
 + (BOOL)closeDB;
 + (id)create: (NSDictionary *)params;
-+ (id)find:(NSString *)type;
+
++ (BOOL)updateAll:(NSDictionary *) params where:(NSString *) where;
++ (BOOL)updateAll:(NSDictionary *) params;
+
++ (NSArray *)findAll:(NSDictionary *)conditions;
++ (NSArray *)findAll;
+- (BOOL)save;
+
++ (id)findOne;
++ (id)findOne:(NSDictionary *)conditions;
+
++ (id)find:(NSDictionary *)conditions;
 + (id)find:(NSString *)type conditions:(NSDictionary *)conditions;
+
++ (NSMutableArray *)varList:(Class)c;
 
 - (id)initWithId:(long) id;
 - (id)init:(NSDictionary *)params;
 
++ (BOOL)deleteAll:(NSString *)where;
++ (BOOL)deleteAll;
+- (BOOL)delete;
 
 @end

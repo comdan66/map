@@ -30,17 +30,47 @@
     }
     
     
-    NSArray *paths = [Path find:@"all" conditions:@{
-                                                    @"select": @"id,lat, lng, al",
-                                                    @"where": @"id > 2",
-                                                    @"offset": @1,
-                                                    @"limit": @"2"
-                                                    }];
-    
-    NSLog(@"%@", paths);
-    
-    
+//    NSArray *paths = [Path find:@"all" conditions:@{
+//                                                    @"select": @"id,lat, lng, al",
+//                                                    @"where": @"id > 2",
+//                                                    @"offset": @1,
+//                                                    @"limit": @"2"
+//                                                    }];
+//    
+//    
+//    Path *path = [Path find:@"one" conditions:@{
+//                                                @"select": @"id,lat, lng, al",
+//                                                @"where": @"id >= 2",
+//                                                @"offset": @1,
+//                                                @"limit": @"2",
+//                                                @"order": @"id DESC"
+//                                                }];
+
+
+    Path *path = [Path find:@"one" conditions:@{
+                                                @"select": @"id,lat, lng",
+                                                @"where": @"id = 2",
+                                                }];
+//    NSLog(@"%@", path.lat);
+//    
+////    [Path deleteAll];
+//    [path delete];
+//    path = [Path find:@"one" conditions:@{
+//                                                @"where": @"id = 2",
+//                                                }];
+//    NSLog(@"%@", path);
 //
+//    NSLog(@"%@", path.lat);
+//    
+//    [path setLat:@"222"];
+//    [path save];
+//    
+////    path = [Path find:@"one" conditions:@{
+////                                                @"where": @"id = 2",
+////                                                }];
+//    
+//    NSLog(@"%@", path.lat);
+    //
 //    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 //
 //    

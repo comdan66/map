@@ -39,25 +39,95 @@ static NSString *sqlName = @"maps";
                 [self setValue:[params objectForKey:key] forKey:key];
     return self;
 }
++ (NSMutableArray *)varList:(Class)c {
+    unsigned int count;
+    
+    NSMutableArray *list = [NSMutableArray new];
+    Ivar *vars = class_copyIvarList(c, &count);
+    for (NSUInteger i=0; i<count; i++)
+        [list addObject:[[NSString stringWithFormat:@"%s", ivar_getName(vars[i])] find:@"_" replace:@""]];
 
+    return list;
+}
+
++ (BOOL)deleteAll:(NSString *)where {
+    if (!db) return NO;
+
+    NSString *tableName = [[NSStringFromClass([self class]) lowercaseString] pluralizeString];
+    NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@%@", tableName, [where length] > 0 ? [NSString stringWithFormat:@" WHERE %@", where] : @""];
+    
+    const char *deltetSql = [sql cStringUsingEncoding:NSASCIIStringEncoding];
+    
+    sqlite3_stmt *statement;
+    sqlite3_prepare(db, deltetSql, -1, &statement, NULL);
+    
+    if (sqlite3_step(statement) != SQLITE_DONE)
+        return nil;
+    
+    sqlite3_finalize(statement);
+
+    return YES;
+}
++ (BOOL)deleteAll {
+    return [self deleteAll:nil];
+}
+- (BOOL)delete {
+    if (!(db && [self id])) return NO;
+    return [[self class] deleteAll:[NSString stringWithFormat:@"id = %ld", [self id]]];
+}
+- (BOOL)save {
+    if (!(db && [self id])) return NO;
+    NSMutableArray *vars = [ORM varList:[self class]];
+
+    NSMutableDictionary *params = [NSMutableDictionary new];
+
+    for (NSString *key in vars)
+        if ([self respondsToSelector:NSSelectorFromString(key)])
+            [params setValue:[self valueForKey:key] forKey:key];
+    
+    return [[self class] updateAll:params where:[NSString stringWithFormat:@"id = %ld", [self id]]];
+}
++ (BOOL)updateAll:(NSDictionary *) params where:(NSString *) where {
+    if (!db) return NO;
+
+    NSString *tableName = [[NSStringFromClass([self class]) lowercaseString] pluralizeString];
+
+    NSMutableArray *vars = [self varList:[self class]],
+                    *set = [NSMutableArray new];
+
+    for (NSString *key in params)
+        if ((int)[vars indexOfObject:key] > -1)
+            [set addObject:[NSString stringWithFormat:@"'%@'='%@'", key, [params objectForKey:key]]];
+
+    NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@%@", tableName, [set componentsJoinedByString:@", "], [where length] > 0 ? [NSString stringWithFormat:@" WHERE %@", where] : @""];
+
+    const char *updateSql = [sql cStringUsingEncoding:NSASCIIStringEncoding];
+
+    sqlite3_stmt *statement;
+    sqlite3_prepare(db, updateSql, -1, &statement, NULL);
+
+    if (sqlite3_step(statement) != SQLITE_DONE)
+        return nil;
+    
+    sqlite3_finalize(statement);
+    
+    return YES;
+}
++ (BOOL)updateAll:(NSDictionary *) params {
+    return [self updateAll:params where:nil];
+}
 + (NSArray *)findAll:(NSDictionary *)conditions {
     if (!db) return nil;
-    NSString *tableName = [[NSStringFromClass([self class]) lowercaseString] pluralizeString];
-    
-    NSMutableArray *select;// = [NSMutableArray new];
     conditions = [[NSMutableDictionary alloc] initWithDictionary:conditions copyItems:YES];
+    NSString *tableName = [[NSStringFromClass([self class]) lowercaseString] pluralizeString];
+    NSMutableArray *select;
     
     if (![conditions objectForKey:@"select"]) {
-        unsigned int count;
+
         select = [NSMutableArray new];
-        Ivar *vars = class_copyIvarList([ORM class], &count);
-        for (NSUInteger i=0; i<count; i++)
-            [select addObject:[[NSString stringWithFormat:@"%s", ivar_getName(vars[i])] find:@"_" replace:@""]];
         
-        
-        vars = class_copyIvarList([self class], &count);
-        for (NSUInteger i=0; i<count; i++)
-            [select addObject:[[NSString stringWithFormat:@"%s", ivar_getName(vars[i])] find:@"_" replace:@""]];
+        [select addObjectsFromArray:[self varList:[ORM class]]];
+        [select addObjectsFromArray:[self varList:[self class]]];
         
         [conditions setValue:[select componentsJoinedByString:@", "] forKey:@"select"];
     } else {
@@ -80,7 +150,7 @@ static NSString *sqlName = @"maps";
                               [conditions objectForKey:@"order"] ? [NSString stringWithFormat:@" ORDER BY %@", [conditions objectForKey:@"order"]] : @"",
                               [conditions objectForKey:@"limit"] ? [NSString stringWithFormat:@" LIMIT %@", [conditions objectForKey:@"limit"]] : @""
                               ] cStringUsingEncoding:NSASCIIStringEncoding];
-    
+
     sqlite3_stmt *statement;
 
     sqlite3_prepare(db, selectSql, -1, &statement, NULL);
@@ -99,18 +169,24 @@ static NSString *sqlName = @"maps";
 + (NSArray *)findAll {
     return [self findAll:nil];
 }
++ (id)findOne:(NSDictionary *)conditions {
+    id objs = [self findAll:conditions];
+    return [objs firstObject];
+}
++ (id)findOne {
+    return [self findOne:nil];
+}
 
 + (id)find:(NSString *)type conditions:(NSDictionary *)conditions {
-    if ([type isEqualToString:@"all"]) {
+    if ([type isEqualToString:@"one"]) {
+        return [self findOne:conditions];
+    } else {
         return [self findAll:conditions];
     }
     return nil;
 }
-+ (id)find:(NSString *)type {
-    if ([type isEqualToString:@"all"]) {
-        return [self findAll];
-    }
-    return nil;
++ (id)find:(NSDictionary *)conditions {
+    return [self findAll:conditions];
 }
 + (id)create: (NSDictionary *)params {
     if (!db) return nil;
