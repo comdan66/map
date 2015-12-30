@@ -13,12 +13,10 @@
 
 @interface ORM : NSObject
 
-//@property sqlite3 *db;
-
 @property long id;
 @property NSUInteger *count;
 
-+ (BOOL)initDB;
++ (BOOL)initDB:(NSString *)sqlName;
 + (BOOL)closeDB;
 + (NSMutableArray *)varList:(Class)class;
 

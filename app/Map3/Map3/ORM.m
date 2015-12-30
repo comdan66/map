@@ -12,17 +12,15 @@
 
 
 static sqlite3 *db = nil;
-static NSString *sqlName = @"maps";
 
-+ (BOOL)initDB {
++ (BOOL)initDB:(NSString *)sqlName {
     if (db) return YES;
     
     NSFileManager *fm = [NSFileManager new];
     NSString *src = [[NSBundle mainBundle] pathForResource:sqlName ofType:@"sqlite"];
     NSString *dst = [NSString stringWithFormat:@"%@/Documents/%@.sqlite", NSHomeDirectory(), sqlName];
     
-    if ([fm fileExistsAtPath:dst])
-        [fm removeItemAtPath:dst error:nil];
+    if ([fm fileExistsAtPath:dst]) [fm removeItemAtPath:dst error:nil];
     
     [fm copyItemAtPath:src toPath:dst error:nil];
     
@@ -64,9 +62,7 @@ static NSString *sqlName = @"maps";
 
 - (id)initWithId:(long) id {
     self = [super init];
-    if (self) {
-        [self setId:id];
-    }
+    if (self) [self setId:id];
     return self;
 }
 
@@ -74,7 +70,7 @@ static NSString *sqlName = @"maps";
     self = [super init];
     if (self) {
         [self setId:id];
-        
+
         for (NSString *key in params)
             if ([self respondsToSelector:NSSelectorFromString(key)])
                 [self setValue:[params objectForKey:key] forKey:key];
@@ -83,7 +79,6 @@ static NSString *sqlName = @"maps";
 }
 
 - (id)initWithCount:(NSUInteger *)count {
-    
     self = [super init];
     if (self) self.count = count;
     return self;
@@ -96,15 +91,10 @@ static NSString *sqlName = @"maps";
     NSString *keyFields = [NSString stringWithFormat:@"'%@'", [[params allKeys] componentsJoinedByString:@"', '"]];
     NSString *valueFields = [NSString stringWithFormat:@"'%@'", [[params allValues] componentsJoinedByString:@"', '"]];
     
-    sqlite3_stmt *statement;
-    
     const char *sql = [[NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", tableName, keyFields, valueFields] cStringUsingEncoding:NSASCIIStringEncoding];
+    sqlite3_stmt *statement;
     sqlite3_prepare(db, sql, -1, &statement, NULL);
-    
-    if (sqlite3_step(statement) != SQLITE_DONE)
-        return nil;
-    
-    
+    if (sqlite3_step(statement) != SQLITE_DONE) return nil;
     sqlite3_finalize(statement);
     
     return [[self alloc] initWithId:sqlite3_last_insert_rowid(db) params: params];
@@ -112,17 +102,15 @@ static NSString *sqlName = @"maps";
 
 + (NSArray *)findAll:(NSDictionary *)conditions {
     if (!db) return nil;
+
     conditions = [[NSMutableDictionary alloc] initWithDictionary:conditions copyItems:YES];
     NSString *tableName = [[NSStringFromClass([self class]) lowercaseString] pluralizeString];
     NSMutableArray *select;
     
     if (![conditions objectForKey:@"select"]) {
-        
         select = [NSMutableArray new];
-        
         [select addObjectsFromArray:[self varList:[ORM class]]];
         [select addObjectsFromArray:[self varList:[self class]]];
-        
         [conditions setValue:[select componentsJoinedByString:@", "] forKey:@"select"];
     } else {
         select = (NSMutableArray *)[[[conditions objectForKey:@"select"] find:@", *" replace:@","] componentsSeparatedByString:@","];
@@ -144,17 +132,15 @@ static NSString *sqlName = @"maps";
                               [conditions objectForKey:@"order"] ? [NSString stringWithFormat:@" ORDER BY %@", [conditions objectForKey:@"order"]] : @"",
                               [conditions objectForKey:@"limit"] ? [NSString stringWithFormat:@" LIMIT %@", [conditions objectForKey:@"limit"]] : @""
                               ] cStringUsingEncoding:NSASCIIStringEncoding];
-    
     sqlite3_stmt *statement;
-    
     sqlite3_prepare(db, selectSql, -1, &statement, NULL);
     
     NSMutableArray *row = [NSMutableArray new];
     for (int i = 0; sqlite3_step(statement) == SQLITE_ROW; i++) {
         NSMutableDictionary *column = [NSMutableDictionary new];
-        for (int j = 0; j < [select count]; j++) {
+
+        for (int j = 0; j < [select count]; j++)
             [column setValue:[NSString stringWithCString:(char *)sqlite3_column_text(statement, j) encoding:NSUTF8StringEncoding] forKey:[select objectAtIndex:j]];
-        }
         
         if ([column objectForKey:@"COUNT(id)"])
             [row addObject:[[self alloc] initWithCount:(NSUInteger *)[[column objectForKey:@"COUNT(id)"] integerValue]]];
@@ -183,12 +169,7 @@ static NSString *sqlName = @"maps";
 }
 
 + (id)find:(NSString *)type conditions:(NSDictionary *)conditions {
-    if ([type isEqualToString:@"one"]) {
-        return [self findOne:conditions];
-    } else {
-        return [self findAll:conditions];
-    }
-    return nil;
+    return [type isEqualToString:@"one"] ? [self findOne:conditions] : [self findAll:conditions];
 }
 
 + (id)first {
@@ -223,16 +204,10 @@ static NSString *sqlName = @"maps";
         if ((int)[vars indexOfObject:key] > -1)
             [set addObject:[NSString stringWithFormat:@"'%@'='%@'", key, [params objectForKey:key]]];
     
-    NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET %@%@", tableName, [set componentsJoinedByString:@", "], [where length] > 0 ? [NSString stringWithFormat:@" WHERE %@", where] : @""];
-    
-    const char *updateSql = [sql cStringUsingEncoding:NSASCIIStringEncoding];
-    
+    const char *updateSql = [[NSString stringWithFormat:@"UPDATE %@ SET %@%@", tableName, [set componentsJoinedByString:@", "], [where length] > 0 ? [NSString stringWithFormat:@" WHERE %@", where] : @""] cStringUsingEncoding:NSASCIIStringEncoding];
     sqlite3_stmt *statement;
     sqlite3_prepare(db, updateSql, -1, &statement, NULL);
-    
-    if (sqlite3_step(statement) != SQLITE_DONE)
-        return nil;
-    
+    if (sqlite3_step(statement) != SQLITE_DONE) return nil;
     sqlite3_finalize(statement);
     
     return YES;
@@ -244,8 +219,8 @@ static NSString *sqlName = @"maps";
 
 - (BOOL)save {
     if (!(db && [self id])) return NO;
+
     NSMutableArray *vars = [ORM varList:[self class]];
-    
     NSMutableDictionary *params = [NSMutableDictionary new];
     
     for (NSString *key in vars)
@@ -259,16 +234,11 @@ static NSString *sqlName = @"maps";
     if (!db) return NO;
     
     NSString *tableName = [[NSStringFromClass([self class]) lowercaseString] pluralizeString];
-    NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@%@", tableName, [where length] > 0 ? [NSString stringWithFormat:@" WHERE %@", where] : @""];
-    
-    const char *deltetSql = [sql cStringUsingEncoding:NSASCIIStringEncoding];
-    
+
+    const char *deltetSql = [[NSString stringWithFormat:@"DELETE FROM %@%@", tableName, [where length] > 0 ? [NSString stringWithFormat:@" WHERE %@", where] : @""] cStringUsingEncoding:NSASCIIStringEncoding];
     sqlite3_stmt *statement;
     sqlite3_prepare(db, deltetSql, -1, &statement, NULL);
-    
-    if (sqlite3_step(statement) != SQLITE_DONE)
-        return nil;
-    
+    if (sqlite3_step(statement) != SQLITE_DONE) return nil;
     sqlite3_finalize(statement);
     
     return YES;

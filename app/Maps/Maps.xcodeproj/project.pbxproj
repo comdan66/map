@@ -10,7 +10,11 @@
 		0E46EE5A1C310F500000BE18 /* Marker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46EE581C310F500000BE18 /* Marker.m */; };
 		0E46EE5B1C310F500000BE18 /* Marker.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E46EE591C310F500000BE18 /* Marker.xib */; };
 		0E46EEA51C3138F70000BE18 /* Maps.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 0E46EEA41C3138F70000BE18 /* Maps.sqlite */; };
-		0E46EEA81C313A060000BE18 /* ORM.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46EEA71C313A060000BE18 /* ORM.m */; };
+		0E46EF011C33A4F30000BE18 /* ORM.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46EF001C33A4F30000BE18 /* ORM.m */; };
+		0E46EF071C33A4FA0000BE18 /* ActiveSupportInflector.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46EF031C33A4FA0000BE18 /* ActiveSupportInflector.m */; };
+		0E46EF081C33A4FA0000BE18 /* ActiveSupportInflector.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E46EF041C33A4FA0000BE18 /* ActiveSupportInflector.plist */; };
+		0E46EF091C33A4FA0000BE18 /* NSString+ActiveSupportInflector.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46EF061C33A4FA0000BE18 /* NSString+ActiveSupportInflector.m */; };
+		0E46EF0C1C33A5000000BE18 /* Path.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46EF0B1C33A5000000BE18 /* Path.m */; };
 		0EF05E251C29467A00243BB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05E241C29467A00243BB9 /* main.m */; };
 		0EF05E281C29467A00243BB9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05E271C29467A00243BB9 /* AppDelegate.m */; };
 		0EF05E2B1C29467A00243BB9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05E2A1C29467A00243BB9 /* ViewController.m */; };
@@ -88,8 +92,15 @@
 		0E46EE581C310F500000BE18 /* Marker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Marker.m; sourceTree = "<group>"; };
 		0E46EE591C310F500000BE18 /* Marker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Marker.xib; sourceTree = "<group>"; };
 		0E46EEA41C3138F70000BE18 /* Maps.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Maps.sqlite; sourceTree = "<group>"; };
-		0E46EEA61C313A060000BE18 /* ORM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORM.h; sourceTree = "<group>"; };
-		0E46EEA71C313A060000BE18 /* ORM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORM.m; sourceTree = "<group>"; };
+		0E46EEFF1C33A4F30000BE18 /* ORM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORM.h; sourceTree = "<group>"; };
+		0E46EF001C33A4F30000BE18 /* ORM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORM.m; sourceTree = "<group>"; };
+		0E46EF021C33A4FA0000BE18 /* ActiveSupportInflector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveSupportInflector.h; sourceTree = "<group>"; };
+		0E46EF031C33A4FA0000BE18 /* ActiveSupportInflector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveSupportInflector.m; sourceTree = "<group>"; };
+		0E46EF041C33A4FA0000BE18 /* ActiveSupportInflector.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = ActiveSupportInflector.plist; sourceTree = "<group>"; };
+		0E46EF051C33A4FA0000BE18 /* NSString+ActiveSupportInflector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ActiveSupportInflector.h"; sourceTree = "<group>"; };
+		0E46EF061C33A4FA0000BE18 /* NSString+ActiveSupportInflector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ActiveSupportInflector.m"; sourceTree = "<group>"; };
+		0E46EF0A1C33A5000000BE18 /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path.h; sourceTree = "<group>"; };
+		0E46EF0B1C33A5000000BE18 /* Path.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Path.m; sourceTree = "<group>"; };
 		0EF05E201C29467A00243BB9 /* Maps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Maps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EF05E241C29467A00243BB9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0EF05E261C29467A00243BB9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -235,13 +246,36 @@
 			name = Marker;
 			sourceTree = "<group>";
 		};
-		0E46EEA91C313A0B0000BE18 /* orm */ = {
+		0E46EF0D1C33A5070000BE18 /* ActiveSupportInflector */ = {
 			isa = PBXGroup;
 			children = (
-				0E46EEA61C313A060000BE18 /* ORM.h */,
-				0E46EEA71C313A060000BE18 /* ORM.m */,
+				0E46EF021C33A4FA0000BE18 /* ActiveSupportInflector.h */,
+				0E46EF031C33A4FA0000BE18 /* ActiveSupportInflector.m */,
+				0E46EF041C33A4FA0000BE18 /* ActiveSupportInflector.plist */,
+				0E46EF051C33A4FA0000BE18 /* NSString+ActiveSupportInflector.h */,
+				0E46EF061C33A4FA0000BE18 /* NSString+ActiveSupportInflector.m */,
 			);
-			name = orm;
+			name = ActiveSupportInflector;
+			sourceTree = "<group>";
+		};
+		0E46EF0E1C33A50F0000BE18 /* ORM */ = {
+			isa = PBXGroup;
+			children = (
+				0E46EEFF1C33A4F30000BE18 /* ORM.h */,
+				0E46EF001C33A4F30000BE18 /* ORM.m */,
+			);
+			name = ORM;
+			sourceTree = "<group>";
+		};
+		0E46EF0F1C33A51B0000BE18 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0E46EF0E1C33A50F0000BE18 /* ORM */,
+				0E46EF0D1C33A5070000BE18 /* ActiveSupportInflector */,
+				0E46EF0A1C33A5000000BE18 /* Path.h */,
+				0E46EF0B1C33A5000000BE18 /* Path.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		0EF05E171C29467A00243BB9 = {
@@ -279,10 +313,10 @@
 			isa = PBXGroup;
 			children = (
 				0EF05F531C2BC10800243BB9 /* Header.h */,
+				0E46EF0F1C33A51B0000BE18 /* Model */,
 				0EF05F261C2A989500243BB9 /* Map */,
 				0EF05F1F1C2A8F0800243BB9 /* TabBar */,
 				0EF05F191C2A405F00243BB9 /* Gps */,
-				0E46EEA91C313A0B0000BE18 /* orm */,
 				0EF05E261C29467A00243BB9 /* AppDelegate.h */,
 				0EF05E271C29467A00243BB9 /* AppDelegate.m */,
 				0EF05E291C29467A00243BB9 /* ViewController.h */,
@@ -590,6 +624,7 @@
 				0E46EE5B1C310F500000BE18 /* Marker.xib in Resources */,
 				0EF05E331C29467A00243BB9 /* Assets.xcassets in Resources */,
 				0EF05E2E1C29467A00243BB9 /* Main.storyboard in Resources */,
+				0E46EF081C33A4FA0000BE18 /* ActiveSupportInflector.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,6 +651,7 @@
 			files = (
 				0EF05FFF1C2D465500243BB9 /* SDWebImageDecoder.m in Sources */,
 				0EF0600A1C2D465500243BB9 /* UIView+WebCacheOperation.m in Sources */,
+				0E46EF0C1C33A5000000BE18 /* Path.m in Sources */,
 				0EF05F431C2B950E00243BB9 /* AFSecurityPolicy.m in Sources */,
 				0EF060021C2D465500243BB9 /* SDWebImageManager.m in Sources */,
 				0EF05F291C2B87C000243BB9 /* OAHUD.m in Sources */,
@@ -636,7 +672,7 @@
 				0EF060051C2D465500243BB9 /* UIImage+GIF.m in Sources */,
 				0EF060061C2D465500243BB9 /* UIImage+MultiFormat.m in Sources */,
 				0EF060071C2D465500243BB9 /* UIImage+WebP.m in Sources */,
-				0E46EEA81C313A060000BE18 /* ORM.m in Sources */,
+				0E46EF011C33A4F30000BE18 /* ORM.m in Sources */,
 				0E46EE5A1C310F500000BE18 /* Marker.m in Sources */,
 				0EF060031C2D465500243BB9 /* SDWebImagePrefetcher.m in Sources */,
 				0EF05E281C29467A00243BB9 /* AppDelegate.m in Sources */,
@@ -652,8 +688,10 @@
 				0EF05FFC1C2D465500243BB9 /* NSData+ImageContentType.m in Sources */,
 				0EF05E311C29467A00243BB9 /* Maps.xcdatamodeld in Sources */,
 				0EF05F511C2B968E00243BB9 /* UIAlertView+Blocks.m in Sources */,
+				0E46EF071C33A4FA0000BE18 /* ActiveSupportInflector.m in Sources */,
 				0EF05FFD1C2D465500243BB9 /* SDImageCache.m in Sources */,
 				0EF05E251C29467A00243BB9 /* main.m in Sources */,
+				0E46EF091C33A4FA0000BE18 /* NSString+ActiveSupportInflector.m in Sources */,
 				0EF05F221C2A8F7F00243BB9 /* MyUITabBarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

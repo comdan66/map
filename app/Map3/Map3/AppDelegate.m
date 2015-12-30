@@ -19,7 +19,7 @@
     // Override point for customization after application launch.
     
     
-    [ORM initDB];
+    [ORM initDB:@"maps"];
 
     return YES;
 }

@@ -22,6 +22,5 @@
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 
--(sqlite3 *)getDB;
 @end
 

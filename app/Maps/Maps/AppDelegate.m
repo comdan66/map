@@ -16,9 +16,6 @@
 @implementation AppDelegate
 
 
--(sqlite3 *)getDB {
-    return db;
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -35,25 +32,8 @@
     [application registerForRemoteNotifications];
 
     
-    if ([ORM initDB]) {
-//        UIAlertController *error = [UIAlertController
-//                                    alertControllerWithTitle:@"錯誤"
-//                                    message:@"無法產生 SQLite，請洽詢工程師！"
-//                                    preferredStyle:UIAlertControllerStyleAlert];
-//        [error addAction:[UIAlertAction
-//                          actionWithTitle:@"確定"
-//                          style:UIAlertActionStyleDefault
-//                          handler:^(UIAlertAction * action)
-//                          {
-//                              [error dismissViewControllerAnimated:YES completion:nil];
-//                          }]];
-//        
-//        [self presentViewController:error animated:YES completion:nil];
-    }
+    [ORM initDB:@"Maps"];
         
-    
-    
-    
     return YES;
 }
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -90,6 +70,7 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
+    [ORM closeDB];
 }
 
 #pragma mark - Core Data stack
