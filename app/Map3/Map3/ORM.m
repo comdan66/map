@@ -10,6 +10,7 @@
 
 @implementation ORM
 
+
 static sqlite3 *db = nil;
 static NSString *sqlName = @"maps";
 
@@ -39,11 +40,17 @@ static NSString *sqlName = @"maps";
                 [self setValue:[params objectForKey:key] forKey:key];
     return self;
 }
-+ (NSMutableArray *)varList:(Class)c {
+- (id)initWithCount:(NSUInteger *)count {
+    
+    self = [super init];
+    if (self) self.count = count;
+    return self;
+}
++ (NSMutableArray *)varList:(Class)class {
     unsigned int count;
     
     NSMutableArray *list = [NSMutableArray new];
-    Ivar *vars = class_copyIvarList(c, &count);
+    Ivar *vars = class_copyIvarList(class, &count);
     for (NSUInteger i=0; i<count; i++)
         [list addObject:[[NSString stringWithFormat:@"%s", ivar_getName(vars[i])] find:@"_" replace:@""]];
 
@@ -161,7 +168,11 @@ static NSString *sqlName = @"maps";
         for (int j = 0; j < [select count]; j++) {
             [column setValue:[NSString stringWithCString:(char *)sqlite3_column_text(statement, j) encoding:NSUTF8StringEncoding] forKey:[select objectAtIndex:j]];
         }
-        [row addObject:[[self alloc] init:[NSDictionary dictionaryWithDictionary:column]]];
+
+        if ([column objectForKey:@"COUNT(id)"])
+            [row addObject:[[self alloc] initWithCount:(NSUInteger *)[[column objectForKey:@"COUNT(id)"] integerValue]]];
+        else
+            [row addObject:[[self alloc] init:[NSDictionary dictionaryWithDictionary:column]]];
     }
     sqlite3_finalize(statement);
     return row;
@@ -184,6 +195,22 @@ static NSString *sqlName = @"maps";
         return [self findAll:conditions];
     }
     return nil;
+}
++ (id)first {
+    return [self find:@"one" conditions:nil];
+}
++ (id)first:(NSDictionary *)conditions {
+    return [self find:@"one" conditions:conditions];
+}
++ (NSUInteger *)count {
+    ORM* obj = [[self findAll:@{@"select": @"COUNT(id)"}] firstObject];
+    return (NSUInteger *)obj.count;
+}
++ (NSUInteger *)count:(NSDictionary *)conditions {
+    conditions = [[NSMutableDictionary alloc] initWithDictionary:conditions copyItems:YES];
+    [conditions setValue:@"COUNT(id)" forKey:@"select"];
+    ORM* obj = [[self findAll:conditions] firstObject];
+    return (NSUInteger *)obj.count;
 }
 + (id)find:(NSDictionary *)conditions {
     return [self findAll:conditions];

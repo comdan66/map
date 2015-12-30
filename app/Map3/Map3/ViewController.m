@@ -46,11 +46,11 @@
 //                                                @"order": @"id DESC"
 //                                                }];
 
-
-    Path *path = [Path find:@"one" conditions:@{
-                                                @"select": @"id,lat, lng",
-                                                @"where": @"id = 2",
-                                                }];
+//    NSLog(@"%d", (int)[Path count:@{@"where": @"id > 5"}]);
+//    Path *path = [Path find:@"one" conditions:@{
+//                                                @"select": @"id,lat, lng",
+//                                                @"where": @"id = 2",
+//                                                }];
 //    NSLog(@"%@", path.lat);
 //    
 ////    [Path deleteAll];

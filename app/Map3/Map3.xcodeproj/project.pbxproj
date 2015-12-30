@@ -124,10 +124,11 @@
 		0E46EE681C31208B0000BE18 /* Map3 */ = {
 			isa = PBXGroup;
 			children = (
-				0E46EEAD1C3224D40000BE18 /* ORM */,
+				0E46EEAD1C3224D40000BE18 /* Model */,
 				0E46EE6C1C31208B0000BE18 /* AppDelegate.h */,
 				0E46EE6D1C31208B0000BE18 /* AppDelegate.m */,
 				0E46EE6F1C31208B0000BE18 /* ViewController.h */,
+				0E46EE701C31208B0000BE18 /* ViewController.m */,
 				0E46EE721C31208B0000BE18 /* Main.storyboard */,
 				0E46EE781C31208B0000BE18 /* Assets.xcassets */,
 				0E46EE7A1C31208B0000BE18 /* LaunchScreen.storyboard */,
@@ -164,17 +165,15 @@
 			path = Map3UITests;
 			sourceTree = "<group>";
 		};
-		0E46EEAD1C3224D40000BE18 /* ORM */ = {
+		0E46EEAD1C3224D40000BE18 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0E46EEFC1C33840A0000BE18 /* ORM */,
 				0E46EEB91C32410C0000BE18 /* ActiveSupportInflector */,
 				0E46EEAE1C3224E30000BE18 /* Path.h */,
 				0E46EEAF1C3224E30000BE18 /* Path.m */,
-				0E46EEAA1C32240A0000BE18 /* ORM.h */,
-				0E46EEAB1C32240A0000BE18 /* ORM.m */,
-				0E46EE701C31208B0000BE18 /* ViewController.m */,
 			);
-			name = ORM;
+			name = Model;
 			sourceTree = "<group>";
 		};
 		0E46EEB91C32410C0000BE18 /* ActiveSupportInflector */ = {
@@ -187,6 +186,15 @@
 				0E46EEB51C3232B90000BE18 /* NSString+ActiveSupportInflector.m */,
 			);
 			name = ActiveSupportInflector;
+			sourceTree = "<group>";
+		};
+		0E46EEFC1C33840A0000BE18 /* ORM */ = {
+			isa = PBXGroup;
+			children = (
+				0E46EEAA1C32240A0000BE18 /* ORM.h */,
+				0E46EEAB1C32240A0000BE18 /* ORM.m */,
+			);
+			name = ORM;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

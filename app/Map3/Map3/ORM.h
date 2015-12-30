@@ -16,6 +16,7 @@
 //@property sqlite3 *db;
 
 @property long id;
+@property NSUInteger *count;
 
 + (BOOL)initDB;
 + (BOOL)closeDB;
@@ -33,11 +34,17 @@
 
 + (id)find:(NSDictionary *)conditions;
 + (id)find:(NSString *)type conditions:(NSDictionary *)conditions;
++ (id)first;
++ (id)first:(NSDictionary *)conditions;
 
-+ (NSMutableArray *)varList:(Class)c;
++ (NSUInteger *)count;
++ (NSUInteger *)count:(NSDictionary *)conditions;
+
++ (NSMutableArray *)varList:(Class)class;
 
 - (id)initWithId:(long) id;
 - (id)init:(NSDictionary *)params;
+- (id)initWithCount:(NSUInteger *)count;
 
 + (BOOL)deleteAll:(NSString *)where;
 + (BOOL)deleteAll;
