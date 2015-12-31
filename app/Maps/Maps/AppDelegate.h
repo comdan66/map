@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "Header.h"
 #import "ORM.h"
-#import "GPS.h"
+#import "PathGPS.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

@@ -13,11 +13,11 @@
 #import "MemoView.h"
 #import "MyAnnotation.h"
 #import "Marker.h"
-#import "GPS.h"
+#import "PathGPS.h"
 
 @interface GpsViewController : UIViewController <MKMapViewDelegate>
 
-@property NSString *polylineId;
+//@property NSString *polylineId;
 
 @property UISwitch *switchButton;
 @property UILabel *switchLabel;

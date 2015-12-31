@@ -49,7 +49,7 @@
 
     [self loadData];
     if (self.timer) { [self.timer invalidate]; self.timer = nil; }
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:MAP_TIMER target:self selector:@selector(loadData) userInfo:nil repeats:YES];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:PATH_FETCH_TIMER target:self selector:@selector(loadData) userInfo:nil repeats:YES];
 }
 
 - (void)loadData {

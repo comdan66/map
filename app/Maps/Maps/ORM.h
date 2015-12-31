@@ -49,4 +49,6 @@
 + (BOOL)deleteAll;
 - (BOOL)delete;
 
+- (NSDictionary *)toDictionary;
+
 @end

@@ -33,7 +33,7 @@
 
     
     [ORM initDB:@"Maps"];
-    [GPS initGPS];
+    [PathGPS initGPS];
         
     return YES;
 }

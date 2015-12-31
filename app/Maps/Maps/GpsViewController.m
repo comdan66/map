@@ -39,7 +39,7 @@
     
     [self loadData];
     if (self.timer) { [self.timer invalidate]; self.timer = nil; }
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:MAP_TIMER target:self selector:@selector(loadData) userInfo:nil repeats:YES];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:PATH_FETCH_TIMER target:self selector:@selector(loadData) userInfo:nil repeats:YES];
 }
 - (void)loadData {
     if (self.isLoadData) return;
@@ -200,63 +200,27 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    //    離開
     [self clean];
-    
 }
 
 - (void) startGPS {
     [self.switchLabel setText:@"開啟中.."];
 
-    NSMutableDictionary *data = [NSMutableDictionary new];
-    [data setValue:@"xxx" forKey:@"name"];
-
-    AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
-    [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
-    [httpManager POST:[NSString stringWithFormat:API_GET_USER_CREATE_POLYLINE, USER_ID]
-          parameters:data
-             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 if ([[responseObject objectForKey:@"status"] boolValue]) {
-                     self.polylineId = [NSString stringWithFormat:@"%@", [responseObject objectForKey:@"id"]];
-                     [self.switchLabel setText:@"開啟"];
-                     [GPS start];
-                 } else {
-                     [self stopGPS];
-                 }
-             }
-             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                 [self stopGPS];
-             }
-     ];
-
+    [PathGPS start:^{
+        [self.switchButton setOn:YES animated:YES];
+        [self.switchLabel setText:@"開啟"];
+    } failure:^{
+        [self stopGPS];
+    }];
 }
 - (void) stopGPS {
-    if (self.polylineId) {
-        [self finish:(int)[self.polylineId integerValue]
-             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 self.polylineId = nil;
-                 [self stopGPS];
-             }
-             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                 self.polylineId = nil;
-                 [self stopGPS];
-             }];
-    } else {
+    [self.switchLabel setText:@"關閉中.."];
+    [PathGPS stop:^{
         [self.switchButton setOn:NO animated:YES];
         [self.switchLabel setText:@"關閉"];
-        [GPS stop];
-    }
+    }];
 }
-- (void)finish:(int)id success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure{
-    NSLog(@"%d", id);
-    AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
-    [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
-    [httpManager POST:[NSString stringWithFormat:API_GET_USER_FINISH_POLYLINE, USER_ID, id]
-           parameters:[NSMutableDictionary new]
-              success:success
-              failure:failure
-     ];
-}
+
 - (void)switchChangeAction:(UISwitch *)sender {
     if ([sender isOn])
         [self startGPS];
@@ -267,7 +231,6 @@
     double value = [sender value];
     
     [self.stepperLabel setText:[NSString stringWithFormat:@"%d 公尺", (int)value]];
-//    NSLog(@"%@", [NSString stringWithFormat:@"%d", (int)value]);
 }
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
 {

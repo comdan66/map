@@ -10,14 +10,17 @@
 
 @implementation GPS
 
-static GPS *gps;
+static id gps;
 
 + (BOOL)initGPS {
     if (gps) return YES;
 
-    gps = [[GPS alloc] initWithLocationManager];
+    gps = [[[self class] alloc] initWithLocationManager];
     
     return YES;
+}
++ (id)gps {
+    return gps;
 }
 + (void)start {
     if (!gps) return;
@@ -48,8 +51,7 @@ static GPS *gps;
     }
     return self;
 }
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    CLLocation *location = [locations firstObject];
-    NSLog(@"------>%@", [NSString stringWithFormat:@"%f", location.coordinate.latitude]);
-}
+
+//
+//
 @end

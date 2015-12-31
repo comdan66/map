@@ -13,6 +13,7 @@
 @property CLLocationManager *locationManager;
 
 + (BOOL)initGPS;
++ (id)gps;
 + (void)start;
 + (void)stop;
 - (id) initWithLocationManager;

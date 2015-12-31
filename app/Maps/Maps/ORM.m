@@ -40,15 +40,21 @@ static sqlite3 *db = nil;
     else return NO;
 }
 
-+ (NSMutableArray *)varList:(Class)class {
++ (NSMutableArray *)varList:(Class)class exception:(NSArray *)exception {
     unsigned int count;
     
     NSMutableArray *list = [NSMutableArray new];
     Ivar *vars = class_copyIvarList(class, &count);
-    for (NSUInteger i=0; i<count; i++)
-        [list addObject:[[NSString stringWithFormat:@"%s", ivar_getName(vars[i])] find:@"_" replace:@""]];
-    
+    NSString *temp;
+    for (NSUInteger i=0; i<count; i++) {
+        temp = [[NSString stringWithFormat:@"%s", ivar_getName(vars[i])] find:@"_" replace:@""];
+        if (!exception || ((int)[exception indexOfObject:temp] == -1))
+            [list addObject:temp];
+    }
     return list;
+}
++ (NSMutableArray *)varList:(Class)class {
+    return [self varList:class exception:nil];
 }
 
 - (id)init:(NSDictionary *)params{
@@ -109,7 +115,7 @@ static sqlite3 *db = nil;
     
     if (![conditions objectForKey:@"select"]) {
         select = [NSMutableArray new];
-        [select addObjectsFromArray:[self varList:[ORM class]]];
+        [select addObjectsFromArray:[self varList:[ORM class] exception:@[@"count"]]];
         [select addObjectsFromArray:[self varList:[self class]]];
         [conditions setValue:[select componentsJoinedByString:@", "] forKey:@"select"];
     } else {
@@ -132,6 +138,7 @@ static sqlite3 *db = nil;
                               [conditions objectForKey:@"order"] ? [NSString stringWithFormat:@" ORDER BY %@", [conditions objectForKey:@"order"]] : @"",
                               [conditions objectForKey:@"limit"] ? [NSString stringWithFormat:@" LIMIT %@", [conditions objectForKey:@"limit"]] : @""
                               ] cStringUsingEncoding:NSASCIIStringEncoding];
+
     sqlite3_stmt *statement;
     sqlite3_prepare(db, selectSql, -1, &statement, NULL);
     
@@ -253,4 +260,15 @@ static sqlite3 *db = nil;
     return [[self class] deleteAll:[NSString stringWithFormat:@"id = %ld", [self id]]];
 }
 
+- (NSDictionary *)toDictionary {
+    if (!db) return nil;
+    
+    NSMutableArray *vars = [ORM varList:[self class]];
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    
+    for (NSString *key in vars)
+        if ([self respondsToSelector:NSSelectorFromString(key)])
+            [params setValue:[self valueForKey:key] forKey:key];
+    return params;
+}
 @end
