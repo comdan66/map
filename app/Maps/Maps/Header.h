@@ -13,9 +13,9 @@
 
 #define DEV YES
 #define LAY NO
-#define USER_ID 1
+#define USER_ID 2
 #define FOLLOW_USER_ID 1
-#define PATH_FETCH_TIMER 5 //sec
+#define PATH_FETCH_TIMER 10 //sec
 #define UPLOAD_PATHS_TIMER 5 //sec
 
 #define API_GET_USER_NEWEST_POLYLINE (API_URL @"users/%d/polylines/newest")

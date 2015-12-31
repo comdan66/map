@@ -28,7 +28,6 @@
     for (Path* path in paths)
         [parameters setValue:[path toDictionary] forKey:[NSString stringWithFormat:@"%d", i++]];
 
-    NSLog(@"%@", (NSMutableDictionary *)parameters);
     NSMutableDictionary *data = [NSMutableDictionary new];
     [data setValue:parameters forKey:@"paths"];
 
@@ -37,16 +36,22 @@
     [httpManager POST:[NSString stringWithFormat:API_POST_POLYLINES_PAYHS, (int)[self.polylineId integerValue]]
            parameters:data
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                  NSLog(@"%@", responseObject);
+                  self.isUploadPaths = NO;
+//                  if ([[responseObject objectForKey:@"status"] boolValue])
+//                      if ((int)[(NSArray *)[responseObject objectForKey:@"ids"] count] > 0)
+//                          [Path deleteAll:[NSString stringWithFormat:@"id IN (%@)", [[responseObject objectForKey:@"ids"] componentsJoinedByString:@", "]]];
+//
+//                  if (![finish isKindOfClass:[NSTimer class]] && finish) finish();
+                                    NSLog(@"ooooooooooooooooooooooooooooooooo");
               }
               failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  NSString* ErrorResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
-                  NSLog(@"%@",ErrorResponse);
+                  self.isUploadPaths = NO;
+//                  if (![finish isKindOfClass:[NSTimer class]] && finish) finish();
+                  NSLog(@"xxxxxxxxxxxxxxxx>%@", [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding]);
+//                  NSString* ErrorResponse = ;
+//                  NSLog(@"%@",ErrorResponse);
               }
      ];
-    
-    
-    if (![finish isKindOfClass:[NSTimer class]] && finish) finish();
 }
 - (void) finish:(void (^)())finish {
     if (!self.polylineId)
@@ -56,8 +61,12 @@
     [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
     [httpManager POST:[NSString stringWithFormat:API_GET_USER_FINISH_POLYLINE, USER_ID, (int)[self.polylineId integerValue]]
            parameters:[NSMutableDictionary new]
-              success:finish
-              failure:finish
+              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                  if (finish) finish();
+              }
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  if (finish) finish();
+              }
      ];
 }
 + (void)start:(void (^)())finish failure:(void (^)())failure {
@@ -86,11 +95,13 @@
                      gps.isUploadPaths = NO;
                  }
 
-//                 gps.timer = [NSTimer scheduledTimerWithTimeInterval:UPLOAD_PATHS_TIMER target:gps selector:@selector(uploadPaths:) userInfo:nil repeats:YES];
+                 gps.timer = [NSTimer scheduledTimerWithTimeInterval:UPLOAD_PATHS_TIMER target:gps selector:@selector(uploadPaths:) userInfo:nil repeats:YES];
                  
                  finish();
              }
-             failure:failure
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  if (finish) finish();
+              }
      ];
 }
 + (void)stop:(void (^)()) finish {
