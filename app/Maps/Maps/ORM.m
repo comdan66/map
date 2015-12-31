@@ -269,6 +269,12 @@ static sqlite3 *db = nil;
     for (NSString *key in vars)
         if ([self respondsToSelector:NSSelectorFromString(key)])
             [params setValue:[self valueForKey:key] forKey:key];
+    
+    vars = [ORM varList:[ORM class] exception:@[@"count"]];
+    for (NSString *key in vars)
+        if ([self respondsToSelector:NSSelectorFromString(key)])
+            [params setValue:[self valueForKey:key] forKey:key];
+    
     return params;
 }
 @end

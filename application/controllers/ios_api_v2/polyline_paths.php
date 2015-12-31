@@ -51,7 +51,9 @@ class Polyline_paths extends Api_controller {
 
     $paths = array_filter ($paths, array ($this, '_validation_path_posts'));
     usort ($paths, function ($a, $b) { return $a['sqlite_id'] > $b['sqlite_id']; });
-
+    echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
+    var_dump ($paths);
+    exit ();
     $polyline = $this->polyline;
     $sqlite_ids = column_array (array_filter ($paths, function (&$path) use ($polyline) {
       $create = Path::transaction (function () use (&$path, $polyline) {
@@ -74,8 +76,8 @@ class Polyline_paths extends Api_controller {
     if (!(isset ($posts['id']) && is_numeric ($posts['id'] = trim ($posts['id'])))) return false; $posts['sqlite_id'] = $posts['id']; unset ($posts['id']);    
     if (!(isset ($posts['lat']) && is_numeric ($posts['lat'] = trim ($posts['lat'])))) return false; $posts['latitude'] = $posts['lat']; unset ($posts['lat']);
     if (!(isset ($posts['lng']) && is_numeric ($posts['lng'] = trim ($posts['lng'])))) return false; $posts['longitude'] = $posts['lng']; unset ($posts['lng']);
-    if (!(isset ($posts['a_h']) && is_numeric ($posts['a_h'] = trim ($posts['a_h'])))) return false; $posts['accuracy_horizontal'] = $posts['a_h']; unset ($posts['a_h']);
-    if (!(isset ($posts['a_v']) && is_numeric ($posts['a_v'] = trim ($posts['a_v'])))) return false; $posts['accuracy_vertical'] = $posts['a_v']; unset ($posts['a_v']);
+    if (!(isset ($posts['ah']) && is_numeric ($posts['ah'] = trim ($posts['ah'])))) return false; $posts['accuracy_horizontal'] = $posts['ah']; unset ($posts['ah']);
+    if (!(isset ($posts['av']) && is_numeric ($posts['av'] = trim ($posts['av'])))) return false; $posts['accuracy_vertical'] = $posts['av']; unset ($posts['av']);
     if (!(isset ($posts['al']) && is_numeric ($posts['al'] = trim ($posts['al'])))) return false; $posts['altitude'] = $posts['al']; unset ($posts['al']);
     if (!(isset ($posts['sd']) && is_numeric ($posts['sd'] = trim ($posts['sd'])))) return false; $posts['speed'] = $posts['sd']; unset ($posts['sd']);
 

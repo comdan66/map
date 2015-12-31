@@ -22,17 +22,16 @@
     NSArray *paths = [Path findAll: @{
          @"limit": @"30"
      }];
-
-    NSMutableArray *parameters = [NSMutableArray new];
-    for (Path* path in paths)
-        [parameters addObject:[path toDictionary]];
     
+    NSMutableDictionary *parameters = [NSMutableDictionary new];
+    int i = 0;
+    for (Path* path in paths)
+        [parameters setValue:[path toDictionary] forKey:[NSString stringWithFormat:@"%d", i++]];
 
-    NSLog(@"%@", parameters);
+    NSLog(@"%@", (NSMutableDictionary *)parameters);
     NSMutableDictionary *data = [NSMutableDictionary new];
     [data setValue:parameters forKey:@"paths"];
-//    NSLog(@"%@", [NSString stringWithFormat:API_POST_POLYLINES_PAYHS, (int)[self.polylineId integerValue]]);
-    
+
     AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
     [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
     [httpManager POST:[NSString stringWithFormat:API_POST_POLYLINES_PAYHS, (int)[self.polylineId integerValue]]
@@ -41,7 +40,8 @@
                   NSLog(@"%@", responseObject);
               }
               failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  NSLog(@"%@", error);
+                  NSString* ErrorResponse = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
+                  NSLog(@"%@",ErrorResponse);
               }
      ];
     
@@ -86,7 +86,7 @@
                      gps.isUploadPaths = NO;
                  }
 
-                 gps.timer = [NSTimer scheduledTimerWithTimeInterval:UPLOAD_PATHS_TIMER target:gps selector:@selector(uploadPaths:) userInfo:nil repeats:YES];
+//                 gps.timer = [NSTimer scheduledTimerWithTimeInterval:UPLOAD_PATHS_TIMER target:gps selector:@selector(uploadPaths:) userInfo:nil repeats:YES];
                  
                  finish();
              }
