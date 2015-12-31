@@ -51,9 +51,7 @@ class Polyline_paths extends Api_controller {
 
     $paths = array_filter ($paths, array ($this, '_validation_path_posts'));
     usort ($paths, function ($a, $b) { return $a['sqlite_id'] > $b['sqlite_id']; });
-    echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-    var_dump ($paths);
-    exit ();
+
     $polyline = $this->polyline;
     $sqlite_ids = column_array (array_filter ($paths, function (&$path) use ($polyline) {
       $create = Path::transaction (function () use (&$path, $polyline) {
