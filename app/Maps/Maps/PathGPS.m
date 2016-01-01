@@ -10,6 +10,9 @@
 
 @implementation PathGPS
 
+- (void)fetch {
+    [self uploadPaths:nil];
+}
 - (void) uploadPaths:(void (^)())finish {
     if (self.isUploadPaths) {
         if (![finish isKindOfClass:[NSTimer class]] && finish) finish();
@@ -30,26 +33,24 @@
 
     NSMutableDictionary *data = [NSMutableDictionary new];
     [data setValue:parameters forKey:@"paths"];
-
+    if (DEV) NSLog(@"=======>url:%@", [NSString stringWithFormat:API_POST_POLYLINES_PAYHS, (int)[self.polylineId integerValue]]);
+    
     AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
     [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
     [httpManager POST:[NSString stringWithFormat:API_POST_POLYLINES_PAYHS, (int)[self.polylineId integerValue]]
            parameters:data
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   self.isUploadPaths = NO;
-//                  if ([[responseObject objectForKey:@"status"] boolValue])
-//                      if ((int)[(NSArray *)[responseObject objectForKey:@"ids"] count] > 0)
-//                          [Path deleteAll:[NSString stringWithFormat:@"id IN (%@)", [[responseObject objectForKey:@"ids"] componentsJoinedByString:@", "]]];
-//
-//                  if (![finish isKindOfClass:[NSTimer class]] && finish) finish();
-                                    NSLog(@"ooooooooooooooooooooooooooooooooo");
+                  if ([[responseObject objectForKey:@"status"] boolValue])
+                      if ((int)[(NSArray *)[responseObject objectForKey:@"ids"] count] > 0)
+                          [Path deleteAll:[NSString stringWithFormat:@"id IN (%@)", [[responseObject objectForKey:@"ids"] componentsJoinedByString:@", "]]];
+                  if (DEV) NSLog(@"=======>Success!");
+                  if (![finish isKindOfClass:[NSTimer class]] && finish) finish();
               }
               failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                   self.isUploadPaths = NO;
-//                  if (![finish isKindOfClass:[NSTimer class]] && finish) finish();
-                  NSLog(@"xxxxxxxxxxxxxxxx>%@", [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding]);
-//                  NSString* ErrorResponse = ;
-//                  NSLog(@"%@",ErrorResponse);
+                  if (DEV) NSLog(@"=======>Failure!Error:%@", [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding]);
+                  if (![finish isKindOfClass:[NSTimer class]] && finish) finish();
               }
      ];
 }
@@ -95,7 +96,7 @@
                      gps.isUploadPaths = NO;
                  }
 
-                 gps.timer = [NSTimer scheduledTimerWithTimeInterval:UPLOAD_PATHS_TIMER target:gps selector:@selector(uploadPaths:) userInfo:nil repeats:YES];
+                 gps.timer = [NSTimer scheduledTimerWithTimeInterval:UPLOAD_PATHS_TIMER target:gps selector:@selector(fetch) userInfo:nil repeats:YES];
                  
                  finish();
              }
