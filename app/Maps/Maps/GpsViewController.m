@@ -127,7 +127,7 @@
             [self.mapView setRegion:MKCoordinateRegionMake(coordinateArray[0], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
         }
         
-        if (!self.user) {
+        if (!self.user && ([paths count] > 0)) {
             self.user = [[MyAnnotation alloc] initWithLocation:coordinateArray[0]];
             [self.user setImageUrl:avatar];
             [self.mapView addAnnotation:self.user];
@@ -135,7 +135,7 @@
             [self.user setCoordinate:coordinateArray[0]];
         }
         
-        self.line = [MKPolyline polylineWithCoordinates:coordinateArray count:paths.count];
+        self.line = [MKPolyline polylineWithCoordinates:coordinateArray count:[paths count]];
         [self.mapView addOverlay:self.line];
     }
     

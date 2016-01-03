@@ -39,7 +39,12 @@ class Polyline_paths extends Api_controller {
   }
   public function index () {
     if (!($paths = $this->_paths ($this->polyline)))
-      return $this->output_json (array ('status' => false));
+      return $this->output_json (array (
+          'status' => true, 
+          'avatar' => $this->polyline->user->avatar->url ('100x100c'),
+          'is_finished' => true,
+          'paths' => array ()
+        ));
 
     return $this->output_json (array_merge (array ('status' => true), array (
         'run_time' => implode ('', $this->polyline->run_time_units ()),

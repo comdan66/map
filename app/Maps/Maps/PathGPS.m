@@ -60,7 +60,7 @@
     
     AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
     [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
-    [httpManager POST:[NSString stringWithFormat:API_GET_USER_FINISH_POLYLINE, USER_ID, (int)[self.polylineId integerValue]]
+    [httpManager POST:[NSString stringWithFormat:API_POST_USER_FINISH_POLYLINE, USER_ID, (int)[self.polylineId integerValue]]
            parameters:[NSMutableDictionary new]
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   if (finish) finish();
@@ -79,7 +79,7 @@
 
     AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
     [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
-    [httpManager POST:[NSString stringWithFormat:API_GET_USER_CREATE_POLYLINE, USER_ID]
+    [httpManager POST:[NSString stringWithFormat:API_POST_USER_CREATE_POLYLINE, USER_ID]
           parameters:data
              success:^(AFHTTPRequestOperation *operation, id responseObject) {
                  if (![[responseObject objectForKey:@"status"] boolValue])
