@@ -13,8 +13,8 @@
 
 #define DEV YES
 #define LAY NO
-#define USER_ID 1
-#define FOLLOW_USER_ID 2
+#define USER_ID 2
+#define FOLLOW_USER_ID 1
 #define PATH_FETCH_TIMER 7 //sec
 #define UPLOAD_PATHS_TIMER 13 //sec
 

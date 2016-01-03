@@ -51,5 +51,6 @@ Route::get ('polylines/(:num)', 'polylines@content($1)');
   Route::get ($ios_api_uri . 'users/(:id)/polylines/newest', $ios_api_path . 'user_polylines@newest($0)');
   Route::post ($ios_api_uri . 'users/(:id)/polylines/', $ios_api_path . 'user_polylines@create($0)');
   Route::post ($ios_api_uri . 'users/(:id)/polylines/(:id)/finish', $ios_api_path . 'user_polylines@finish($0, $1)');
+  Route::get ($ios_api_uri . 'users/(:id)/polylines/', $ios_api_path . 'user_polylines@index($0)');
   Route::post ($ios_api_uri . 'polylines/(:id)/paths', $ios_api_path . 'polyline_paths@create($0)');
   Route::get ($ios_api_uri . 'polylines/(:id)/paths', $ios_api_path . 'polyline_paths@index($0)');

@@ -25,34 +25,10 @@
     [tmepLabel setBackgroundColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:0.5f]];
     [tempView addSubview:tmepLabel];
 
-    [tempView addConstraint:[NSLayoutConstraint constraintWithItem:tmepLabel
-                                                         attribute:NSLayoutAttributeCenterX
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:tempView
-                                                         attribute:NSLayoutAttributeCenterX
-                                                        multiplier:1.0
-                                                          constant:0.0]];
-    
-    [tempView addConstraint:[NSLayoutConstraint constraintWithItem:tmepLabel
-                                                         attribute:NSLayoutAttributeTop
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:tempView
-                                                         attribute:NSLayoutAttributeTop
-                                                        multiplier:1 constant:0]];
-    [tempView addConstraint:[NSLayoutConstraint constraintWithItem:tmepLabel
-                                                         attribute:NSLayoutAttributeBottom
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:tempView
-                                                         attribute:NSLayoutAttributeBottom
-                                                        multiplier:1 constant:0]];
-    
-    [tempView addConstraint:[NSLayoutConstraint constraintWithItem:tmepLabel
-                                                         attribute:NSLayoutAttributeWidth
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:nil
-                                                         attribute:NSLayoutAttributeNotAnAttribute
-                                                        multiplier:1
-                                                          constant:1.0f / [UIScreen mainScreen].scale]];
+    [tempView addConstraint:[NSLayoutConstraint constraintWithItem:tmepLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:tempView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
+    [tempView addConstraint:[NSLayoutConstraint constraintWithItem:tmepLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:tempView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+    [tempView addConstraint:[NSLayoutConstraint constraintWithItem:tmepLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:tempView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+    [tempView addConstraint:[NSLayoutConstraint constraintWithItem:tmepLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:1.0f / [UIScreen mainScreen].scale]];
     
     
     self.left = [UILabel new];

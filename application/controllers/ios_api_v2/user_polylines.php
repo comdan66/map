@@ -21,6 +21,33 @@ class User_polylines extends Api_controller {
         return $this->disable ($this->output_json (array ('status' => false)));
   }
 
+  public function index () {
+    $next_id = OAInput::get ('next_id');
+    $limit = OAInput::get ('limit');
+
+    $limit = $limit ? $limit : 5;
+
+    $conditions = $next_id ? array ('id <= ?', $next_id) : array ();
+    $polylines = Polyline::find ('all', array ('order' => 'id DESC', 'limit' => $limit + 1, 'include' => array ('user'), 'conditions' => $conditions));
+
+    $next_id = ($temp = (count ($polylines) > $limit ? end ($polylines) : null)) ? $temp->id : -1;
+
+    return $this->output_json (array (
+      'status' => true,
+      'polylines' => array_map (function ($polyline) {
+        return array (
+            'id' => $polyline->id,
+            'cover' => $polyline->cover->url ('640x640c'),
+            'avatar' => $polyline->user->avatar->url ('100x100c'),
+            'is_finished' => $polyline->is_finished,
+            'run_time' => implode ('', $polyline->run_time_units ()),
+            'length' => $polyline->length > 0 ? round ($polyline->length / 1000, 2) . '公里' : '',
+          );
+      }, array_slice ($polylines, 0, $limit)),
+      'next_id' => $next_id
+    ));
+  }
+
   public function finish () {
     $polyline = $this->polyline;
     $polyline->is_finished = 1;

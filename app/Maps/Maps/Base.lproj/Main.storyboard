@@ -24,25 +24,6 @@
             </objects>
             <point key="canvasLocation" x="257" y="75"/>
         </scene>
-        <!--活動紀錄-->
-        <scene sceneID="kNK-cq-dbG">
-            <objects>
-                <viewController id="Co2-Lu-Huk" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="F1l-Ic-SmF"/>
-                        <viewControllerLayoutGuide type="bottom" id="5TN-Ox-tes"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="nzl-FE-BzD">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="活動紀錄" id="fdH-dB-Gze"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="R4f-1F-uoE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="999" y="91"/>
-        </scene>
         <!--MyUI Tab Bar Controller-->
         <scene sceneID="xdW-Ve-jgE">
             <objects>
@@ -53,14 +34,14 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
+                        <segue destination="D11-dM-jQH" kind="relationship" relationship="viewControllers" id="EoV-fR-kGh"/>
                         <segue destination="b8C-7l-O70" kind="relationship" relationship="viewControllers" id="9uZ-Cw-ZLp"/>
-                        <segue destination="Co2-Lu-Huk" kind="relationship" relationship="viewControllers" id="6yA-Lw-7jA"/>
                         <segue destination="gxk-ab-qlp" kind="relationship" relationship="viewControllers" id="rqf-iP-9Ui"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aZ2-js-qgV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="747" y="-715"/>
+            <point key="canvasLocation" x="713" y="-755"/>
         </scene>
         <!--地圖模式-->
         <scene sceneID="qun-Rp-Z2K">
@@ -80,6 +61,52 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7P7-kW-rF6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="338" y="719"/>
+        </scene>
+        <!--Root View Controller-->
+        <scene sceneID="dFh-tN-t91">
+            <objects>
+                <tableViewController id="Fgf-rv-3CF" customClass="PolylinesTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="9NN-5V-DTY">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="HaL-fh-BkH">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HaL-fh-BkH" id="Nxf-vB-5Gp">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Fgf-rv-3CF" id="QS6-gW-LMC"/>
+                            <outlet property="delegate" destination="Fgf-rv-3CF" id="UMb-UH-Pen"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="ogs-gj-vtQ"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Und-zX-K6n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1101" y="924"/>
+        </scene>
+        <!--活動紀錄-->
+        <scene sceneID="21p-c7-uxj">
+            <objects>
+                <navigationController id="D11-dM-jQH" customClass="MyNavigationController" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="活動紀錄" id="nxV-dB-pJm"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FCi-X8-57n">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Fgf-rv-3CF" kind="relationship" relationship="rootViewController" id="UYM-JA-TjK"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vck-Wq-ITv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="926" y="61"/>
         </scene>
         <!--個人設定-->
         <scene sceneID="XLC-Av-UrY">
