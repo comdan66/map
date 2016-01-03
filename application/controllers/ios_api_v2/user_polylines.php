@@ -33,7 +33,7 @@ class User_polylines extends Api_controller {
   }
   public function newest () {
     if (!($polyline = Polyline::find ('one', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array ('user_id = ?', $this->user->id)))))
-      return $this->output_json (array ('status' => false));
+      return $this->output_json (array ('status' => true, 'id' => 0));
     return $this->output_json (array ('status' => true, 'id' => $polyline->id));
   }
   public function create () {

@@ -64,7 +64,7 @@
                     [USER_DEFAULTS setValue:[responseObject objectForKey:@"id"] forKey:@"polylineId"];
                     [self loadPaths:alert];
                 } else {
-                    [self failure:alert];
+                    [self failure:alert title:@"提示" message:@"尚未有新的路徑！"];
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 [self failure:alert];
@@ -148,20 +148,20 @@
         if (DEV) NSLog(@"------->Finish!");
     }
 }
-- (void)failure:(UIAlertController *)alert {
+- (void)failure:(UIAlertController *)alert title:(NSString *) title message:(NSString *) message {
     
     if (DEV) NSLog(@"------->Failure!");
     
     UIAlertController *error = [UIAlertController
-                                alertControllerWithTitle:@"錯誤"
-                                message:@"地圖模式錯誤！"
+                                alertControllerWithTitle:title ? title : @"錯誤"
+                                message:message ? message : @"地圖模式錯誤！"
                                 preferredStyle:UIAlertControllerStyleAlert];
     [error addAction:[UIAlertAction
                       actionWithTitle:@"確定"
                       style:UIAlertActionStyleDefault
                       handler:^(UIAlertAction * action)
                       {
-//                          [[NSNotificationCenter defaultCenter] postNotificationName:@"goToTabIndex0" object:nil];
+                          //                          [[NSNotificationCenter defaultCenter] postNotificationName:@"goToTabIndex0" object:nil];
                           [error dismissViewControllerAnimated:YES completion:^{
                               self.isLoadData = NO;
                           }];
@@ -172,6 +172,9 @@
         }];
     else
         self.isLoadData = NO;
+}
+- (void)failure:(UIAlertController *)alert {
+    [self failure:alert title:nil message:nil];
 }
 - (void)clean {
     if (self.line) {
