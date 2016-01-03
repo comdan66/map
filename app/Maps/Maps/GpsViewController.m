@@ -34,14 +34,15 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
     self.isLoadData = NO;
+    if (DEV) NSLog(@"------->viewWillAppear!");
     
-    [self loadData];
+    [self loadPaths];
     if (self.timer) { [self.timer invalidate]; self.timer = nil; }
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:PATH_FETCH_TIMER target:self selector:@selector(loadData) userInfo:nil repeats:YES];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:PATH_FETCH_TIMER target:self selector:@selector(loadPaths) userInfo:nil repeats:YES];
 }
-- (void)loadData {
+- (void)loadPaths {
     if (self.isLoadData) return;
     
     self.isLoadData = YES;
@@ -113,9 +114,7 @@
     if (paths.count > 0) {
         if (self.line)
             [self.mapView removeOverlay:self.line];
-//        if (self.user)
-//            [self.mapView removeAnnotation:self.user];
-        
+
         [self.memo setLeftText:length rightText:runTime];
         
         CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * paths.count);
@@ -175,8 +174,16 @@
         self.isLoadData = NO;
 }
 - (void)clean {
-    [self.mapView removeOverlay:self.line];
-    [self.mapView removeAnnotation:self.user];
+    if (self.line) {
+        [self.mapView removeOverlay:self.line];
+        self.line = nil;
+    }
+    if (self.user) {
+        [self.mapView removeAnnotation:self.user];
+        self.user = nil;
+    }
+
+    
     self.isLoadData = YES;
     
     if (self.timer) {

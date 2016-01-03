@@ -78,6 +78,7 @@ class Polyline_paths extends Api_controller {
     if (!(isset ($posts['av']) && is_numeric ($posts['av'] = trim ($posts['av'])))) return false; $posts['accuracy_vertical'] = $posts['av']; unset ($posts['av']);
     if (!(isset ($posts['al']) && is_numeric ($posts['al'] = trim ($posts['al'])))) return false; $posts['altitude'] = $posts['al']; unset ($posts['al']);
     if (!(isset ($posts['sd']) && is_numeric ($posts['sd'] = trim ($posts['sd'])))) return false; $posts['speed'] = $posts['sd']; unset ($posts['sd']);
+    if (!(isset ($posts['ct']) && $posts['ct'] = trim ($posts['ct']))) return false; $posts['create_time'] = $posts['ct']; unset ($posts['ct']);
 
     return true;
   }

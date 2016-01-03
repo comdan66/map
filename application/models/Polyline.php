@@ -35,10 +35,10 @@ class Polyline extends OaModel {
       }, Path::find ('all', array ('select' => 'latitude, longitude', 'conditions' => array ('polyline_id = ?', $this->id)))));
   }
   public function compute_run_time () {
-    if (!(isset ($this->id) && ($first = Path::first (array ('select' => 'created_at', 'conditions' => array ('polyline_id = ?', $this->id)))) && ($last = Path::last (array ('select' => 'created_at', 'conditions' => array ('polyline_id = ?', $this->id))))))
+    if (!(isset ($this->id) && ($first = Path::first (array ('select' => 'create_time', 'conditions' => array ('polyline_id = ?', $this->id)))) && ($last = Path::last (array ('select' => 'create_time', 'conditions' => array ('polyline_id = ?', $this->id))))))
       return 0;
 
-    return strtotime ($last->created_at->format ('Y-m-d H:i:s')) - strtotime ($first->created_at->format ('Y-m-d H:i:s'));
+    return strtotime ($last->create_time->format ('Y-m-d H:i:s')) - strtotime ($first->create_time->format ('Y-m-d H:i:s'));
   }
   public function run_time_units () {
     if (!isset ($this->run_time))

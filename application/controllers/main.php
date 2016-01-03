@@ -8,9 +8,11 @@
 class Main extends Site_controller {
 
   public function x () {
-    delay_job ('main', 'compute_polyline', array ('id' => 7));
+    $p = Polyline::find (1);
+    
+    // delay_job ('main', 'compute_polyline', array ('id' => 1));
     // $p = Polyline::find(6);
-    // echo $p->compute_run_time ();
+    echo $p->compute_run_time ();
 
     // $this->load->library ('PushToParse');
     // PushToParse::send ('>"<', array ('user_2', 'user_1'));

@@ -13,10 +13,10 @@
 
 #define DEV YES
 #define LAY NO
-#define USER_ID 2
-#define FOLLOW_USER_ID 1
-#define PATH_FETCH_TIMER 5 //sec
-#define UPLOAD_PATHS_TIMER 5 //sec
+#define USER_ID 1
+#define FOLLOW_USER_ID 2
+#define PATH_FETCH_TIMER 7 //sec
+#define UPLOAD_PATHS_TIMER 13 //sec
 
 #define API_GET_USER_NEWEST_POLYLINE (API_URL @"users/%d/polylines/newest")
 #define API_GET_POLYLINE_PATHS (API_URL @"polylines/%d/paths")
