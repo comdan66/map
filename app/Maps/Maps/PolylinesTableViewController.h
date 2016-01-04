@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Header.h"
 #import "PolylineTableViewCell.h"
+#import "AFHTTPRequestOperationManager.h"
 
 @interface PolylinesTableViewController : UITableViewController <UIScrollViewDelegate>
 
-
+@property BOOL isLoading;
+@property NSString *nextId;
+@property NSMutableArray *polylines;
 @end

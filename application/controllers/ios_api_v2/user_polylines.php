@@ -35,13 +35,14 @@ class User_polylines extends Api_controller {
     return $this->output_json (array (
       'status' => true,
       'polylines' => array_map (function ($polyline) {
+        $run_time = $polyline->run_time_units ();
         return array (
             'id' => $polyline->id,
             'cover' => $polyline->cover->url ('640x640c'),
             'avatar' => $polyline->user->avatar->url ('100x100c'),
             'is_finished' => $polyline->is_finished,
-            'run_time' => implode ('', $polyline->run_time_units ()),
-            'length' => $polyline->length > 0 ? round ($polyline->length / 1000, 2) . '公里' : '',
+            'run_time' => $run_time ? implode ('', $run_time) : '0秒',
+            'length' => $polyline->length > 0 ? round ($polyline->length / 1000, 2) . '公里' : '0公尺',
           );
       }, array_slice ($polylines, 0, $limit)),
       'next_id' => $next_id

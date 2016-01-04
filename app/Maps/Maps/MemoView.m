@@ -14,6 +14,7 @@
     UIView *tempView = [UIView new];
     [tempView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [tempView setClipsToBounds:YES];
+    
     [self addSubview:tempView];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:tempView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:tempView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
@@ -54,12 +55,12 @@
     [tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.right attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:tempView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
     [tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.right attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:tmepLabel attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
     [tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.right attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:tempView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+
 }
 - (void)drawRect:(CGRect)rect {
     [self initUI];
 }
-- (void)setLeftText:(NSString *) l rightText:(NSString *)r {
-    
+- (void)setLeftText:(NSString *) l rightText:(NSString *)r animate:(BOOL)animate{
     CGFloat d = 30.0f;
     if ((l.length < 1) && (l.length < 1)) {
         d = 1.0f;
@@ -67,11 +68,17 @@
         [self.left setText:[NSString stringWithFormat:@"長度：%@", l]];
         [self.right setText:[NSString stringWithFormat:@"耗時：%@", r]];
     }
-    
-    [UIView animateWithDuration:0.5f animations:^{
+    if (animate) {
+        [UIView animateWithDuration:0.5f animations:^{
+            [self.constraintHeight setConstant:d];
+            [self layoutIfNeeded];
+        }];
+    } else {
         [self.constraintHeight setConstant:d];
         [self layoutIfNeeded];
-    }];
+    }
 }
-
+- (void)setLeftText:(NSString *) l rightText:(NSString *)r {
+    return [self setLeftText:l rightText:r animate: YES];
+}
 @end

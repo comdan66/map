@@ -34,10 +34,12 @@ class Polyline_paths extends Api_controller {
           'is_finished' => true,
           'paths' => array ()
         ));
+    
+    $run_time = $this->polyline->run_time_units ();
 
     return $this->output_json (array_merge (array ('status' => true), array (
-        'run_time' => implode ('', $this->polyline->run_time_units ()),
-        'length' => $this->polyline->length > 0 ? round ($this->polyline->length / 1000, 2) . '公里' : '',
+        'run_time' => $run_time ? implode ('', $run_time) : '0秒',
+        'length' => $this->polyline->length > 0 ? round ($this->polyline->length / 1000, 2) . '公里' : '0公尺',
       ), $paths));
   }
   public function create () {
