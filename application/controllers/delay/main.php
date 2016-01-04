@@ -10,6 +10,13 @@ class Main extends Delay_controller {
     parent::__construct ();
   }
 
+  public function put_cover () {
+    if (!(($id = OAInput::post ('id')) && ($polyline = Polyline::find_by_id ($id, array ('select' => 'id, cover')))))
+      return;
+    Polyline::transaction (function () use ($polyline) {
+      return $polyline->put_cover ();
+    });
+  }
   public function compute_polyline () {
     if (!(($id = OAInput::post ('id')) && ($polyline = Polyline::find_by_id ($id, array ('select' => 'id, length, run_time')))))
       return;

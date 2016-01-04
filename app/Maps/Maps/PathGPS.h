@@ -17,7 +17,7 @@
 @property NSTimer *timer;
 @property BOOL isUploadPaths;
 
-+ (void)start:(void (^)())finish failure:(void (^)())failure;
++ (void)start:(CLLocationCoordinate2D)coordinate success:(void (^)())finish failure:(void (^)())failure;
 + (void)stop:(void (^)())finish;
 
 //- (void)stop:(NSString *) polylineId;

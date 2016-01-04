@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url'] = 'http://maps.ioa.tw/';
+$config['base_url'] = 'http://dev.map.ioa.tw/';
 
 /*
 |--------------------------------------------------------------------------

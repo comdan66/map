@@ -70,13 +70,17 @@
               }
      ];
 }
-+ (void)start:(void (^)())finish failure:(void (^)())failure {
++ (void)start:(CLLocationCoordinate2D)coordinate success:(void (^)())finish failure:(void (^)())failure {
+
     NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
 
     NSMutableDictionary *data = [NSMutableDictionary new];
     [data setValue:[dateFormatter stringFromDate:[NSDate date]] forKey:@"name"];
-
+    [data setValue:[NSString stringWithFormat:@"%f", coordinate.latitude] forKey:@"lat"];
+    [data setValue:[NSString stringWithFormat:@"%f", coordinate.longitude] forKey:@"lng"];
+    if (DEV) NSLog(@"------->lat: %f, lng: %f", coordinate.latitude, coordinate.longitude);
+    
     AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
     [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
     [httpManager POST:[NSString stringWithFormat:API_POST_USER_CREATE_POLYLINE, USER_ID]

@@ -19,6 +19,11 @@ class Polyline extends OaModel {
     array ('user', 'class_name' => 'User')
   );
 
+  private $paths = null;
+
+  const D4_START_LAT = 25.0404423;
+  const D4_START_LNG = 121.5192483;
+
   public function __construct ($attributes = array (), $guard_attributes = true, $instantiating_via_find = false, $new_record = true) {
     parent::__construct ($attributes, $guard_attributes, $instantiating_via_find, $new_record);
 
@@ -52,5 +57,45 @@ class Polyline extends OaModel {
     array_push ($units, gmdate ('s', $this->run_time) * 1 ? gmdate ('s', $this->run_time) * 1 . '秒' : null);
 
     return array_filter ($units);
+  }
+  public function paths ($select = '', $is_GS = true) {
+    if ($this->paths !== null) return $this->paths;
+
+    $path_ids = array ();
+
+    if (!isset ($this->id))
+      return $path_ids;
+
+    if (!($all_path_ids = column_array (Path::find ('all', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array (
+                                'polyline_id = ? AND accuracy_horizontal < ?', $this->id, 100
+                              ))), 'id')))
+      return $path_ids;
+
+
+    for ($i = 0; ($key = $is_GS ? round (($i * (2 + ($i - 1) * 0.25)) / 2) : $i) < $all_path_ids[0]; $i++)
+      if ($temp = array_slice ($all_path_ids, $key, 1))
+        array_push ($path_ids, array_shift ($temp));
+
+    if (!$path_ids)
+      return $path_ids;
+
+    return $this->paths = Path::find ('all', array ('select' => !$select ? 'id, latitude AS lat, longitude AS lng' : $select, 'order' => 'id DESC', 'conditions' => array ('id IN (?)', $path_ids)));
+  }
+  public function picture ($size = '60x60', $type = 'client_key', $color = 'red') {
+    if (count ($paths = array_map (function ($path) {
+                    return $path->lat . ',' . $path->lng;
+                  }, $this->paths ())) > 1)
+      return 'https://maps.googleapis.com/maps/api/staticmap?path=color:' . $color . '|weight:5|' . implode ('|', $paths) . '&size=' . $size . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
+    else if ($paths && ($paths = array_shift ($paths))) {
+      return 'https://maps.googleapis.com/maps/api/staticmap?center=' . $paths . '&zoom=13&size=' . $size . '&markers=color:' . $color . '%7C' . $paths . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
+    }
+    else
+      return 'https://maps.googleapis.com/maps/api/staticmap?center=' . Polyline::D4_START_LAT . ',' . Polyline::D4_START_LNG . '&zoom=13&size=' . $size . '&markers=color:' . $color . '%7C' . Polyline::D4_START_LAT . ',' . Polyline::D4_START_LNG . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
+  }
+  public function put_cover () {
+    if ($url = $this->picture ('1200x1200', 'server_key'))
+      return $this->cover->put_url ($url);
+    else
+      return true;
   }
 }

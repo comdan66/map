@@ -215,8 +215,8 @@
 
 - (void) startGPS {
     [self.switchLabel setText:@"開啟中.."];
-
-    [PathGPS start:^{
+//    self.mapView.userLocation.location.coordinate.latitude
+    [PathGPS start:self.mapView.userLocation.location.coordinate success:^{
         [self.switchButton setOn:YES animated:YES];
         [self.switchLabel setText:@"開啟"];
     } failure:^{

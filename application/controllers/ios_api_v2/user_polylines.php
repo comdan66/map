@@ -56,6 +56,7 @@ class User_polylines extends Api_controller {
       return $polyline->save ();
     });
 
+    delay_job ('main', 'put_cover', array ('id' => $polyline->id));
     return $this->output_json (array ('status' => $update ? true : false));
   }
   public function newest () {
@@ -74,6 +75,13 @@ class User_polylines extends Api_controller {
       if (!(verifyCreateOrm ($polyline = Polyline::create (array_intersect_key ($posts, Polyline::table ()->columns)))))
         return false;
 
+      if (!(verifyCreateOrm ($path = Path::create (array_intersect_key (array_merge ($posts, array ('polyline_id' => $polyline->id)), Path::table ()->columns)))))
+        return false;
+
+      if ($polyline->is_finished && !($polyline->is_finished = 0))
+        $polyline->save ();
+
+      delay_job ('main', 'put_cover', array ('id' => $polyline->id));
       return true;
     });
 
@@ -85,6 +93,8 @@ class User_polylines extends Api_controller {
   private function _validation_polyline_posts (&$posts) {
     if (!(isset ($posts['name']) && ($posts['name'] = trim ($posts['name'])))) $posts['name'] = date ('Y-m-d H:i:s');
     if (!(isset ($posts['user_id']) && is_numeric ($posts['user_id'] = trim ($posts['user_id'])))) $posts['user_id'] = $this->user->id;
+    if (!(isset ($posts['lat']) && is_numeric ($posts['lat'] = trim ($posts['lat'])))) $posts['lat'] = Polyline::D4_START_LAT; $posts['latitude'] = $posts['lat']; unset ($posts['lat']);
+    if (!(isset ($posts['lng']) && is_numeric ($posts['lng'] = trim ($posts['lng'])))) $posts['lng'] = Polyline::D4_START_LNG; $posts['longitude'] = $posts['lng']; unset ($posts['lng']);
 
     return '';
   }
