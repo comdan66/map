@@ -41,8 +41,28 @@
     }];
 }
 - (void)refreshAction {
-    NSLog(@"----------------!");
-    [self.refreshControl endRefreshing];
+    if (DEV) NSLog(@"------->RefreshAction!");
+
+    [self loadNewData:nil
+           callbackBlock: ^(UITableView *tableView){
+               [self.refreshControl endRefreshing];
+           }];
+}
+- (void)loadNewData:(UIAlertController *)alert callbackBlock:(void (^)(UITableView *tableView))callbackBlock {
+
+    NSMutableDictionary *data = [NSMutableDictionary new];
+    [data setValue:[self.polylines count] > 0 ? [NSString stringWithFormat:@"%li", [[[self.polylines objectAtIndex:0] objectForKey:@"id"] integerValue] + 1] : @"0" forKey:@"prev_id"];
+
+    AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
+    [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
+    [httpManager GET:[NSString stringWithFormat:API_GET_USER_NEW_POLYLINES, FOLLOW_USER_ID]
+          parameters:data
+             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 
+             }
+             failure:^(AFHTTPRequestOperation *operation, NSError *error) {}
+     ];
+
 }
 - (void)loadDataFailure:(UIAlertController *)alert title:(NSString *) title message:(NSString *) message {
     
@@ -125,6 +145,15 @@
         [self loadData:nil];
     }
 }
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    NSString *action = [[[[features objectAtIndex:indexPath.section] objectForKey:@"items"] objectAtIndex:indexPath.row] objectForKey:@"action"];
+//    
+//    if ([action isEqualToString:@"logout"]) {
+//        [[[[UIApplication sharedApplication] delegate] window] setRootViewController:[LoginViewController new]];
+//    } else {
+//        [self.navigationController pushViewController:[NSClassFromString(action) new] animated:YES];
+//    }
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

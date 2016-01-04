@@ -18,12 +18,16 @@
 #define PATH_FETCH_TIMER 7 //sec
 #define UPLOAD_PATHS_TIMER 13 //sec
 
-#define API_GET_USER_NEWEST_POLYLINE (API_URL @"users/%d/polylines/newest")
 #define API_GET_POLYLINE_PATHS (API_URL @"polylines/%d/paths")
-#define API_POST_USER_CREATE_POLYLINE (API_URL @"users/%d/polylines")
-#define API_GET_USER_POLYLINES (API_URL @"users/%d/polylines")
-#define API_POST_USER_FINISH_POLYLINE (API_URL @"users/%d/polylines/%d/finish")
 #define API_POST_POLYLINES_PAYHS (API_URL @"polylines/%d/paths")
+
+#define API_GET_USER_NEWEST_POLYLINE  (API_URL @"users/%d/polylines/newest")
+#define API_POST_USER_CREATE_POLYLINE (API_URL @"users/%d/polylines")
+#define API_GET_USER_POLYLINES        (API_URL @"users/%d/polylines")
+#define API_GET_USER_NEW_POLYLINES    (API_URL @"users/%d/polylines/new")
+#define API_POST_USER_FINISH_POLYLINE (API_URL @"users/%d/polylines/%d/finish")
+
+
 
 
 #define USER_DEFAULTS [NSUserDefaults standardUserDefaults]

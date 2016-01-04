@@ -49,6 +49,7 @@ Route::get ('polylines/(:num)', 'polylines@content($1)');
 // iOS API
   $ios_api_uri = 'api/v2/'; $ios_api_path = 'ios_api_v2/';
   Route::get ($ios_api_uri . 'users/(:id)/polylines/newest', $ios_api_path . 'user_polylines@newest($0)');
+  Route::get ($ios_api_uri . 'users/(:id)/new/polylines/', $ios_api_path . 'user_polylines@prev($0)');
   Route::post ($ios_api_uri . 'users/(:id)/polylines/', $ios_api_path . 'user_polylines@create($0)');
   Route::post ($ios_api_uri . 'users/(:id)/polylines/(:id)/finish', $ios_api_path . 'user_polylines@finish($0, $1)');
   Route::get ($ios_api_uri . 'users/(:id)/polylines/', $ios_api_path . 'user_polylines@index($0)');

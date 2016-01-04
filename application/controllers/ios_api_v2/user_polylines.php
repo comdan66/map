@@ -21,6 +21,32 @@ class User_polylines extends Api_controller {
         return $this->disable ($this->output_json (array ('status' => false)));
   }
 
+  public function prev () {
+    $prev_id = ($prev_id = OAInput::get ('prev_id')) ? $prev_id : 0;
+    $limit = ($limit = OAInput::get ('limit')) ? $limit : 5;
+
+    $conditions = array ('id >= ?', $prev_id);
+    $polylines = Polyline::find ('all', array ('order' => 'id ASC', 'limit' => $limit + 1, 'include' => array ('user'), 'conditions' => $conditions));
+
+    $prev_id = ($temp = (count ($polylines) > $limit ? end ($polylines) : null)) ? $temp->id : -1;
+
+    return $this->output_json (array (
+      'status' => true,
+      'polylines' => array_map (function ($polyline) {
+        $run_time = $polyline->run_time_units ();
+        return array (
+            'id' => $polyline->id,
+            'name' => $polyline->name,
+            'cover' => $polyline->cover->url ('640x640c'),
+            'avatar' => $polyline->user->avatar->url ('100x100c'),
+            'is_finished' => $polyline->is_finished,
+            'run_time' => $run_time ? implode ('', $run_time) : '0秒',
+            'length' => $polyline->length > 0 ? round ($polyline->length / 1000, 2) . '公里' : '0公尺',
+          );
+      }, array_slice ($polylines, 0, $limit)),
+      'prev_id' => $prev_id
+    ));
+  }
   public function index () {
     $next_id = OAInput::get ('next_id');
     $limit = OAInput::get ('limit');
