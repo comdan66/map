@@ -38,6 +38,7 @@ class User_polylines extends Api_controller {
         $run_time = $polyline->run_time_units ();
         return array (
             'id' => $polyline->id,
+            'name' => $polyline->name,
             'cover' => $polyline->cover->url ('640x640c'),
             'avatar' => $polyline->user->avatar->url ('100x100c'),
             'is_finished' => $polyline->is_finished,

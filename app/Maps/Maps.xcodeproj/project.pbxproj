@@ -318,10 +318,10 @@
 		0E46EF211C3975420000BE18 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				0E46EF1E1C3975340000BE18 /* PolylineTableViewCell.h */,
-				0E46EF1F1C3975340000BE18 /* PolylineTableViewCell.m */,
 				0E46EF231C3A46440000BE18 /* GradientView.h */,
 				0E46EF241C3A46440000BE18 /* GradientView.m */,
+				0E46EF1E1C3975340000BE18 /* PolylineTableViewCell.h */,
+				0E46EF1F1C3975340000BE18 /* PolylineTableViewCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";

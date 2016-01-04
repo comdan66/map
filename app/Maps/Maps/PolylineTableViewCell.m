@@ -40,9 +40,21 @@
     [self initBorder];
     [self initContent];
     [self initCover:polyline];
-    [self initMemo:polyline];
+    [self initTop:polyline];
+    [self initBottom:polyline];
 }
-- (void)initMemo:(NSDictionary *)polyline {
+- (void)initTop:(NSDictionary *)polyline {
+    GradientView *gradient = [[GradientView alloc] initWithPosition:GradientViewPositionTop];
+    
+    [self.content addSubview:gradient];
+    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeTop multiplier:1 constant:-1]];
+    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeRight multiplier:1 constant:1]];
+    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeLeft multiplier:1 constant:-1]];
+    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:40]];
+    
+    [gradient setTitleText:[NSString stringWithFormat:@"%@", [polyline objectForKey:@"length"]]];
+}
+- (void)initBottom:(NSDictionary *)polyline {
     GradientView *gradient = [[GradientView alloc] initWithPosition:GradientViewPositionBottom];
     
     [self.content addSubview:gradient];
@@ -51,34 +63,9 @@
     [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeLeft multiplier:1 constant:-1]];
     [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:40]];
     
-//    self.memo = [MemoView new];
-//    
-//    [self.memo setTranslatesAutoresizingMaskIntoConstraints:NO];
-//    [self.memo setBackgroundColor:[UIColor clearColor]];
-//
-//    
-////    [self.memo.layer setShadowColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1].CGColor];
-////    [self.memo.layer setShadowOffset:CGSizeMake(0, 2)];
-////    [self.memo.layer setShadowRadius:2.0f];
-////    [self.memo.layer setShadowOpacity:1.0f];
-////    [self.memo.layer setOpacity:0.9f];
-//    
-//    [self.content addSubview:self.memo];
-//    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:self.memo attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeBottom multiplier:1 constant:1]];
-//    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:self.memo attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeRight multiplier:1 constant:1]];
-//    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:self.memo attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeLeft multiplier:1 constant:-1]];
-//    [self.memo setConstraintHeight:[NSLayoutConstraint constraintWithItem:self.memo attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:1]];
-//    [self.content addConstraint:self.memo.constraintHeight];
-//    
-//    [self.memo setLeftText: @"123" rightText:@"234" animate:NO];
-//    [self.memo setStyle:MemoStyleGradient];
-//
-    
-//    [self performSelector:@selector(hideClick1) withObject:nil afterDelay:3.0f];
+    [gradient setLeftText:[NSString stringWithFormat:@"%@", [polyline objectForKey:@"length"]] rightText:[NSString stringWithFormat:@"%@", [polyline objectForKey:@"run_time"]]];
 }
-//- (void)hideClick1 {
-//    [self.memo setLeftText: @"123" rightText:@"234" animate:YES];
-//}
+
 - (void)initCover:(NSDictionary *)polyline {
     self.cover = [UIImageView new];
     [self.cover setTranslatesAutoresizingMaskIntoConstraints:NO];

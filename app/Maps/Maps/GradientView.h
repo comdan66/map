@@ -20,4 +20,5 @@ typedef NS_ENUM(NSInteger, GradientViewPosition) {
 
 - (GradientView *)initWithPosition:(GradientViewPosition)positon;
 - (void)setLeftText:(NSString *) l rightText:(NSString *)r;
+- (void)setTitleText:(NSString *)text;
 @end
