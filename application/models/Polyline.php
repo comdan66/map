@@ -81,16 +81,13 @@ class Polyline extends OaModel {
 
     return $this->paths = Path::find ('all', array ('select' => !$select ? 'id, latitude AS lat, longitude AS lng' : $select, 'order' => 'id DESC', 'conditions' => array ('id IN (?)', $path_ids)));
   }
-  public function picture ($size = '60x60', $type = 'client_key', $color = 'red') {
-    if (count ($paths = array_map (function ($path) {
-                    return $path->lat . ',' . $path->lng;
-                  }, $this->paths ())) > 1)
-      return 'https://maps.googleapis.com/maps/api/staticmap?path=color:' . $color . '|weight:5|' . implode ('|', $paths) . '&size=' . $size . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
-    else if ($paths && ($paths = array_shift ($paths))) {
-      return 'https://maps.googleapis.com/maps/api/staticmap?center=' . $paths . '&zoom=13&size=' . $size . '&markers=color:' . $color . '%7C' . $paths . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
-    }
+  public function picture ($size = '60x60', $type = 'client_key', $color = '0x272822', $marker_color = 'red') {
+    if (count ($paths = array_map (function ($path) { return $path->lat . ',' . $path->lng; }, $this->paths ())) > 1)
+      return 'https://maps.googleapis.com/maps/api/staticmap?path=color:' . $color . '|weight:3|' . implode ('|', $paths) . '&size=' . $size . '&markers=color:' . $marker_color . '%7C' . $paths[0] . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
+    else if ($paths && ($paths = array_shift ($paths)))
+      return 'https://maps.googleapis.com/maps/api/staticmap?center=' . $paths . '&zoom=13&size=' . $size . '&markers=color:' . $marker_color . '%7C' . $paths . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
     else
-      return 'https://maps.googleapis.com/maps/api/staticmap?center=' . Polyline::D4_START_LAT . ',' . Polyline::D4_START_LNG . '&zoom=13&size=' . $size . '&markers=color:' . $color . '%7C' . Polyline::D4_START_LAT . ',' . Polyline::D4_START_LNG . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
+      return 'https://maps.googleapis.com/maps/api/staticmap?center=' . Polyline::D4_START_LAT . ',' . Polyline::D4_START_LNG . '&zoom=13&size=' . $size . '&markers=color:' . $marker_color . '%7C' . Polyline::D4_START_LAT . ',' . Polyline::D4_START_LNG . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
   }
   public function put_cover () {
     if ($url = $this->picture ('1200x1200', 'server_key'))

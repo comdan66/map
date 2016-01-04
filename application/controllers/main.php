@@ -8,9 +8,12 @@
 class Main extends Site_controller {
 
   public function x () {
-      delay_job ('main', 'put_cover', array ('id' => 7));
-    // $p = Polyline::find (5);
-    // echo $p->put_cover () ? "1" : "0";
+      // delay_job ('main', 'put_cover', array ('id' => 7));
+    // $p = Polyline::find (3);
+    foreach (Polyline::all () as $p) {
+      $p->put_cover ();
+    }
+    // echo $p->picture ('1200x1200');
     // echo "<img src='". $p->cover->url () . "'>";
     // delay_job ('main', 'compute_polyline', array ('id' => 1));
     // $p = Polyline::find(6);
