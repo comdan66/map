@@ -318,8 +318,7 @@
 		0E46EF211C3975420000BE18 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				0E46EF231C3A46440000BE18 /* GradientView.h */,
-				0E46EF241C3A46440000BE18 /* GradientView.m */,
+				0EFF9C5A1C3A68CA0033916B /* GradientView */,
 				0E46EF1E1C3975340000BE18 /* PolylineTableViewCell.h */,
 				0E46EF1F1C3975340000BE18 /* PolylineTableViewCell.m */,
 			);
@@ -562,6 +561,15 @@
 				0EF0600F1C2D473700243BB9 /* MyAnnotation.m */,
 			);
 			name = MyAnnotation;
+			sourceTree = "<group>";
+		};
+		0EFF9C5A1C3A68CA0033916B /* GradientView */ = {
+			isa = PBXGroup;
+			children = (
+				0E46EF231C3A46440000BE18 /* GradientView.h */,
+				0E46EF241C3A46440000BE18 /* GradientView.m */,
+			);
+			name = GradientView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

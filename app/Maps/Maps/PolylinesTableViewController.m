@@ -107,30 +107,24 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    NSLog(@"-%@--------------====!",indexPath);
-    NSString *identifier = [NSString stringWithFormat:@"PolylineTableViewCell_%@", @"1"];
-    
+    NSString *identifier = [NSString stringWithFormat:@"PolylineTableViewCell_%@", [[self.polylines objectAtIndex:indexPath.row] objectForKey:@"id"]];
     PolylineTableViewCell *cell = (PolylineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     
-    if(cell == nil){
-//        cell = [[[PolylineTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] initBaseData];
+    if(cell == nil) {
+        if (DEV) NSLog(@"~~~~~~>CellForRowAtIndexPath!");
         cell = [[PolylineTableViewCell alloc] initCellWithStyle: [self.polylines objectAtIndex:indexPath.row] style:UITableViewCellStyleDefault reuseIdentifier:identifier];
-
-        
-//        cell = [[[PolylineTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] initBaseData];
-//        cell = [cell initUI:[pictures objectAtIndex:indexPath.row] w:self.tableView.frame.size.width];
     }
-    
-        return cell;
-//    NSLog(@"----------------====!");
-//    return cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 
-    
-//    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"celxxl"];
-//    [cell.textLabel setText:@"xxx"];
-//    return cell;
+    return cell;
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (self.isLoading) return;
+    
+    if ((scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.frame.size.height * 2)) {
+        [self loadData:nil];
+    }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -149,7 +143,7 @@
     return [self.polylines count];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 240;
+    return 250;
 }
 /*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

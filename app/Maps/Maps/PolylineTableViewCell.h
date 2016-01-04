@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "UIImageView+WebCache.h"
-//#import "MemoView.h"
+#import "Header.h"
 #import "GradientView.h"
 
 @interface PolylineTableViewCell : UITableViewCell
@@ -16,10 +16,7 @@
 @property  UIView *border;
 @property  UIView *content;
 @property  UIImageView *cover;
-//@property  MemoView *memo;
-//@property GradientView *gradient;
 
-- (PolylineTableViewCell *)initBaseData;
 - (PolylineTableViewCell *) initCellWithStyle:(NSDictionary *)polyline style:(UITableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier;
 
 @end
