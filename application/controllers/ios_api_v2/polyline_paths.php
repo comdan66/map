@@ -34,7 +34,7 @@ class Polyline_paths extends Api_controller {
           'is_finished' => true,
           'paths' => array ()
         ));
-    
+    set_status_header (4000);
     $run_time = $this->polyline->run_time_units ();
 
     return $this->output_json (array_merge (array ('status' => true), array (

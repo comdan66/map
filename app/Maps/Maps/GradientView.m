@@ -31,12 +31,11 @@
 - (void)initUI {
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self setClipsToBounds:YES];
+//
+//    self.gradient = [CAGradientLayer layer];
+//    [self.gradient setFrame:self.bounds];
+//    [self.layer insertSublayer:self.gradient atIndex:0];
 
-    self.gradient = [CAGradientLayer layer];
-    [self.gradient setFrame:self.bounds];
-    [self.layer insertSublayer:self.gradient atIndex:0];
-
-    
 }
 - (void)setTitleText:(NSString *)text {
     [self.left setText:text];
@@ -44,19 +43,24 @@
 - (void)initTopUI {
     [self initUI];
 
-    self.gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:.7] CGColor], (id)[[UIColor clearColor] CGColor], nil];
+//    self.gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:.7] CGColor], (id)[[UIColor clearColor] CGColor], nil];
     
     self.left = [UILabel new];
     [self.left setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.left setText:@""];
-    [self.left setTextColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
+    [self.left setTextColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.8]];
     [self.left setFont:[UIFont systemFontOfSize:14.0]];
-    [self.left setTextAlignment:NSTextAlignmentLeft];
+    [self.left setTextAlignment:NSTextAlignmentRight];
+    
+    [self.left.layer setShadowColor:[[UIColor whiteColor] CGColor]];
+    [self.left.layer setShadowOffset:CGSizeMake(0, 0)];
+    [self.left.layer setShadowOpacity:1.0f];
+    [self.left.layer setShadowRadius:1.0f];
     
     [self addSubview:self.left];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.left attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.left attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.left attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1 constant:70]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.left attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1 constant:10]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.left attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:-10]];
 }
 - (void)layoutSubviews {
@@ -66,8 +70,9 @@
 - (void)initBottomUI {
     [self initUI];
     
-    [self.gradient setColors:[NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:.7] CGColor], nil]];
-    
+//    [self.gradient setColors:[NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:.7] CGColor], nil]];
+    [self setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5]];
+
     UILabel *tmepLabel = [UILabel new];
     [tmepLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [tmepLabel setBackgroundColor:[UIColor clearColor]];
@@ -89,7 +94,7 @@
     [self addSubview:self.left];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.left attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:tmepLabel attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.left attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.left attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:15]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.left attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.left attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
     
     self.right = [UILabel new];
@@ -102,7 +107,7 @@
     [self addSubview:self.right];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.right attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.right attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:tmepLabel attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.right attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:15]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.right attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.right attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
 }
 - (void)setLeftText:(NSString *) l rightText:(NSString *)r{

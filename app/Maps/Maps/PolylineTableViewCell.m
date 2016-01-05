@@ -38,75 +38,60 @@
     [self initAvatar:polyline];
 }
 - (void)initAvatar:(NSDictionary *)polyline {
-    int w = 50, s = 3.5;
+    int w = 50, s = 3;
     
     UIView *avatar = [UIView new];
     [avatar setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    if (LAY) {
-        [avatar.layer setBorderColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1].CGColor];
-        [avatar.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
-    }
-
-    [self.content addSubview:avatar];
-    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:avatar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeTop multiplier:1 constant:10]];
-    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:avatar attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeLeft multiplier:1 constant:10]];
-    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:avatar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:w]];
-    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:avatar attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:w]];
+    [avatar.layer setBorderColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.3].CGColor];
+    [avatar.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
+    [avatar setBackgroundColor:[UIColor whiteColor]];
+    [avatar.layer setCornerRadius:3];
     
-    UIView *circle = [UIView new];
-    [circle setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [circle.layer setBorderColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5].CGColor];
-    [circle.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
-    [circle setBackgroundColor:[UIColor whiteColor]];
-    [circle.layer setZPosition:2];
+    [self.contentView addSubview:avatar];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:avatar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeTop multiplier:1 constant:-10]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:avatar attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeLeft multiplier:1 constant:10]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:avatar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:w]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:avatar attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:w]];
     
-    [circle.layer setShadowColor:[UIColor colorWithRed:0.15 green:0.16 blue:0.13 alpha:1].CGColor];
-    [circle.layer setShadowOffset:CGSizeMake(0, 0)];
-    [circle.layer setShadowRadius:2.5f];
-    [circle.layer setShadowOpacity:0.4f];
-    [circle.layer setCornerRadius:w / 2];
-    
-    [avatar addSubview:circle];
-    
-    [avatar addConstraint:[NSLayoutConstraint constraintWithItem:circle attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:avatar attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
-    [avatar addConstraint:[NSLayoutConstraint constraintWithItem:circle attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:avatar attribute:NSLayoutAttributeLeft multiplier:1 constant:0.0]];
-    [avatar addConstraint:[NSLayoutConstraint constraintWithItem:circle attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:avatar attribute:NSLayoutAttributeRight multiplier:1 constant:0.0]];
-    [avatar addConstraint:[NSLayoutConstraint constraintWithItem:circle attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:avatar attribute:NSLayoutAttributeBottom multiplier:1 constant:0.0]];
-    
-    
-    UIView *avatarView = [UIView new];
-    [avatarView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [avatarView.layer setBorderColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.3].CGColor];
-    [avatarView.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
-    [avatarView setBackgroundColor:[UIColor whiteColor]];
-    [avatarView.layer setZPosition:4];
-    
-    [avatarView.layer setShadowColor:[UIColor colorWithRed:0.15 green:0.16 blue:0.13 alpha:1].CGColor];
-    [avatarView.layer setShadowOffset:CGSizeMake(0, 0)];
-    [avatarView.layer setShadowRadius:2.0f];
-    [avatarView.layer setShadowOpacity:0.25f];
-    [avatarView.layer setCornerRadius:w / 2 - s];
-    
-    [avatar addSubview:avatarView];
-    [avatar addConstraint:[NSLayoutConstraint constraintWithItem:avatarView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:circle attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
-    [avatar addConstraint:[NSLayoutConstraint constraintWithItem:avatarView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:circle attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
-    [avatar addConstraint:[NSLayoutConstraint constraintWithItem:avatarView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:circle attribute:NSLayoutAttributeWidth multiplier:1.0 constant:-s * 2]];
-    [avatar addConstraint:[NSLayoutConstraint constraintWithItem:avatarView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:circle attribute:NSLayoutAttributeHeight multiplier:1.0 constant:-s * 2]];
     
     UIImageView *avatarImageView = [UIImageView new];
     [avatarImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
+//    [avatarImageView.layer setBorderColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.2].CGColor];
+//    [avatarImageView.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
     [avatarImageView sd_setImageWithURL:[NSURL URLWithString:[polyline objectForKey:@"avatar"]]];
     [avatarImageView setContentMode:UIViewContentModeScaleAspectFill];
     [avatarImageView setClipsToBounds:YES];
-    [avatarImageView.layer setCornerRadius:w / 2 - s];
+    [avatarImageView.layer setCornerRadius:1];
     
-    [avatarView addSubview:avatarImageView];
-    [avatarView addConstraint:[NSLayoutConstraint constraintWithItem:avatarImageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:avatarView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
-    [avatarView addConstraint:[NSLayoutConstraint constraintWithItem:avatarImageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:avatarView attribute:NSLayoutAttributeLeft multiplier:1 constant:0.0]];
-    [avatarView addConstraint:[NSLayoutConstraint constraintWithItem:avatarImageView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:avatarView attribute:NSLayoutAttributeRight multiplier:1 constant:0.0]];
-    [avatarView addConstraint:[NSLayoutConstraint constraintWithItem:avatarImageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:avatarView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];    
+    [avatar addSubview:avatarImageView];
+    [avatar addConstraint:[NSLayoutConstraint constraintWithItem:avatarImageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:avatar attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
+    [avatar addConstraint:[NSLayoutConstraint constraintWithItem:avatarImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:avatar attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
+    [avatar addConstraint:[NSLayoutConstraint constraintWithItem:avatarImageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:avatar attribute:NSLayoutAttributeWidth multiplier:1.0 constant:-s * 2]];
+    [avatar addConstraint:[NSLayoutConstraint constraintWithItem:avatarImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:avatar attribute:NSLayoutAttributeHeight multiplier:1.0 constant:-s * 2]];
+    
+//    
+//    UIView *avatarView = [UIView new];
+//    [avatarView setTranslatesAutoresizingMaskIntoConstraints:NO];
+//    [avatarView.layer setBorderColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.3].CGColor];
+//    [avatarView.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
+//    [avatarView setBackgroundColor:[UIColor whiteColor]];
+//    [avatarView.layer setZPosition:4];
+//    
+//    [avatarView.layer setShadowColor:[UIColor colorWithRed:0.15 green:0.16 blue:0.13 alpha:1].CGColor];
+//    [avatarView.layer setShadowOffset:CGSizeMake(0, 0)];
+//    [avatarView.layer setShadowRadius:2.0f];
+//    [avatarView.layer setShadowOpacity:0.25f];
+//    [avatarView.layer setCornerRadius:w / 2 - s];
+//    
+//    [avatar addSubview:avatarView];
+//;
+//    
+//    [avatarView addSubview:avatarImageView];
+//    [avatarView addConstraint:[NSLayoutConstraint constraintWithItem:avatarImageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:avatarView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+//    [avatarView addConstraint:[NSLayoutConstraint constraintWithItem:avatarImageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:avatarView attribute:NSLayoutAttributeLeft multiplier:1 constant:0.0]];
+//    [avatarView addConstraint:[NSLayoutConstraint constraintWithItem:avatarImageView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:avatarView attribute:NSLayoutAttributeRight multiplier:1 constant:0.0]];
+//    [avatarView addConstraint:[NSLayoutConstraint constraintWithItem:avatarImageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:avatarView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];    
 }
 - (void)initTop:(NSDictionary *)polyline {
     GradientView *gradient = [[GradientView alloc] initWithPosition:GradientViewPositionTop];
@@ -114,8 +99,8 @@
     [self.content addSubview:gradient];
     [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeTop multiplier:1 constant:-1]];
     [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeRight multiplier:1 constant:1]];
-    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeLeft multiplier:1 constant:-1]];
-    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:65]];
+    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeLeft multiplier:1 constant:60]];
+    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30]];
     
     [gradient setTitleText:[NSString stringWithFormat:@"%@ - %@", [polyline objectForKey:@"id"], [polyline objectForKey:@"name"]]];
 }
@@ -126,7 +111,7 @@
     [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeBottom multiplier:1 constant:1]];
     [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeRight multiplier:1 constant:1]];
     [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.content attribute:NSLayoutAttributeLeft multiplier:1 constant:-1]];
-    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:50]];
+    [self.content addConstraint:[NSLayoutConstraint constraintWithItem:gradient attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:35]];
     
     [gradient setLeftText:[NSString stringWithFormat:@"%@", [polyline objectForKey:@"length"]] rightText:[NSString stringWithFormat:@"%@", [polyline objectForKey:@"run_time"]]];
 }
@@ -169,7 +154,7 @@
 //    [self.border.layer setShadowRadius:1.0f];
 //    [self.border.layer setShadowOpacity:1.0f];
 
-    [self.border.layer setBorderColor:[UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:.7].CGColor];
+    [self.border.layer setBorderColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5].CGColor];
     [self.border.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
     [self.border.layer setCornerRadius:2];
     [self.border setClipsToBounds:YES];

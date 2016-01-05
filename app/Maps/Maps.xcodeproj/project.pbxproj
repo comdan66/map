@@ -73,6 +73,7 @@
 		0EF060091C2D465500243BB9 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05FF81C2D465500243BB9 /* UIImageView+WebCache.m */; };
 		0EF0600A1C2D465500243BB9 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05FFA1C2D465500243BB9 /* UIView+WebCacheOperation.m */; };
 		0EF060101C2D473700243BB9 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF0600F1C2D473700243BB9 /* MyAnnotation.m */; };
+		0EFF9C5D1C3A86BC0033916B /* PolylineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFF9C5C1C3A86BC0033916B /* PolylineViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -215,6 +216,8 @@
 		0EF05FFA1C2D465500243BB9 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		0EF0600E1C2D473700243BB9 /* MyAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnnotation.h; sourceTree = "<group>"; };
 		0EF0600F1C2D473700243BB9 /* MyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnnotation.m; sourceTree = "<group>"; };
+		0EFF9C5B1C3A86BC0033916B /* PolylineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolylineViewController.h; sourceTree = "<group>"; };
+		0EFF9C5C1C3A86BC0033916B /* PolylineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolylineViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -307,6 +310,7 @@
 		0E46EF1A1C3970870000BE18 /* Polylines */ = {
 			isa = PBXGroup;
 			children = (
+				0EFF9C5E1C3BA17F0033916B /* Polyline */,
 				0E46EF221C397B480000BE18 /* Navigation */,
 				0E46EF211C3975420000BE18 /* Cell */,
 				0E46EF171C39707D0000BE18 /* PolylinesTableViewController.h */,
@@ -572,6 +576,15 @@
 			name = GradientView;
 			sourceTree = "<group>";
 		};
+		0EFF9C5E1C3BA17F0033916B /* Polyline */ = {
+			isa = PBXGroup;
+			children = (
+				0EFF9C5B1C3A86BC0033916B /* PolylineViewController.h */,
+				0EFF9C5C1C3A86BC0033916B /* PolylineViewController.m */,
+			);
+			name = Polyline;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -756,6 +769,7 @@
 				0EF05F591C2C59CE00243BB9 /* MemoView.m in Sources */,
 				0EF05FFC1C2D465500243BB9 /* NSData+ImageContentType.m in Sources */,
 				0EF05E311C29467A00243BB9 /* Maps.xcdatamodeld in Sources */,
+				0EFF9C5D1C3A86BC0033916B /* PolylineViewController.m in Sources */,
 				0EF05F511C2B968E00243BB9 /* UIAlertView+Blocks.m in Sources */,
 				0E46EF071C33A4FA0000BE18 /* ActiveSupportInflector.m in Sources */,
 				0EF05FFD1C2D465500243BB9 /* SDImageCache.m in Sources */,

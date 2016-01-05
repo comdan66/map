@@ -24,7 +24,7 @@
 #define API_GET_USER_NEWEST_POLYLINE  (API_URL @"users/%d/polylines/newest")
 #define API_POST_USER_CREATE_POLYLINE (API_URL @"users/%d/polylines")
 #define API_GET_USER_POLYLINES        (API_URL @"users/%d/polylines")
-#define API_GET_USER_NEW_POLYLINES    (API_URL @"users/%d/polylines/new")
+#define API_GET_USER_NEW_POLYLINES    (API_URL @"users/%d/new/polylines")
 #define API_POST_USER_FINISH_POLYLINE (API_URL @"users/%d/polylines/%d/finish")
 
 

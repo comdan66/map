@@ -58,11 +58,23 @@
     [httpManager GET:[NSString stringWithFormat:API_GET_USER_NEW_POLYLINES, FOLLOW_USER_ID]
           parameters:data
              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 NSLog(@"%@", responseObject);
                  
-             }
-             failure:^(AFHTTPRequestOperation *operation, NSError *error) {}
-     ];
+                 if (![[responseObject objectForKey:@"status"] boolValue])
+                     return ;
+                 
+                 for (NSDictionary *polyline in [responseObject objectForKey:@"polylines"])
+                     [self.polylines insertObject: polyline atIndex:0];
+                 
+                  if (alert) [alert dismissViewControllerAnimated:YES completion:nil];
 
+                 [self.tableView reloadData];
+                 callbackBlock(self.tableView);
+             }
+             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 callbackBlock(self.tableView);
+             }
+     ];
 }
 - (void)loadDataFailure:(UIAlertController *)alert title:(NSString *) title message:(NSString *) message {
     
@@ -145,15 +157,9 @@
         [self loadData:nil];
     }
 }
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    NSString *action = [[[[features objectAtIndex:indexPath.section] objectForKey:@"items"] objectAtIndex:indexPath.row] objectForKey:@"action"];
-//    
-//    if ([action isEqualToString:@"logout"]) {
-//        [[[[UIApplication sharedApplication] delegate] window] setRootViewController:[LoginViewController new]];
-//    } else {
-//        [self.navigationController pushViewController:[NSClassFromString(action) new] animated:YES];
-//    }
-//}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.navigationController pushViewController:[[PolylineViewController alloc] initWithId:[[self.polylines objectAtIndex:indexPath.row] objectForKey:@"id"]] animated:YES];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

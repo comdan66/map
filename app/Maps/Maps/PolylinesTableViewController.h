@@ -10,6 +10,7 @@
 #import "Header.h"
 #import "PolylineTableViewCell.h"
 #import "AFHTTPRequestOperationManager.h"
+#import "PolylineViewController.h"
 
 @interface PolylinesTableViewController : UITableViewController <UIScrollViewDelegate>
 
