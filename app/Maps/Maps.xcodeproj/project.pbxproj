@@ -74,6 +74,7 @@
 		0EF0600A1C2D465500243BB9 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05FFA1C2D465500243BB9 /* UIView+WebCacheOperation.m */; };
 		0EF060101C2D473700243BB9 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF0600F1C2D473700243BB9 /* MyAnnotation.m */; };
 		0EFF9C5D1C3A86BC0033916B /* PolylineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFF9C5C1C3A86BC0033916B /* PolylineViewController.m */; };
+		0EFF9C611C3BC73B0033916B /* GradientPolylineOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFF9C601C3BC73B0033916B /* GradientPolylineOverlay.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -218,6 +219,8 @@
 		0EF0600F1C2D473700243BB9 /* MyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnnotation.m; sourceTree = "<group>"; };
 		0EFF9C5B1C3A86BC0033916B /* PolylineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolylineViewController.h; sourceTree = "<group>"; };
 		0EFF9C5C1C3A86BC0033916B /* PolylineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolylineViewController.m; sourceTree = "<group>"; };
+		0EFF9C5F1C3BC73B0033916B /* GradientPolylineOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientPolylineOverlay.h; sourceTree = "<group>"; };
+		0EFF9C601C3BC73B0033916B /* GradientPolylineOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientPolylineOverlay.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -581,6 +584,8 @@
 			children = (
 				0EFF9C5B1C3A86BC0033916B /* PolylineViewController.h */,
 				0EFF9C5C1C3A86BC0033916B /* PolylineViewController.m */,
+				0EFF9C5F1C3BC73B0033916B /* GradientPolylineOverlay.h */,
+				0EFF9C601C3BC73B0033916B /* GradientPolylineOverlay.m */,
 			);
 			name = Polyline;
 			sourceTree = "<group>";
@@ -739,6 +744,7 @@
 				0EF05FFE1C2D465500243BB9 /* SDWebImageCompat.m in Sources */,
 				0EF060011C2D465500243BB9 /* SDWebImageDownloaderOperation.m in Sources */,
 				0EF05F421C2B950E00243BB9 /* AFNetworkReachabilityManager.m in Sources */,
+				0EFF9C611C3BC73B0033916B /* GradientPolylineOverlay.m in Sources */,
 				0EF060091C2D465500243BB9 /* UIImageView+WebCache.m in Sources */,
 				0EF05F441C2B950E00243BB9 /* AFURLConnectionOperation.m in Sources */,
 				0EF05F3F1C2B950E00243BB9 /* AFHTTPRequestOperation.m in Sources */,

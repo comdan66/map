@@ -46,9 +46,6 @@
 
                  [self setMap:responseObject
                         alert:alert];
-                 
-//                 if (alert) [alert dismissViewControllerAnimated:YES completion:nil];
-
              }
              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 //                  if (alert) [alert dismissViewControllerAnimated:YES completion:nil];
@@ -58,35 +55,29 @@
 }
 //
 - (void)setMap:(NSDictionary *)responseObject alert:(UIAlertController *)alert {
-    NSArray paths = [responseObject objectForKey:@"paths"];
-//    if (paths.count > 0) {
-//        if (self.line)
-//            [self.mapView removeOverlay:self.line];
-//        
-//        [self.memo setLeftText:length rightText:runTime];
-//        
-//        CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * paths.count);
-//        
-//        int caIndex = 0;
-//        for (NSMutableDictionary *path in paths)
-//            coordinateArray[caIndex++] = CLLocationCoordinate2DMake([[path objectForKey:@"lat"] doubleValue], [[path objectForKey:@"lng"] doubleValue]);
-//        
-//        if (alert) {
-//            [self.mapView setRegion:MKCoordinateRegionMake(coordinateArray[0], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
-//        }
-//        
-//        if (!self.user && ([paths count] > 0)) {
-//            self.user = [[MyAnnotation alloc] initWithLocation:coordinateArray[0]];
-//            [self.user setImageUrl:avatar];
-//            [self.mapView addAnnotation:self.user];
-//        } else {
-//            [self.user setCoordinate:coordinateArray[0]];
-//        }
-//        
-//        self.line = [MKPolyline polylineWithCoordinates:coordinateArray count:[paths count]];
-//        [self.mapView addOverlay:self.line];
-//    }
-//    
+    NSArray *paths = [responseObject objectForKey:@"paths"];
+    
+    if (paths.count > 0) {
+        if (self.line) [self.mapView removeOverlay:self.line];
+        
+        CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * paths.count);
+        float *velocity = malloc(sizeof(float) * paths.count);
+        
+        int caIndex = 0;
+        for (NSMutableDictionary *path in paths) {
+            velocity[caIndex] = [[path objectForKey:@"sd"] doubleValue];
+            coordinateArray[caIndex++] = CLLocationCoordinate2DMake([[path objectForKey:@"lat"] doubleValue], [[path objectForKey:@"lng"] doubleValue]);
+        }
+        
+        
+        if (alert) {
+            [self.mapView setRegion:MKCoordinateRegionMake(coordinateArray[0], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
+        }
+        
+        GradientPolylineOverlay *polyline = [[GradientPolylineOverlay alloc] initWithPoints:coordinateArray velocity:velocity count:paths.count];
+        [self.mapView addOverlay:polyline];
+    }
+//
 //    self.isLoadData = NO;
 //    
 //    if (isFinish && self.timer) {
@@ -97,6 +88,16 @@
 //    }
 }
 
+-(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay{
+    if ([overlay isKindOfClass:[MKPolyline class]]) {
+        MKPolylineRenderer *overView = [[MKPolylineRenderer alloc] initWithOverlay:overlay];
+        overView.strokeColor = [[UIColor redColor] colorWithAlphaComponent:0.7];
+        overView.lineWidth = 3;
+        return overView;
+    }
+    return nil;
+    
+}
 - (void)initUI {
     [self.view.layer setBackgroundColor:[UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1].CGColor];
     [self initMapView];
