@@ -26,11 +26,11 @@
     [self initUI];
 
     self.isLoadData = NO;
-    [self loadPaths];
+    [self loadPaths:nil];
 //    if (self.timer) { [self.timer invalidate]; self.timer = nil; }
 //    self.timer = [NSTimer scheduledTimerWithTimeInterval:PATH_FETCH_TIMER target:self selector:@selector(loadPaths) userInfo:nil repeats:YES];
 }
-- (void)loadPaths {
+- (void)loadPaths:(UIAlertController *)alert {
     if ((int)[self.id integerValue] < 1) [self.navigationController popToRootViewControllerAnimated:YES];
 
     if (self.isLoadData) return; else self.isLoadData = YES;
@@ -42,29 +42,23 @@
     [httpManager GET:[NSString stringWithFormat:API_GET_POLYLINE_PATHS, (int)[self.id integerValue]]
           parameters:[NSMutableDictionary new]
              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 NSLog(@"Success");
-//                 if ([[responseObject objectForKey:@"status"] boolValue]) {
+                 if (DEV) NSLog(@"-------> Success!");
 
-//                     [self setMap:[responseObject objectForKey:@"paths"]
-//                         isFinish: [[responseObject objectForKey:@"is_finished"] boolValue]
-//                           length:[responseObject objectForKey:@"length"]
-//                          runTime:[responseObject objectForKey:@"run_time"]
-//                           avatar:[NSURL URLWithString:[responseObject objectForKey:@"avatar"]]
-//                            alert:alert];
-//                     
-//                     if (alert) [alert dismissViewControllerAnimated:YES completion:nil];
-//                 } else {
-//                     [self failure:alert];
-//                 }
+                 [self setMap:responseObject
+                        alert:alert];
+                 
+//                 if (alert) [alert dismissViewControllerAnimated:YES completion:nil];
+
              }
              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  NSLog(@"Failure %@", error);
+//                  if (alert) [alert dismissViewControllerAnimated:YES completion:nil];
 //                 [self failure:alert];
              }
      ];
 }
 //
-//- (void)setMap:(NSMutableDictionary*)paths isFinish:(BOOL)isFinish length:(NSString *)length runTime:(NSString *)runTime avatar:(NSURL *)avatar alert:(UIAlertController *)alert {
+- (void)setMap:(NSDictionary *)responseObject alert:(UIAlertController *)alert {
+    NSArray paths = [responseObject objectForKey:@"paths"];
 //    if (paths.count > 0) {
 //        if (self.line)
 //            [self.mapView removeOverlay:self.line];
@@ -101,7 +95,7 @@
 //        self.timer = nil;
 //        if (DEV) NSLog(@"------->Finish!");
 //    }
-//}
+}
 
 - (void)initUI {
     [self.view.layer setBackgroundColor:[UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1].CGColor];

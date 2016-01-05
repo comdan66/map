@@ -58,11 +58,6 @@
     [httpManager GET:[NSString stringWithFormat:API_GET_USER_NEW_POLYLINES, FOLLOW_USER_ID]
           parameters:data
              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 NSLog(@"%@", responseObject);
-                 
-                 if (![[responseObject objectForKey:@"status"] boolValue])
-                     return ;
-                 
                  for (NSDictionary *polyline in [responseObject objectForKey:@"polylines"])
                      [self.polylines insertObject: polyline atIndex:0];
                  
@@ -114,9 +109,6 @@
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   if (DEV) NSLog(@"~~~~~~>LoadData success");
 
-                  if (![[responseObject objectForKey:@"status"] boolValue])
-                      return [self loadDataFailure:alert title:nil message:nil];
-                  
                   for (NSDictionary *polyline in [responseObject objectForKey:@"polylines"])
                       [self.polylines addObject: polyline];
 
