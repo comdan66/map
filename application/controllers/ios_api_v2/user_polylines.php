@@ -14,11 +14,11 @@ class User_polylines extends Api_controller {
     parent::__construct ();
 
     if (!(($id = $this->uri->rsegments (6, 0)) && ($this->user = User::find_by_id ($id))))
-      return $this->disable ($this->output_json (array ('status' => false)));
+      return $this->disable ($this->output_error_json ('Parameters error!'));
 
     if ($this->uri->rsegments (9, 0) && in_array ($this->uri->rsegments (9, 0), array ('finish')))
       if (!(($id = $this->uri->rsegments (8, 0)) && ($this->polyline = Polyline::find_by_id_and_user_id ($id, $this->user->id))))
-        return $this->disable ($this->output_json (array ('status' => false)));
+        return $this->disable ($this->output_error_json ('Parameters error!'));
   }
 
   public function prev () {
@@ -31,7 +31,6 @@ class User_polylines extends Api_controller {
     $prev_id = ($temp = (count ($polylines) > $limit ? end ($polylines) : null)) ? $temp->id : -1;
 
     return $this->output_json (array (
-      'status' => true,
       'polylines' => array_map (function ($polyline) {
         $run_time = $polyline->run_time_units ();
         return array (
@@ -59,7 +58,6 @@ class User_polylines extends Api_controller {
     $next_id = ($temp = (count ($polylines) > $limit ? end ($polylines) : null)) ? $temp->id : -1;
 
     return $this->output_json (array (
-      'status' => true,
       'polylines' => array_map (function ($polyline) {
         $run_time = $polyline->run_time_units ();
         return array (
@@ -85,18 +83,21 @@ class User_polylines extends Api_controller {
     });
 
     delay_job ('main', 'put_cover', array ('id' => $polyline->id));
-    return $this->output_json (array ('status' => $update ? true : false));
+    
+    if (!$update) return $this->output_error_json ('Update failure!');
+
+    return $this->output_json (array ('status' => true));
   }
   public function newest () {
     if (!($polyline = Polyline::find ('one', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array ('user_id = ?', $this->user->id)))))
-      return $this->output_json (array ('status' => false));
+      return $this->output_error_json ('No any polyline!');
     return $this->output_json (array ('status' => true, 'id' => $polyline->id));
   }
   public function create () {
     $posts = OAInput::post ();
 
     if ($msg = $this->_validation_polyline_posts ($posts))
-      return $this->output_json (array ('status' => false));
+      return $this->output_error_json ('Parameters error!');
 
     $polyline = null;
     $create = Polyline::transaction (function () use ($posts, &$polyline) {
@@ -113,10 +114,9 @@ class User_polylines extends Api_controller {
       return true;
     });
 
-    if ($create)
-      return $this->output_json (array ('status' => true, 'id' => $polyline->id));
-    else
-      return $this->output_json (array ('status' => false));
+    if (!$create) return $this->output_error_json ('Create failure!');
+
+    return $this->output_json (array ('id' => $polyline->id));
   }
   private function _validation_polyline_posts (&$posts) {
     if (!(isset ($posts['name']) && ($posts['name'] = trim ($posts['name'])))) $posts['name'] = date ('Y-m-d H:i:s');

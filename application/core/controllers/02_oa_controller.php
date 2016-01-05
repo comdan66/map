@@ -115,6 +115,22 @@ class Oa_controller extends Root_controller {
     return $this->input->is_ajax_request () && (!$has_post || $this->has_post ());
   }
 
+  protected function output_error_json ($message, $code = 405, $cache = 0) {
+    $server_protocol = (isset($_SERVER['SERVER_PROTOCOL'])) ? $_SERVER['SERVER_PROTOCOL'] : FALSE;
+    if (substr (php_sapi_name (), 0, 3) == 'cgi')
+      header ('Status: ' . $code . ' ' . $message, true);
+    elseif (($server_protocol == 'HTTP/1.1') || ($server_protocol == 'HTTP/1.0'))
+      header ($server_protocol . ' ' . $code . ' ' . $message, true, $code);
+    else
+      header ('HTTP/1.1 ' . $code . ' ' . $message, true, $code);
+
+    return $this->output
+                ->set_content_type ('application/json')
+                ->set_output (json_encode (array (
+                    'message' => $message
+                  )))
+                ->cache ($cache);
+  }
   protected function output_json ($data, $cache = 0) {
     return $this->output
                 ->set_content_type ('application/json')

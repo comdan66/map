@@ -12,7 +12,7 @@ class Polyline_paths extends Api_controller {
     parent::__construct ();
 
     if (!(($id = $this->uri->rsegments (6, 0)) && ($this->polyline = Polyline::find_by_id ($id))))
-      return $this->disable ($this->output_json (array ('status' => false)));
+      return $this->disable ($this->output_error_json ('Parameters error!'));
   }
   private function _paths ($polyline) {
     if (!($paths = $this->polyline->paths ()))
@@ -29,15 +29,14 @@ class Polyline_paths extends Api_controller {
   public function index () {
     if (!($paths = $this->_paths ($this->polyline)))
       return $this->output_json (array (
-          'status' => true, 
           'avatar' => $this->polyline->user->avatar->url ('100x100c'),
           'is_finished' => true,
           'paths' => array ()
         ));
-    set_status_header (4000);
+
     $run_time = $this->polyline->run_time_units ();
 
-    return $this->output_json (array_merge (array ('status' => true), array (
+    return $this->output_json (array_merge (array (
         'run_time' => $run_time ? implode ('', $run_time) : '0秒',
         'length' => $this->polyline->length > 0 ? round ($this->polyline->length / 1000, 2) . '公里' : '0公尺',
       ), $paths));
@@ -64,7 +63,7 @@ class Polyline_paths extends Api_controller {
     
     delay_job ('main', 'compute_polyline', array ('id' => $this->polyline->id));
 
-    return $this->output_json (array ('status' => true, 'ids' => $sqlite_ids));
+    return $this->output_json (array ('ids' => $sqlite_ids));
   }
   private function _validation_path_posts (&$posts) {
     if (!(isset ($posts['id']) && is_numeric ($posts['id'] = trim ($posts['id'])))) return false; $posts['sqlite_id'] = $posts['id']; unset ($posts['id']);    
