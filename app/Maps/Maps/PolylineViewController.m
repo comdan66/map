@@ -22,7 +22,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-
+    [self.navigationController setNavigationBarHidden:NO];
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
+    
     [self initUI];
 }
 - (void)viewWillAppear:(BOOL)animated {
