@@ -11,6 +11,7 @@
 #import "Header.h"
 #import "AFHTTPRequestOperationManager.h"
 #import "GradientPolylineOverlay.h"
+#import "GradientPolylineRenderer.h"
 
 @interface PolylineViewController : UIViewController<MKMapViewDelegate>
 
@@ -19,7 +20,8 @@
 @property UIButton *myLocationButton, *uLocationButton;
 @property BOOL isLoadData;
 
-@property MKPolyline *line;
+
+@property NSTimer *timer;
 
 -(PolylineViewController *)initWithId:(NSString *)id;
 @end

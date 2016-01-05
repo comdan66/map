@@ -11,10 +11,14 @@
 #import "PolylineTableViewCell.h"
 #import "AFHTTPRequestOperationManager.h"
 #import "PolylineViewController.h"
+#import "AppDelegate.h"
+
 
 @interface PolylinesTableViewController : UITableViewController <UIScrollViewDelegate>
 
 @property BOOL isLoading;
 @property NSString *nextId;
 @property NSMutableArray *polylines;
+@property(nonatomic, getter = shouldHideStatusBar) BOOL hideStatusBar;
+
 @end

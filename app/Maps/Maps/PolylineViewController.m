@@ -24,18 +24,58 @@
 
 
     [self initUI];
+}
+- (void)viewWillAppear:(BOOL)animated {
+    if (DEV) NSLog(@"------->viewWillAppear!");
 
-    self.isLoadData = NO;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"取得資料中" message:@"請稍候..." preferredStyle:UIAlertControllerStyleAlert];
+    [self presentViewController:alert animated:YES completion:^{
+        self.isLoadData = NO;
+        [self loadPaths:alert];
+        
+        if (self.timer) {
+            [self.timer invalidate];
+            self.timer = nil;
+        }
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:PATH_FETCH_TIMER target:self selector:@selector(loadPathsByTimer) userInfo:nil repeats:YES];
+    }];
+}
+- (void)clean {
+    [self.mapView removeOverlays:self.mapView.overlays];
+
+//    if (self.user) {
+//        [self.mapView removeAnnotation:self.user];
+//        self.user = nil;
+//    }
+    
+    
+    self.isLoadData = YES;
+    
+    if (self.timer) {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+    if (DEV) NSLog(@"------->Clean!");
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self clean];
+}
+- (void)loadPathsByTimer {
     [self loadPaths:nil];
-//    if (self.timer) { [self.timer invalidate]; self.timer = nil; }
-//    self.timer = [NSTimer scheduledTimerWithTimeInterval:PATH_FETCH_TIMER target:self selector:@selector(loadPaths) userInfo:nil repeats:YES];
 }
 - (void)loadPaths:(UIAlertController *)alert {
-    if ((int)[self.id integerValue] < 1) [self.navigationController popToRootViewControllerAnimated:YES];
+    if (DEV) NSLog(@"------->Load Paths!");
+    
+    if ((int)[self.id integerValue] < 1) {
+        if (DEV) NSLog(@"-------> ID < 1!");
+
+        if (alert) [alert dismissViewControllerAnimated:YES completion:^{ [self.navigationController popToRootViewControllerAnimated:YES]; }];
+        else [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 
     if (self.isLoadData) return; else self.isLoadData = YES;
-
-    if (DEV) NSLog(@"------->Load Paths!");
 
     AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
     [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
@@ -44,21 +84,39 @@
              success:^(AFHTTPRequestOperation *operation, id responseObject) {
                  if (DEV) NSLog(@"-------> Success!");
 
-                 [self setMap:responseObject
-                        alert:alert];
+                 [self setMap:responseObject alert:alert];
              }
              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//                  if (alert) [alert dismissViewControllerAnimated:YES completion:nil];
-//                 [self failure:alert];
+                 if (DEV) NSLog(@"-------> Failure!");
+                 [self failure:alert title:nil message:nil];
              }
      ];
 }
-//
+- (void)failure:(UIAlertController *)alert title:(NSString *) title message:(NSString *) message {
+    UIAlertController *error = [UIAlertController
+                                alertControllerWithTitle:title ? title : @"錯誤"
+                                message:message ? message : @"地圖模式錯誤！"
+                                preferredStyle:UIAlertControllerStyleAlert];
+    [error addAction:[UIAlertAction
+                      actionWithTitle:@"確定"
+                      style:UIAlertActionStyleDefault
+                      handler:^(UIAlertAction * action)
+                      {
+                          [error dismissViewControllerAnimated:YES completion:^{
+                              [self.navigationController popToRootViewControllerAnimated:YES];
+                          }];
+                      }]];
+
+    if (alert) [alert dismissViewControllerAnimated:YES completion:^{ [self presentViewController:error animated:YES completion:nil]; }];
+    else self.isLoadData = NO;
+}
 - (void)setMap:(NSDictionary *)responseObject alert:(UIAlertController *)alert {
     NSArray *paths = [responseObject objectForKey:@"paths"];
+    BOOL isFinish = [[responseObject objectForKey:@"is_finished"] boolValue];
     
+    [self.mapView removeOverlays:self.mapView.overlays];
+
     if (paths.count > 0) {
-        if (self.line) [self.mapView removeOverlay:self.line];
         
         CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * paths.count);
         float *velocity = malloc(sizeof(float) * paths.count);
@@ -68,34 +126,30 @@
             velocity[caIndex] = [[path objectForKey:@"sd"] doubleValue];
             coordinateArray[caIndex++] = CLLocationCoordinate2DMake([[path objectForKey:@"lat"] doubleValue], [[path objectForKey:@"lng"] doubleValue]);
         }
-        
-        
-        if (alert) {
-            [self.mapView setRegion:MKCoordinateRegionMake(coordinateArray[0], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
-        }
-        
-        GradientPolylineOverlay *polyline = [[GradientPolylineOverlay alloc] initWithPoints:coordinateArray velocity:velocity count:paths.count];
-        [self.mapView addOverlay:polyline];
+
+        [self.mapView addOverlay:[[GradientPolylineOverlay alloc] initWithPoints:coordinateArray velocity:velocity count:paths.count]];
+        [self.uLocationButton setEnabled:YES];
+        if (alert) [self.mapView setRegion:MKCoordinateRegionMake(coordinateArray[0], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
+    } else {
+        [self.uLocationButton setEnabled:NO];
     }
-//
-//    self.isLoadData = NO;
-//    
-//    if (isFinish && self.timer) {
-//        self.isLoadData = YES;
-//        [self.timer invalidate];
-//        self.timer = nil;
-//        if (DEV) NSLog(@"------->Finish!");
-//    }
+
+    self.isLoadData = NO;
+
+    if (isFinish && self.timer) {
+        self.isLoadData = YES;
+        [self.timer invalidate];
+        self.timer = nil;
+        if (DEV) NSLog(@"------->Finish!");
+    }
+
+    if (alert) [alert dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay{
-    if ([overlay isKindOfClass:[MKPolyline class]]) {
-        MKPolylineRenderer *overView = [[MKPolylineRenderer alloc] initWithOverlay:overlay];
-        overView.strokeColor = [[UIColor redColor] colorWithAlphaComponent:0.7];
-        overView.lineWidth = 3;
-        return overView;
-    }
-    return nil;
+    GradientPolylineRenderer *polylineRenderer = [[GradientPolylineRenderer alloc] initWithOverlay:overlay];
+    polylineRenderer.lineWidth = 8.0f;
+    return polylineRenderer;
     
 }
 - (void)initUI {
@@ -103,8 +157,11 @@
     [self initMapView];
     [self initLocationButton];
 }
+
+- (void)goToULocation:(id)sender {
+    [self.mapView setRegion:MKCoordinateRegionMake([[self.mapView.overlays lastObject] coordinate], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
+}
 - (void)goToMyLocation:(id)sender {
-    //    NSLog(@"2222%@", self.mapView.userLocation.coordinate);
     [self.mapView setRegion:MKCoordinateRegionMake(self.mapView.userLocation.coordinate, MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
 }
 - (void)initLocationButton {
@@ -167,6 +224,7 @@
     [self.uLocationButton setTitleColor:[UIColor colorWithRed:0.26 green:0.61 blue:0.99 alpha:.4] forState:UIControlStateDisabled];
     [self.uLocationButton setEnabled:NO];
     [self.uLocationButton.layer setZPosition:3];
+    [self.uLocationButton addTarget:self action:@selector(goToULocation:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.uLocationButton];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.uLocationButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];

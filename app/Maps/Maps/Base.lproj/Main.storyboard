@@ -62,7 +62,7 @@
             </objects>
             <point key="canvasLocation" x="338" y="719"/>
         </scene>
-        <!--Root View Controller-->
+        <!--活動紀錄-->
         <scene sceneID="dFh-tN-t91">
             <objects>
                 <tableViewController id="Fgf-rv-3CF" customClass="PolylinesTableViewController" sceneMemberID="viewController">
@@ -85,7 +85,7 @@
                             <outlet property="delegate" destination="Fgf-rv-3CF" id="UMb-UH-Pen"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="ogs-gj-vtQ"/>
+                    <navigationItem key="navigationItem" title="活動紀錄" id="ogs-gj-vtQ"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Und-zX-K6n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -94,12 +94,16 @@
         <!--活動紀錄-->
         <scene sceneID="21p-c7-uxj">
             <objects>
-                <navigationController id="D11-dM-jQH" customClass="MyNavigationController" sceneMemberID="viewController">
+                <navigationController hidesBarsOnSwipe="YES" id="D11-dM-jQH" customClass="MyNavigationController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="活動紀錄" id="nxV-dB-pJm"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="FCi-X8-57n">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="ufd-k1-HIM">
+                        <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="Fgf-rv-3CF" kind="relationship" relationship="rootViewController" id="UYM-JA-TjK"/>
                     </connections>

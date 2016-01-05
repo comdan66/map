@@ -31,10 +31,19 @@
     [application registerUserNotificationSettings:settings];
     [application registerForRemoteNotifications];
 
-    
     [ORM initDB:@"Maps"];
     [PathGPS initGPS];
-        
+//    self.window.backgroundColor = [UIColor colorWithRed:0.78f green:0.13f blue:0.11f alpha:1];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        UIView *addStatusBar = [[UIView alloc] init];
+        addStatusBar.frame = CGRectMake(0, 0, self.window.frame.size.width, 20);
+//        [addStatusBar setm]
+        //change this to match your navigation bar or view color or tool bar
+        //You can also use addStatusBar.backgroundColor = [UIColor BlueColor]; or any other color
+        addStatusBar.backgroundColor = [UIColor colorWithRed:0.973/255. green:0.973/255. blue:0.973/255. alpha:1];
+        [self.window.rootViewController.view addSubview:addStatusBar];
+    }
+
     return YES;
 }
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {

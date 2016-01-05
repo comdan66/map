@@ -75,6 +75,7 @@
 		0EF060101C2D473700243BB9 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF0600F1C2D473700243BB9 /* MyAnnotation.m */; };
 		0EFF9C5D1C3A86BC0033916B /* PolylineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFF9C5C1C3A86BC0033916B /* PolylineViewController.m */; };
 		0EFF9C611C3BC73B0033916B /* GradientPolylineOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFF9C601C3BC73B0033916B /* GradientPolylineOverlay.m */; };
+		0EFF9C641C3BCA6D0033916B /* GradientPolylineRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFF9C631C3BCA6D0033916B /* GradientPolylineRenderer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -221,6 +222,8 @@
 		0EFF9C5C1C3A86BC0033916B /* PolylineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolylineViewController.m; sourceTree = "<group>"; };
 		0EFF9C5F1C3BC73B0033916B /* GradientPolylineOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientPolylineOverlay.h; sourceTree = "<group>"; };
 		0EFF9C601C3BC73B0033916B /* GradientPolylineOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientPolylineOverlay.m; sourceTree = "<group>"; };
+		0EFF9C621C3BCA6D0033916B /* GradientPolylineRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientPolylineRenderer.h; sourceTree = "<group>"; };
+		0EFF9C631C3BCA6D0033916B /* GradientPolylineRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientPolylineRenderer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -582,6 +585,8 @@
 		0EFF9C5E1C3BA17F0033916B /* Polyline */ = {
 			isa = PBXGroup;
 			children = (
+				0EFF9C621C3BCA6D0033916B /* GradientPolylineRenderer.h */,
+				0EFF9C631C3BCA6D0033916B /* GradientPolylineRenderer.m */,
 				0EFF9C5B1C3A86BC0033916B /* PolylineViewController.h */,
 				0EFF9C5C1C3A86BC0033916B /* PolylineViewController.m */,
 				0EFF9C5F1C3BC73B0033916B /* GradientPolylineOverlay.h */,
@@ -770,6 +775,7 @@
 				0EF05F461C2B950E00243BB9 /* AFURLResponseSerialization.m in Sources */,
 				0EF05FFB1C2D465500243BB9 /* MKAnnotationView+WebCache.m in Sources */,
 				0EF05F181C2A405800243BB9 /* GpsViewController.m in Sources */,
+				0EFF9C641C3BCA6D0033916B /* GradientPolylineRenderer.m in Sources */,
 				0EF060001C2D465500243BB9 /* SDWebImageDownloader.m in Sources */,
 				0EF060041C2D465500243BB9 /* UIButton+WebCache.m in Sources */,
 				0EF05F591C2C59CE00243BB9 /* MemoView.m in Sources */,

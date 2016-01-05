@@ -23,7 +23,7 @@
 }
 - (void)initItem {
     
-//    [self setBarTintColor:[UIColor colorWithRed:236.0/255.0 green:140.0/255.0 blue:113.0/255.0 alpha:1]];
+//    [self setBarTintColor:[UIColor colorWithRed:0.04 green:0.62 blue:0.46 alpha:1]];
 //    [self setAlpha:1.0f];
     
 //    for (int i = 0; i < [self.items count]; i++) {

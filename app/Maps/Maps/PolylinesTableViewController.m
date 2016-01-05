@@ -25,7 +25,21 @@
     [self.tableView setBackgroundView:nil];
     [self.tableView setBackgroundColor:[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1]];
     [self.tableView.layer setBackgroundColor:[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1].CGColor];
+    
+//    [[[[UIApplication sharedApplication] delegate] window] setBackgroundColor:[UIColor blueColor]];
+//    self.pa.window.backgroundColor = [UIColor colorWithRed:0.78f green:0.13f blue:0.11f alpha:1];
+//    [self]
 
+    //    [self.navigationController.navigationBar setBarStyle:<#(UIBarStyle)#>:UIBarStyleBlack];
+//    NSLog(@"~~~~~~~~~~~~~~~~~~~~~%@", self.view);
+//    [self setStatusBarHidden:NO];
+//    [self setStatusBarStyle:UIStatusBarStyleLightContent];
+//    
+    //    [(MyNavigationController *)self.navigationController setTableViewController:self];
+
+    //    [self.na setBarStyle:UIBarStyleBlack];
+//    [self.navigationController.interactivePopGestureRecognizer setDelegate:nil];
+    
 //    [self.parentViewController.view.layer setBackgroundColor:[UIColor redColor].CGColor];
 //    [self.parentViewController.parentViewController.view.layer setBackgroundColor:[UIColor redColor].CGColor];
 //    NSLog(@"%@", self.parentViewController.parentViewController.parentViewController);
@@ -40,6 +54,19 @@
         [self loadData:alert];
     }];
 }
+-(UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+//- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+//    NSLog(@"xxxxxxxxxxxxxxxxxxxxxxxxx");
+////    if (self.viewControllers.count > 1) {
+////        return YES;
+////    }
+//    return NO;
+//}
 - (void)refreshAction {
     if (DEV) NSLog(@"------->RefreshAction!");
 
