@@ -12,6 +12,8 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "GradientPolylineOverlay.h"
 #import "GradientPolylineRenderer.h"
+#import "MyAnnotation.h"
+#import "UserMarker.h"
 
 @interface PolylineViewController : UIViewController<MKMapViewDelegate>
 
@@ -20,6 +22,7 @@
 @property UIButton *myLocationButton, *uLocationButton;
 @property BOOL isLoadData;
 
+@property MyAnnotation *user;
 
 @property NSTimer *timer;
 

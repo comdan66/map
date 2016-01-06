@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0E46EE5A1C310F500000BE18 /* Marker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46EE581C310F500000BE18 /* Marker.m */; };
-		0E46EE5B1C310F500000BE18 /* Marker.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E46EE591C310F500000BE18 /* Marker.xib */; };
+		0E46EE5A1C310F500000BE18 /* UserMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46EE581C310F500000BE18 /* UserMarker.m */; };
+		0E46EE5B1C310F500000BE18 /* UserMarker.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E46EE591C310F500000BE18 /* UserMarker.xib */; };
 		0E46EEA51C3138F70000BE18 /* Maps.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 0E46EEA41C3138F70000BE18 /* Maps.sqlite */; };
 		0E46EF011C33A4F30000BE18 /* ORM.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46EF001C33A4F30000BE18 /* ORM.m */; };
 		0E46EF071C33A4FA0000BE18 /* ActiveSupportInflector.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E46EF031C33A4FA0000BE18 /* ActiveSupportInflector.m */; };
@@ -37,7 +37,7 @@
 		0EF05EBB1C29843800243BB9 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF05EB81C29843800243BB9 /* Parse.framework */; };
 		0EF05EBC1C29843800243BB9 /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF05EB91C29843800243BB9 /* ParseFacebookUtils.framework */; };
 		0EF05EBE1C2984D800243BB9 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF05EBD1C2984D800243BB9 /* libsqlite3.dylib */; };
-		0EF05F181C2A405800243BB9 /* GpsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F171C2A405800243BB9 /* GpsViewController.m */; };
+		0EF05F181C2A405800243BB9 /* TempGpsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F171C2A405800243BB9 /* TempGpsViewController.m */; };
 		0EF05F1B1C2A7BA300243BB9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF05F1A1C2A7BA300243BB9 /* MapKit.framework */; };
 		0EF05F1E1C2A8F0200243BB9 /* MyUITabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F1D1C2A8F0200243BB9 /* MyUITabBar.m */; };
 		0EF05F221C2A8F7F00243BB9 /* MyUITabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF05F211C2A8F7F00243BB9 /* MyUITabBarController.m */; };
@@ -76,6 +76,8 @@
 		0EFF9C5D1C3A86BC0033916B /* PolylineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFF9C5C1C3A86BC0033916B /* PolylineViewController.m */; };
 		0EFF9C611C3BC73B0033916B /* GradientPolylineOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFF9C601C3BC73B0033916B /* GradientPolylineOverlay.m */; };
 		0EFF9C641C3BCA6D0033916B /* GradientPolylineRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFF9C631C3BCA6D0033916B /* GradientPolylineRenderer.m */; };
+		0EFF9C681C3CD8E10033916B /* GPSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFF9C671C3CD8E10033916B /* GPSViewController.m */; };
+		0EFF9C721C3D1ABC0033916B /* CAShapeLayerAnim.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFF9C711C3D1ABC0033916B /* CAShapeLayerAnim.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,9 +98,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0E46EE571C310F500000BE18 /* Marker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Marker.h; sourceTree = "<group>"; };
-		0E46EE581C310F500000BE18 /* Marker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Marker.m; sourceTree = "<group>"; };
-		0E46EE591C310F500000BE18 /* Marker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Marker.xib; sourceTree = "<group>"; };
+		0E46EE571C310F500000BE18 /* UserMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserMarker.h; sourceTree = "<group>"; };
+		0E46EE581C310F500000BE18 /* UserMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserMarker.m; sourceTree = "<group>"; };
+		0E46EE591C310F500000BE18 /* UserMarker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserMarker.xib; sourceTree = "<group>"; };
 		0E46EEA41C3138F70000BE18 /* Maps.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Maps.sqlite; sourceTree = "<group>"; };
 		0E46EEFF1C33A4F30000BE18 /* ORM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORM.h; sourceTree = "<group>"; };
 		0E46EF001C33A4F30000BE18 /* ORM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORM.m; sourceTree = "<group>"; };
@@ -144,8 +146,8 @@
 		0EF05EB81C29843800243BB9 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		0EF05EB91C29843800243BB9 /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
 		0EF05EBD1C2984D800243BB9 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = ../../../../../../usr/lib/libsqlite3.dylib; sourceTree = "<group>"; };
-		0EF05F161C2A405800243BB9 /* GpsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GpsViewController.h; sourceTree = "<group>"; };
-		0EF05F171C2A405800243BB9 /* GpsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GpsViewController.m; sourceTree = "<group>"; };
+		0EF05F161C2A405800243BB9 /* TempGpsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TempGpsViewController.h; sourceTree = "<group>"; };
+		0EF05F171C2A405800243BB9 /* TempGpsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TempGpsViewController.m; sourceTree = "<group>"; };
 		0EF05F1A1C2A7BA300243BB9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		0EF05F1C1C2A8F0200243BB9 /* MyUITabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyUITabBar.h; sourceTree = "<group>"; };
 		0EF05F1D1C2A8F0200243BB9 /* MyUITabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyUITabBar.m; sourceTree = "<group>"; };
@@ -224,6 +226,10 @@
 		0EFF9C601C3BC73B0033916B /* GradientPolylineOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientPolylineOverlay.m; sourceTree = "<group>"; };
 		0EFF9C621C3BCA6D0033916B /* GradientPolylineRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientPolylineRenderer.h; sourceTree = "<group>"; };
 		0EFF9C631C3BCA6D0033916B /* GradientPolylineRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientPolylineRenderer.m; sourceTree = "<group>"; };
+		0EFF9C661C3CD8E10033916B /* GPSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPSViewController.h; sourceTree = "<group>"; };
+		0EFF9C671C3CD8E10033916B /* GPSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPSViewController.m; sourceTree = "<group>"; };
+		0EFF9C701C3D1ABC0033916B /* CAShapeLayerAnim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAShapeLayerAnim.h; sourceTree = "<group>"; };
+		0EFF9C711C3D1ABC0033916B /* CAShapeLayerAnim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAShapeLayerAnim.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,14 +266,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0E46EE5C1C310F560000BE18 /* Marker */ = {
+		0E46EE5C1C310F560000BE18 /* UserMarker */ = {
 			isa = PBXGroup;
 			children = (
-				0E46EE571C310F500000BE18 /* Marker.h */,
-				0E46EE581C310F500000BE18 /* Marker.m */,
-				0E46EE591C310F500000BE18 /* Marker.xib */,
+				0E46EE571C310F500000BE18 /* UserMarker.h */,
+				0E46EE581C310F500000BE18 /* UserMarker.m */,
+				0E46EE591C310F500000BE18 /* UserMarker.xib */,
 			);
-			name = Marker;
+			name = UserMarker;
 			sourceTree = "<group>";
 		};
 		0E46EF0D1C33A5070000BE18 /* ActiveSupportInflector */ = {
@@ -378,13 +384,14 @@
 		0EF05E221C29467A00243BB9 /* Maps */ = {
 			isa = PBXGroup;
 			children = (
+				0EFF9C691C3CD8E70033916B /* GPS */,
 				0E46EF1A1C3970870000BE18 /* Polylines */,
 				0EF05F531C2BC10800243BB9 /* Header.h */,
 				0E46EF101C33A8140000BE18 /* Location */,
 				0E46EF0F1C33A51B0000BE18 /* Model */,
 				0EF05F261C2A989500243BB9 /* Map */,
 				0EF05F1F1C2A8F0800243BB9 /* TabBar */,
-				0EF05F191C2A405F00243BB9 /* Gps */,
+				0EF05F191C2A405F00243BB9 /* TempGps */,
 				0EF05E261C29467A00243BB9 /* AppDelegate.h */,
 				0EF05E271C29467A00243BB9 /* AppDelegate.m */,
 				0EF05E2C1C29467A00243BB9 /* Main.storyboard */,
@@ -423,16 +430,14 @@
 			path = MapsUITests;
 			sourceTree = "<group>";
 		};
-		0EF05F191C2A405F00243BB9 /* Gps */ = {
+		0EF05F191C2A405F00243BB9 /* TempGps */ = {
 			isa = PBXGroup;
 			children = (
 				0EF0600C1C2D46EB00243BB9 /* MemoView */,
-				0E46EE5C1C310F560000BE18 /* Marker */,
-				0EF0600D1C2D470900243BB9 /* MyAnnotation */,
-				0EF05F161C2A405800243BB9 /* GpsViewController.h */,
-				0EF05F171C2A405800243BB9 /* GpsViewController.m */,
+				0EF05F161C2A405800243BB9 /* TempGpsViewController.h */,
+				0EF05F171C2A405800243BB9 /* TempGpsViewController.m */,
 			);
-			name = Gps;
+			name = TempGps;
 			sourceTree = "<group>";
 		};
 		0EF05F1F1C2A8F0800243BB9 /* TabBar */ = {
@@ -585,14 +590,35 @@
 		0EFF9C5E1C3BA17F0033916B /* Polyline */ = {
 			isa = PBXGroup;
 			children = (
-				0EFF9C621C3BCA6D0033916B /* GradientPolylineRenderer.h */,
-				0EFF9C631C3BCA6D0033916B /* GradientPolylineRenderer.m */,
+				0EFF9C651C3CC7610033916B /* GradientPolyline */,
+				0E46EE5C1C310F560000BE18 /* UserMarker */,
+				0EF0600D1C2D470900243BB9 /* MyAnnotation */,
 				0EFF9C5B1C3A86BC0033916B /* PolylineViewController.h */,
 				0EFF9C5C1C3A86BC0033916B /* PolylineViewController.m */,
+			);
+			name = Polyline;
+			sourceTree = "<group>";
+		};
+		0EFF9C651C3CC7610033916B /* GradientPolyline */ = {
+			isa = PBXGroup;
+			children = (
+				0EFF9C621C3BCA6D0033916B /* GradientPolylineRenderer.h */,
+				0EFF9C631C3BCA6D0033916B /* GradientPolylineRenderer.m */,
 				0EFF9C5F1C3BC73B0033916B /* GradientPolylineOverlay.h */,
 				0EFF9C601C3BC73B0033916B /* GradientPolylineOverlay.m */,
 			);
-			name = Polyline;
+			name = GradientPolyline;
+			sourceTree = "<group>";
+		};
+		0EFF9C691C3CD8E70033916B /* GPS */ = {
+			isa = PBXGroup;
+			children = (
+				0EFF9C701C3D1ABC0033916B /* CAShapeLayerAnim.h */,
+				0EFF9C711C3D1ABC0033916B /* CAShapeLayerAnim.m */,
+				0EFF9C661C3CD8E10033916B /* GPSViewController.h */,
+				0EFF9C671C3CD8E10033916B /* GPSViewController.m */,
+			);
+			name = GPS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -709,7 +735,7 @@
 			files = (
 				0E46EEA51C3138F70000BE18 /* Maps.sqlite in Resources */,
 				0EF05E361C29467A00243BB9 /* LaunchScreen.storyboard in Resources */,
-				0E46EE5B1C310F500000BE18 /* Marker.xib in Resources */,
+				0E46EE5B1C310F500000BE18 /* UserMarker.xib in Resources */,
 				0EF05E331C29467A00243BB9 /* Assets.xcassets in Resources */,
 				0EF05E2E1C29467A00243BB9 /* Main.storyboard in Resources */,
 				0E46EF081C33A4FA0000BE18 /* ActiveSupportInflector.plist in Resources */,
@@ -764,7 +790,7 @@
 				0EF060061C2D465500243BB9 /* UIImage+MultiFormat.m in Sources */,
 				0EF060071C2D465500243BB9 /* UIImage+WebP.m in Sources */,
 				0E46EF011C33A4F30000BE18 /* ORM.m in Sources */,
-				0E46EE5A1C310F500000BE18 /* Marker.m in Sources */,
+				0E46EE5A1C310F500000BE18 /* UserMarker.m in Sources */,
 				0EF060031C2D465500243BB9 /* SDWebImagePrefetcher.m in Sources */,
 				0EF05E281C29467A00243BB9 /* AppDelegate.m in Sources */,
 				0EF05F401C2B950E00243BB9 /* AFHTTPRequestOperationManager.m in Sources */,
@@ -774,7 +800,7 @@
 				0E46EF201C3975340000BE18 /* PolylineTableViewCell.m in Sources */,
 				0EF05F461C2B950E00243BB9 /* AFURLResponseSerialization.m in Sources */,
 				0EF05FFB1C2D465500243BB9 /* MKAnnotationView+WebCache.m in Sources */,
-				0EF05F181C2A405800243BB9 /* GpsViewController.m in Sources */,
+				0EF05F181C2A405800243BB9 /* TempGpsViewController.m in Sources */,
 				0EFF9C641C3BCA6D0033916B /* GradientPolylineRenderer.m in Sources */,
 				0EF060001C2D465500243BB9 /* SDWebImageDownloader.m in Sources */,
 				0EF060041C2D465500243BB9 /* UIButton+WebCache.m in Sources */,
@@ -785,9 +811,11 @@
 				0EF05F511C2B968E00243BB9 /* UIAlertView+Blocks.m in Sources */,
 				0E46EF071C33A4FA0000BE18 /* ActiveSupportInflector.m in Sources */,
 				0EF05FFD1C2D465500243BB9 /* SDImageCache.m in Sources */,
+				0EFF9C681C3CD8E10033916B /* GPSViewController.m in Sources */,
 				0EF05E251C29467A00243BB9 /* main.m in Sources */,
 				0E46EF091C33A4FA0000BE18 /* NSString+ActiveSupportInflector.m in Sources */,
 				0E46EF251C3A46440000BE18 /* GradientView.m in Sources */,
+				0EFF9C721C3D1ABC0033916B /* CAShapeLayerAnim.m in Sources */,
 				0EF05F221C2A8F7F00243BB9 /* MyUITabBarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,10 +12,10 @@
 #import "AFHTTPRequestOperationManager.h"
 #import "MemoView.h"
 #import "MyAnnotation.h"
-#import "Marker.h"
+#import "UserMarker.h"
 #import "PathGPS.h"
 
-@interface GpsViewController : UIViewController <MKMapViewDelegate>
+@interface TempGpsViewController : UIViewController <MKMapViewDelegate>
 
 //@property NSString *polylineId;
 

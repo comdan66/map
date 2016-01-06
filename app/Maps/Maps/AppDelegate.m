@@ -31,6 +31,21 @@
     [application registerUserNotificationSettings:settings];
     [application registerForRemoteNotifications];
 
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        self.addStatusBar = [[UIView alloc] init];
+        
+        [self.addStatusBar setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.addStatusBar setBackgroundColor:[UIColor colorWithRed:0.04 green:0.62 blue:0.46 alpha:1]];
+        
+        [self.window.rootViewController.view addSubview:self.addStatusBar];
+        
+        [self.window.rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:self.addStatusBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.window.rootViewController.view attribute:NSLayoutAttributeTop multiplier:1 constant:0.0]];
+        [self.window.rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:self.addStatusBar attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.window.rootViewController.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0.0]];
+        [self.window.rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:self.addStatusBar attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.window.rootViewController.view attribute:NSLayoutAttributeRight multiplier:1 constant:0.0]];
+        [self.window.rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:self.addStatusBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:20.0]];
+    }
+    
     [ORM initDB:@"Maps"];
     [PathGPS initGPS];
 

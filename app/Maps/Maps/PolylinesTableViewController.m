@@ -26,19 +26,6 @@
     [self.tableView setBackgroundColor:[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1]];
     [self.tableView.layer setBackgroundColor:[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1].CGColor];
 
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
-        UIView *addStatusBar = [[UIView alloc] init];
-        
-        [addStatusBar setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [addStatusBar setBackgroundColor:[UIColor colorWithRed:0.13 green:0.67 blue:0.53 alpha:1]];
-        
-        [[[[UIApplication sharedApplication] delegate] window].rootViewController.view addSubview:addStatusBar];
-        
-        [[[[UIApplication sharedApplication] delegate] window].rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:addStatusBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:[[[UIApplication sharedApplication] delegate] window].rootViewController.view attribute:NSLayoutAttributeTop multiplier:1 constant:0.0]];
-        [[[[UIApplication sharedApplication] delegate] window].rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:addStatusBar attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:[[[UIApplication sharedApplication] delegate] window].rootViewController.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0.0]];
-        [[[[UIApplication sharedApplication] delegate] window].rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:addStatusBar attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:[[[UIApplication sharedApplication] delegate] window].rootViewController.view attribute:NSLayoutAttributeRight multiplier:1 constant:0.0]];
-        [[[[UIApplication sharedApplication] delegate] window].rootViewController.view addConstraint:[NSLayoutConstraint constraintWithItem:addStatusBar attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:20.0]];
-    }
     
 //     setBackgroundColor:[UIColor blueColor]];
 //    self.pa.window.backgroundColor = [UIColor colorWithRed:0.78f green:0.13f blue:0.11f alpha:1];

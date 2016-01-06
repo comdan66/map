@@ -44,12 +44,11 @@
 }
 - (void)clean {
     [self.mapView removeOverlays:self.mapView.overlays];
-
-//    if (self.user) {
-//        [self.mapView removeAnnotation:self.user];
-//        self.user = nil;
-//    }
     
+    if (self.user) {
+        [self.mapView removeAnnotation:self.user];
+        self.user = nil;
+    }
     
     self.isLoadData = YES;
     
@@ -114,6 +113,7 @@
 }
 - (void)setMap:(NSDictionary *)responseObject alert:(UIAlertController *)alert {
     NSArray *paths = [responseObject objectForKey:@"paths"];
+    NSURL *avatar = [NSURL URLWithString:[responseObject objectForKey:@"avatar"]];
     BOOL isFinish = [[responseObject objectForKey:@"is_finished"] boolValue];
     
     [self.mapView removeOverlays:self.mapView.overlays];
@@ -128,7 +128,15 @@
             velocity[caIndex] = [[path objectForKey:@"sd"] doubleValue];
             coordinateArray[caIndex++] = CLLocationCoordinate2DMake([[path objectForKey:@"lat"] doubleValue], [[path objectForKey:@"lng"] doubleValue]);
         }
-
+        
+        if (!self.user && ([paths count] > 0)) {
+            self.user = [[MyAnnotation alloc] initWithLocation:coordinateArray[0]];
+            [self.user setImageUrl:avatar];
+            [self.mapView addAnnotation:self.user];
+        } else {
+            [self.user setCoordinate:coordinateArray[0]];
+        }
+        
         [self.mapView addOverlay:[[GradientPolylineOverlay alloc] initWithPoints:coordinateArray velocity:velocity count:paths.count]];
         [self.uLocationButton setEnabled:YES];
         if (alert) [self.mapView setRegion:MKCoordinateRegionMake(coordinateArray[0], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
@@ -261,6 +269,23 @@
 
 - (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView {
     [self.myLocationButton setEnabled:YES];
+}
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(MyAnnotation *)annotation {
+    if (![annotation isKindOfClass:[MyAnnotation class]])
+        return nil;
+
+    MKAnnotationView *annView = (MKAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:@"userMarker"];
+    if (annView == nil) {
+        annView = [[MKAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:@"userMarker"];
+        UserMarker *userMarker = [UserMarker create:annotation];
+        [annView addSubview:userMarker];
+        [annView setFrame:CGRectMake(0, 0, 60, 70)];
+        [annView setCenterOffset:CGPointMake(0,-35)];
+        [annView setCanShowCallout:NO];
+        [annView setDraggable:NO];
+    }
+    
+    return annView;
 }
 /*
 #pragma mark - Navigation

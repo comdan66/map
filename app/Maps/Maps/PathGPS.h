@@ -12,13 +12,15 @@
 #import "Path.h"
 
 @interface PathGPS : GPS
+//
+//@property NSString *polylineId;
+//@property NSTimer *timer;
+//@property BOOL isUploadPaths;
 
-@property NSString *polylineId;
-@property NSTimer *timer;
-@property BOOL isUploadPaths;
+@property CLLocationCoordinate2D location;
 
-+ (void)start:(CLLocationCoordinate2D)coordinate success:(void (^)())finish failure:(void (^)())failure;
-+ (void)stop:(void (^)())finish;
++ (void)start:(void (^)())finish failure:(void (^)())failure;
+//+ (void)stop:(void (^)())finish;
 
 //- (void)stop:(NSString *) polylineId;
 

@@ -6,20 +6,20 @@
 //  Copyright © 2015年 OA Wu. All rights reserved.
 //
 
-#import "Marker.h"
+#import "UserMarker.h"
 
-@implementation Marker
+@implementation UserMarker
 
-+ (Marker *) create:(MyAnnotation *)annotation {
-    Marker *marker = [[[NSBundle mainBundle] loadNibNamed:@"Marker" owner:nil options:nil] lastObject];
++ (UserMarker *) create:(MyAnnotation *)annotation {
+    UserMarker *marker = [[[NSBundle mainBundle] loadNibNamed:@"UserMarker" owner:nil options:nil] lastObject];
     
-    if ([marker isKindOfClass:[Marker class]])
+    if ([marker isKindOfClass:[UserMarker class]])
         return [marker initUIByCode:annotation];
     else
         return nil;
 
 }
-- (Marker *) initUIByCode:(MyAnnotation *)annotation {
+- (UserMarker *) initUIByCode:(MyAnnotation *)annotation {
     [self setFrame:CGRectMake(0, 0, 0, 0)];
     [self setBackgroundColor:[UIColor clearColor]];
     

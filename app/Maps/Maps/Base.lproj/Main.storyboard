@@ -5,25 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
-        <!--軌跡記錄-->
-        <scene sceneID="QIG-No-V5P">
-            <objects>
-                <viewController id="b8C-7l-O70" customClass="GpsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="aLb-nN-B2A"/>
-                        <viewControllerLayoutGuide type="bottom" id="2yE-AX-iVg"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="wWX-R7-2WQ">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="軌跡記錄" id="LEi-EG-3FG"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cQe-TG-VGP" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="257" y="75"/>
-        </scene>
         <!--MyUI Tab Bar Controller-->
         <scene sceneID="xdW-Ve-jgE">
             <objects>
@@ -34,14 +15,14 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
+                        <segue destination="1jb-uM-hpD" kind="relationship" relationship="viewControllers" id="xVs-vm-FPU"/>
                         <segue destination="D11-dM-jQH" kind="relationship" relationship="viewControllers" id="EoV-fR-kGh"/>
-                        <segue destination="b8C-7l-O70" kind="relationship" relationship="viewControllers" id="9uZ-Cw-ZLp"/>
                         <segue destination="gxk-ab-qlp" kind="relationship" relationship="viewControllers" id="rqf-iP-9Ui"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aZ2-js-qgV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="713" y="-755"/>
+            <point key="canvasLocation" x="577" y="-781"/>
         </scene>
         <!--地圖模式-->
         <scene sceneID="qun-Rp-Z2K">
@@ -91,6 +72,25 @@
             </objects>
             <point key="canvasLocation" x="1101" y="924"/>
         </scene>
+        <!--Item-->
+        <scene sceneID="mGG-I5-Tok">
+            <objects>
+                <viewController id="1jb-uM-hpD" customClass="GPSViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0DH-AI-AEz"/>
+                        <viewControllerLayoutGuide type="bottom" id="rdm-oF-oGs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PMO-Da-y7E">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="ssl-sg-f95"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x81-jr-rGl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="269" y="33"/>
+        </scene>
         <!--活動紀錄-->
         <scene sceneID="21p-c7-uxj">
             <objects>
@@ -110,7 +110,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vck-Wq-ITv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="926" y="61"/>
+            <point key="canvasLocation" x="956" y="49"/>
         </scene>
         <!--個人設定-->
         <scene sceneID="XLC-Av-UrY">

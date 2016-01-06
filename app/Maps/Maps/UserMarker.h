@@ -12,7 +12,7 @@
 #import "Header.h"
 
 
-@interface Marker : UIView
+@interface UserMarker : UIView
 
-+ (Marker *) create:(MyAnnotation *)annotation;
++ (UserMarker *) create:(MyAnnotation *)annotation;
 @end

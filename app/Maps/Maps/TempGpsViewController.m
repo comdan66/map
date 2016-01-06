@@ -6,13 +6,13 @@
 //  Copyright © 2015年 OA Wu. All rights reserved.
 //
 
-#import "GpsViewController.h"
+#import "TempGpsViewController.h"
 
-@interface GpsViewController ()
+@interface TempGpsViewController ()
 
 @end
 
-@implementation GpsViewController
+@implementation TempGpsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -214,21 +214,21 @@
 }
 
 - (void) startGPS {
-    [self.switchLabel setText:@"開啟中.."];
-//    self.mapView.userLocation.location.coordinate.latitude
-    [PathGPS start:self.mapView.userLocation.location.coordinate success:^{
-        [self.switchButton setOn:YES animated:YES];
-        [self.switchLabel setText:@"開啟"];
-    } failure:^{
-        [self stopGPS];
-    }];
+//    [self.switchLabel setText:@"開啟中.."];
+////    self.mapView.userLocation.location.coordinate.latitude
+//    [PathGPS start:self.mapView.userLocation.location.coordinate success:^{
+//        [self.switchButton setOn:YES animated:YES];
+//        [self.switchLabel setText:@"開啟"];
+//    } failure:^{
+//        [self stopGPS];
+//    }];
 }
 - (void) stopGPS {
-    [self.switchLabel setText:@"關閉中.."];
-    [PathGPS stop:^{
-        [self.switchButton setOn:NO animated:YES];
-        [self.switchLabel setText:@"關閉"];
-    }];
+//    [self.switchLabel setText:@"關閉中.."];
+//    [PathGPS stop:^{
+//        [self.switchButton setOn:NO animated:YES];
+//        [self.switchLabel setText:@"關閉"];
+//    }];
 }
 
 - (void)switchChangeAction:(UISwitch *)sender {
@@ -409,7 +409,7 @@
     if (annView == nil) {
         NSLog(@"---------------------------3");
         annView = [[MKAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:@"aaa"];
-        Marker *marker = [Marker create:annotation];
+        UserMarker *marker = [UserMarker create:annotation];
         [annView addSubview:marker];
 
         
