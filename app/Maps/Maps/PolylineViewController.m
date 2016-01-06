@@ -177,7 +177,6 @@
 - (void)initLocationButton {
     UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
     [visualEffectView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [visualEffectView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [visualEffectView setOpaque:NO];
     [visualEffectView.layer setZPosition:2];
     [self.view addSubview:visualEffectView];

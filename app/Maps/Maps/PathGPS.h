@@ -10,17 +10,18 @@
 #import "Header.h"
 #import "AFHTTPRequestOperationManager.h"
 #import "Path.h"
+#import "GPSViewController.h"
 
 @interface PathGPS : GPS
-//
-//@property NSString *polylineId;
-//@property NSTimer *timer;
-//@property BOOL isUploadPaths;
 
+@property NSString *polylineId;
+@property NSTimer *timer;
+@property BOOL isUploadPaths;
+@property UIViewController *gpsControler;
 @property CLLocationCoordinate2D location;
 
-+ (void)start:(void (^)())finish failure:(void (^)())failure;
-//+ (void)stop:(void (^)())finish;
++ (void)start:(CLLocationCoordinate2D)coordinate success:(void (^)())finish failure:(void (^)())failure gps:(UIViewController *)gpsCtr;
++ (void)stop:(void (^)())finish;
 
 //- (void)stop:(NSString *) polylineId;
 

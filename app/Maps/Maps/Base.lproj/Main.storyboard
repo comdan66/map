@@ -15,8 +15,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="1jb-uM-hpD" kind="relationship" relationship="viewControllers" id="xVs-vm-FPU"/>
                         <segue destination="D11-dM-jQH" kind="relationship" relationship="viewControllers" id="EoV-fR-kGh"/>
+                        <segue destination="1jb-uM-hpD" kind="relationship" relationship="viewControllers" id="xVs-vm-FPU"/>
                         <segue destination="gxk-ab-qlp" kind="relationship" relationship="viewControllers" id="rqf-iP-9Ui"/>
                     </connections>
                 </tabBarController>
@@ -72,7 +72,7 @@
             </objects>
             <point key="canvasLocation" x="1101" y="924"/>
         </scene>
-        <!--Item-->
+        <!--紀錄路徑-->
         <scene sceneID="mGG-I5-Tok">
             <objects>
                 <viewController id="1jb-uM-hpD" customClass="GPSViewController" sceneMemberID="viewController">
@@ -85,7 +85,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="ssl-sg-f95"/>
+                    <tabBarItem key="tabBarItem" title="紀錄路徑" id="ssl-sg-f95"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x81-jr-rGl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
