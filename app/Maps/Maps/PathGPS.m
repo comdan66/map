@@ -21,6 +21,7 @@
     [data setValue:[dateFormatter stringFromDate:[NSDate date]] forKey:@"name"];
     [data setValue:[NSString stringWithFormat:@"%f", coordinate.latitude] forKey:@"lat"];
     [data setValue:[NSString stringWithFormat:@"%f", coordinate.longitude] forKey:@"lng"];
+    [data setValue:[dateFormatter stringFromDate:[NSDate date]] forKey:@"ct"];
 
     if (DEV) NSLog(@"------->create polyline!");
     AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
