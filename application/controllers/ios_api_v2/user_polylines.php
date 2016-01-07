@@ -123,6 +123,7 @@ class User_polylines extends Api_controller {
     if (!(isset ($posts['user_id']) && is_numeric ($posts['user_id'] = trim ($posts['user_id'])))) $posts['user_id'] = $this->user->id;
     if (!(isset ($posts['lat']) && is_numeric ($posts['lat'] = trim ($posts['lat'])))) $posts['lat'] = Polyline::D4_START_LAT; $posts['latitude'] = $posts['lat']; unset ($posts['lat']);
     if (!(isset ($posts['lng']) && is_numeric ($posts['lng'] = trim ($posts['lng'])))) $posts['lng'] = Polyline::D4_START_LNG; $posts['longitude'] = $posts['lng']; unset ($posts['lng']);
+    if (!(isset ($posts['ct']) && ($posts['ct'] = trim ($posts['ct'])))) $posts['ct'] = date('Y-m-d H:i:s'); $posts['create_time'] = $posts['ct']; unset ($posts['ct']);
 
     return '';
   }

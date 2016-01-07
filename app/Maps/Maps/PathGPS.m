@@ -86,6 +86,8 @@
                   if ((int)[(NSArray *)[responseObject objectForKey:@"ids"] count] > 0)
                       [Path deleteAll:[NSString stringWithFormat:@"id IN (%@)", [[responseObject objectForKey:@"ids"] componentsJoinedByString:@", "]]];
                   
+                      [((GPSViewController *)self.gpsControler) rotateSpinningView];
+                  
                   if (finish) finish();
               }
               failure:^(AFHTTPRequestOperation *operation, NSError *error) {

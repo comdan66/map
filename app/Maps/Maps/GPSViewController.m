@@ -24,6 +24,7 @@
     self.buttonTopConstantOpen = 30;
     self.loadLabelTopConstantColse = 20;
     self.loadLabelTopConstantOpen = -100;
+
     [self initUI];
 }
 
@@ -33,7 +34,38 @@
     [self initMapView];
     [self initInfo];
     [self initLogLabel];
+    [self initLayerPath];
     [self initButton];
+    [self initRunLabelLayer];
+    [self initLoadLabel];
+    [self initBallLabel];
+}
+-(void)initBallLabel {
+    self.ballLabel = [UILabel new];
+    [self.ballLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.runLabel addSubview:self.ballLabel];
+    [self.ballLabel.layer setOpacity:0];
+    
+    [self.runLabel addConstraint:[NSLayoutConstraint constraintWithItem:self.ballLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.runLabel attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+    [self.runLabel addConstraint:[NSLayoutConstraint constraintWithItem:self.ballLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.runLabel attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+    [self.runLabel addConstraint:[NSLayoutConstraint constraintWithItem:self.ballLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.runLabel attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+    [self.runLabel addConstraint:[NSLayoutConstraint constraintWithItem:self.ballLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.runLabel attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+    
+    UILabel *ball = [UILabel new];
+    [ball setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [ball setBackgroundColor:[UIColor colorWithRed:0 green:0.53 blue:0.38 alpha:1]];
+    [ball.layer setCornerRadius:10 / 2];
+    [ball setClipsToBounds:YES];
+    
+    [ball.layer setBorderColor:[UIColor colorWithRed:0 green:0.41 blue:0.36 alpha:1].CGColor];
+    [ball.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
+    
+    [self.ballLabel addSubview:ball];
+    [self.ballLabel addConstraint:[NSLayoutConstraint constraintWithItem:ball attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.ballLabel attribute:NSLayoutAttributeTop multiplier:1 constant:-5]];
+    [self.ballLabel addConstraint:[NSLayoutConstraint constraintWithItem:ball attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.ballLabel attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+    [self.ballLabel addConstraint:[NSLayoutConstraint constraintWithItem:ball attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:10]];
+    [self.ballLabel addConstraint:[NSLayoutConstraint constraintWithItem:ball attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:ball attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
+    
 }
 - (void)initInfo {
     self.visualEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
@@ -150,6 +182,53 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.topLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.topLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:self.buttonTopConstantOpen + self.width / 2]];
 }
+- (void)initLayerPath {
+    self.trianglePath = [UIBezierPath bezierPath];
+    [self.trianglePath moveToPoint:CGPointMake(self.width / 3, self.width / 4)];
+    [self.trianglePath addLineToPoint:CGPointMake(self.width * 3 / 4 + 3, self.width / 2)];
+    [self.trianglePath addLineToPoint:CGPointMake(self.width / 3, self.width * 3 / 4)];
+    [self.trianglePath closePath];
+    
+    self.rectanglePath = [UIBezierPath bezierPath];
+    [self.rectanglePath moveToPoint:CGPointMake(self.width / 3 - 5, self.width / 3 - 5)];
+    [self.rectanglePath addLineToPoint:CGPointMake(self.width * 2 / 3 + 5, self.width / 3 - 5)];
+    [self.rectanglePath addLineToPoint:CGPointMake(self.width * 2 / 3 + 5, self.width * 2 / 3 + 5)];
+    [self.rectanglePath addLineToPoint:CGPointMake(self.width / 3 - 5, self.width * 2 / 3 + 5)];
+    [self.rectanglePath closePath];
+    
+}
+- (void)initRunLabelLayer {
+    self.runLabelLayer = [CAShapeLayerAnim layer];
+    [self.runLabelLayer setFillColor:[UIColor colorWithRed:0.03 green:0.53 blue:0.39 alpha:1].CGColor];
+    [self.runLabelLayer setPath:self.trianglePath.CGPath];
+    
+    [self.runLabelLayer setShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1].CGColor];
+    [self.runLabelLayer setShadowOffset:CGSizeMake(0, 0)];
+    [self.runLabelLayer setShadowRadius:0.0f];
+    [self.runLabelLayer setShadowOpacity:1.0f];
+    
+    [self.runLabel.layer addSublayer:self.runLabelLayer];
+}
+- (void)initLoadLabel {
+    self.loadLabel = [UILabel new];
+    [self.loadLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.loadLabel.layer setZPosition:1];
+    [self.loadLabel setText:@"初始中.."];
+    [self.loadLabel.layer setOpacity:1];
+    [self.loadLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.loadLabel setTextColor:[UIColor colorWithRed:0.49 green:0.82 blue:0.73 alpha:1]];
+    
+    if (LAY) {
+        [self.loadLabel.layer setBorderColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1].CGColor];
+        [self.loadLabel.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
+    }
+    [self.view addSubview:self.loadLabel];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.loadLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.runLabel attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+    self.loadLabelTopConstant = [NSLayoutConstraint constraintWithItem:self.loadLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.runLabel attribute:NSLayoutAttributeBottom multiplier:1 constant:self.loadLabelTopConstantColse];
+    [self.view addConstraint:self.loadLabelTopConstant];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.loadLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:120]];
+}
 - (void)initButton {
     self.runLabel = [UILabel new];
     [self.runLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -174,49 +253,6 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.runLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.runLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:self.width]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.runLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.runLabel attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
-    
-    self.trianglePath = [UIBezierPath bezierPath];
-    [self.trianglePath moveToPoint:CGPointMake(self.width / 3, self.width / 4)];
-    [self.trianglePath addLineToPoint:CGPointMake(self.width * 3 / 4 + 3, self.width / 2)];
-    [self.trianglePath addLineToPoint:CGPointMake(self.width / 3, self.width * 3 / 4)];
-    [self.trianglePath closePath];
-    
-    self.rectanglePath = [UIBezierPath bezierPath];
-    [self.rectanglePath moveToPoint:CGPointMake(self.width / 3 - 5, self.width / 3 - 5)];
-    [self.rectanglePath addLineToPoint:CGPointMake(self.width * 2 / 3 + 5, self.width / 3 - 5)];
-    [self.rectanglePath addLineToPoint:CGPointMake(self.width * 2 / 3 + 5, self.width * 2 / 3 + 5)];
-    [self.rectanglePath addLineToPoint:CGPointMake(self.width / 3 - 5, self.width * 2 / 3 + 5)];
-    [self.rectanglePath closePath];
-    
-    self.triangleLayer = [CAShapeLayerAnim layer];
-    [self.triangleLayer setFillColor:[UIColor colorWithRed:0.03 green:0.53 blue:0.39 alpha:1].CGColor];
-    [self.triangleLayer setPath:self.trianglePath.CGPath];
-    
-    [self.triangleLayer setShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1].CGColor];
-    [self.triangleLayer setShadowOffset:CGSizeMake(0, 0)];
-    [self.triangleLayer setShadowRadius:0.0f];
-    [self.triangleLayer setShadowOpacity:1.0f];
-    
-    [self.runLabel.layer addSublayer:self.triangleLayer];
-    
-    self.loadLabel = [UILabel new];
-    [self.loadLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.loadLabel.layer setZPosition:1];
-    [self.loadLabel setText:@"初始中.."];
-    [self.loadLabel.layer setOpacity:1];
-    [self.loadLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.loadLabel setTextColor:[UIColor colorWithRed:0.49 green:0.82 blue:0.73 alpha:1]];
-    
-    if (LAY) {
-        [self.loadLabel.layer setBorderColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1].CGColor];
-        [self.loadLabel.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
-    }
-    [self.view addSubview:self.loadLabel];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.loadLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.runLabel attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
-    self.loadLabelTopConstant = [NSLayoutConstraint constraintWithItem:self.loadLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.runLabel attribute:NSLayoutAttributeBottom multiplier:1 constant:self.loadLabelTopConstantColse];
-    [self.view addConstraint:self.loadLabelTopConstant];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.loadLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:120]];
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle {
@@ -225,20 +261,37 @@
 - (BOOL)prefersStatusBarHidden {
     return NO;
 }
+- (void)rotateSpinningView {
+    
+        if ([self.ballLabel.layer animationForKey:@"RunningAnimation"] == nil) {
+            CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+            [animation setFromValue:[NSNumber numberWithFloat:0.0f]];
+            [animation setToValue:[NSNumber numberWithFloat: 2 * M_PI]];
+            [animation setDuration:1.5f];
+            [animation setRepeatCount:1];
+            [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+
+            [self.ballLabel.layer addAnimation:animation forKey:@"RunningAnimation"];
+        }
+
+}
 - (void)open {
     [self.runLabel.layer setBackgroundColor:[UIColor colorWithRed:0.04 green:0.62 blue:0.46 alpha:1].CGColor];
-    [self.triangleLayer setPath:self.rectanglePath.CGPath];
-    [self.triangleLayer setFillColor:[UIColor colorWithRed:0 green:0.53 blue:0.38 alpha:1].CGColor];
+    [self.runLabelLayer setPath:self.rectanglePath.CGPath];
+    [self.runLabelLayer setFillColor:[UIColor colorWithRed:0 green:0.53 blue:0.38 alpha:1].CGColor];
     [self.buttonTopConstraint setConstant:self.buttonTopConstantOpen];
     [self.loadLabelTopConstant setConstant:self.loadLabelTopConstantOpen];
     [self.runLabel.layer setShadowOffset:CGSizeMake(0, 0.5)];
     [self.runLabel.layer setShadowRadius:2.0f];
-
+    
+    [self rotateSpinningView];
     
     [UIView animateWithDuration:0.5f animations:^{
         [self.topLabel.layer setOpacity:1];
         [self.mapView.layer setOpacity:1];
         [self.loadLabel.layer setOpacity:0];
+        [self.ballLabel.layer setOpacity:1];
+
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.3f animations:^{
@@ -250,8 +303,8 @@
 }
 - (void)close {
     [self.runLabel.layer setBackgroundColor:[UIColor colorWithRed:0.04 green:0.62 blue:0.46 alpha:1].CGColor];
-    [self.triangleLayer setPath:self.trianglePath.CGPath];
-    [self.triangleLayer setFillColor:[UIColor colorWithRed:0.03 green:0.53 blue:0.39 alpha:1].CGColor];
+    [self.runLabelLayer setPath:self.trianglePath.CGPath];
+    [self.runLabelLayer setFillColor:[UIColor colorWithRed:0.03 green:0.53 blue:0.39 alpha:1].CGColor];
     [self.buttonTopConstraint setConstant:self.buttonTopConstantColse];
     [self.loadLabelTopConstant setConstant:self.loadLabelTopConstantColse];
     [self.runLabel.layer setShadowOffset:CGSizeMake(0, 0)];
@@ -266,6 +319,7 @@
             [self.topLabel.layer setOpacity:0];
             [self.mapView.layer setOpacity:0];
             [self.loadLabel.layer setOpacity:1];
+            [self.ballLabel.layer setOpacity:0];
             [self.view layoutIfNeeded];
         }];
     }];
@@ -278,8 +332,20 @@
 
     if (self.isOn) {
         [self.loadLabel setText:@"開啟中.."];
+        
+        if ([self.runLabel.layer animationForKey:@"SpinAnimation"] == nil) {
+            CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+            [animation setFromValue:[NSNumber numberWithFloat:0.0f]];
+            [animation setToValue:[NSNumber numberWithFloat: 2 * M_PI]];
+            [animation setDuration:1.0f];
+            [animation setRepeatCount:INFINITY];
+            
+            [self.runLabel.layer addAnimation:animation forKey:@"SpinAnimation"];
+        }
+        
         [PathGPS start:self.mapView.userLocation.location.coordinate
                success:^{
+                   [self.runLabel.layer removeAnimationForKey:@"SpinAnimation"];
                    [self.loadLabel setText:@"已開啟!"];
                    [self open];
                } failure:^{
@@ -287,9 +353,9 @@
                } gps: self];
     }
     else {
+        [self.loadLabel setText:@"關閉中.."];
+        [self close];
         [PathGPS stop:^{
-            [self.loadLabel setText:@"關閉中.."];
-            [self close];
             [self.loadLabel setText:@"已關閉!"];
         }];
     }

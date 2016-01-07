@@ -14,6 +14,16 @@ $(function () {
   var _paths = [];
   var _polylines = [];
   var colors = ['#CCDDFF', '#99BBFF', '#5599FF', '#0066FF', '#0044BB', '#003C9D', '#003377', '#550088', '#770077'];
+  // [UIColor colorWithRed:0.8 green:0.867 blue:1 alpha:1]
+  // [UIColor colorWithRed:0.6 green:0.733 blue:1 alpha:1]
+  // [UIColor colorWithRed:0.333 green:0.6 blue:1 alpha:1]
+  // [UIColor colorWithRed:0 green:0.4 blue:1 alpha:1]
+  // [UIColor colorWithRed:0 green:0.267 blue:0.733 alpha:1]
+  // [UIColor colorWithRed:0 green:0.235 blue:0.616 alpha:1]
+  // [UIColor colorWithRed:0 green:0.2 blue:0.467 alpha:1]
+  // [UIColor colorWithRed:0.333 green:0 blue:0.533 alpha:1]
+  // [UIColor colorWithRed:0.467 green:0 blue:0.467 alpha:1]
+
   // var colors = ['#CC00CC','#A500CC','#7700BB','#5500DD','#4400CC','#0000CC','#0044BB','#009FCC','#00DDDD','#00DDAA','#00DD77','#00DD00','#66DD00','#99DD00','#FFFF33','#FFDD55','#FFBB66','#FF7744','#FF5511','#FF0000',];
 
   function initMarker (path) {

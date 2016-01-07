@@ -16,16 +16,16 @@
 
 @property UIButton *runButton;
 
-@property CAShapeLayerAnim *triangleLayer;
+@property CAShapeLayerAnim *runLabelLayer;
 @property UIBezierPath *trianglePath, *rectanglePath;
 @property float width, buttonTopConstantColse, buttonTopConstantOpen, loadLabelTopConstantColse, loadLabelTopConstantOpen;
 @property NSLayoutConstraint *buttonTopConstraint, *loadLabelTopConstant, *visualTopConstant;
-@property UILabel *runLabel, *loadLabel, *topLabel, *latLable, *lngLable, *speedLabel, *accuracyLabel;
+@property UILabel *runLabel, *ballLabel, *loadLabel, *topLabel, *latLable, *lngLable, *speedLabel, *accuracyLabel;
 
 @property MKMapView *mapView;
 
 @property BOOL isOn, isMapload;
 
 @property UIVisualEffectView *visualEffectView;
-
+- (void)rotateSpinningView;
 @end
