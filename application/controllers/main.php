@@ -8,7 +8,11 @@
 class Main extends Site_controller {
 
   public function x () {
-    delay_job ('main', 'put_cover', array ('id' => 1));
+    if (!(($id = OAInput::post ('id')) && ($polyline = Polyline::find_by_id ($id, array ('select' => 'id, cover')))))
+      return;
+    Polyline::transaction (function () use ($polyline) {
+      return $polyline->put_cover ();
+    });
 
       // delay_job ('main', 'put_cover', array ('id' => 7));
     // $p = Polyline::find (3);
