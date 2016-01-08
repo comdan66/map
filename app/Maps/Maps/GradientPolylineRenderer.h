@@ -13,7 +13,8 @@
 
 @interface GradientPolylineRenderer : MKOverlayPathRenderer
 
-@property GradientPolylineOverlay *gradientPolylineOverlay;
+@property GradientPolylineOverlay *gradientOverlay;
+
 
 -(id) initWithOverlay:(GradientPolylineOverlay *)overlay;
 

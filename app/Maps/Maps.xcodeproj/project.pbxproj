@@ -379,6 +379,7 @@
 		0EF05E221C29467A00243BB9 /* Maps */ = {
 			isa = PBXGroup;
 			children = (
+				0EFF9C651C3CC7610033916B /* GradientPolyline */,
 				0EFF9C691C3CD8E70033916B /* GPS */,
 				0E46EF1A1C3970870000BE18 /* Polylines */,
 				0EF05F531C2BC10800243BB9 /* Header.h */,
@@ -593,7 +594,6 @@
 		0EFF9C5E1C3BA17F0033916B /* Polyline */ = {
 			isa = PBXGroup;
 			children = (
-				0EFF9C651C3CC7610033916B /* GradientPolyline */,
 				0E46EE5C1C310F560000BE18 /* UserMarker */,
 				0EF0600D1C2D470900243BB9 /* MyAnnotation */,
 				0EFF9C5B1C3A86BC0033916B /* PolylineViewController.h */,

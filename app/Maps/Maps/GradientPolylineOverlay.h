@@ -8,14 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "CalculateSpeed.h"
 
 @interface GradientPolylineOverlay : NSObject <MKOverlay> {
     MKMapRect boundingMapRect;
     pthread_rwlock_t rwLock;
 }
-@property NSMutableArray<CLLocation *> *points;
+@property NSMutableArray<CLLocation *> *locations;
+@property CalculateSpeed *calculate;
 
--(id) initWithCoordinates:(NSMutableArray *) coordinates;
+-(id) initWithLocations:(NSMutableArray<CLLocation *> *) locations calculate:(CalculateSpeed *)c;
 -(void) lockForReading;
 -(void) unlockForReading;
+
 @end

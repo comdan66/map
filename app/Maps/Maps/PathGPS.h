@@ -19,7 +19,7 @@
 @property BOOL isUploadPaths;
 @property UIViewController *gpsControler;
 @property CLLocationCoordinate2D location;
-
+@property CLLocation *lastLocation;
 + (void)start:(CLLocationCoordinate2D)coordinate success:(void (^)())finish failure:(void (^)())failure gps:(UIViewController *)gpsCtr;
 + (void)stop:(void (^)())finish;
 

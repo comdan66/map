@@ -11,16 +11,20 @@
 
 @interface CalculateSpeed : NSObject
 
-+ (float) max;
-+ (void) setMax:(float)m;
-+ (float) min;
-+ (void) setMin:(float)m;
-+ (NSMutableArray<UIColor *> *) colors;
-+ (void) setColors:(NSMutableArray<UIColor *> *)c;
+//+ (float) max;
+//+ (void) setMax:(float)m;
+//+ (float) min;
+//+ (void) setMin:(float)m;
+//+ (NSMutableArray<UIColor *> *) colors;
+//+ (void) setColors:(NSMutableArray<UIColor *> *)c;
+
+@property float max, min;
+@property NSMutableArray<UIColor *> *colors;
+@property NSMutableArray<NSDictionary *> *speeds;
 
 + (NSArray *) d4Colors;
-+ (void) calculate:(NSMutableArray *)velocity;
++ (CalculateSpeed *) calculate:(NSMutableArray *)velocity;
 
-+ (NSMutableArray<NSDictionary *> *) speeds;
-+ (void) setSpeeds:(NSMutableArray<NSDictionary *> *)s;
+//+ (NSMutableArray<NSDictionary *> *) speeds;
+//+ (void) setSpeeds:(NSMutableArray<NSDictionary *> *)s;
 @end

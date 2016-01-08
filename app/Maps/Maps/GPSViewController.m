@@ -20,6 +20,7 @@
     self.isOn = NO;
     self.isMapload = NO;
     self.width = 100;
+    self.speedsLabelHeight = 30;
     self.buttonTopConstantColse = 200;
     self.buttonTopConstantOpen = 30;
     self.loadLabelTopConstantColse = 20;
@@ -33,12 +34,59 @@
     
     [self initMapView];
     [self initInfo];
-    [self initLogLabel];
+    [self initTopLabel];
     [self initLayerPath];
     [self initButton];
     [self initRunLabelLayer];
     [self initLoadLabel];
     [self initBallLabel];
+    [self initSpeedsLabel];
+}
+
+-(void)initSpeedsLabel {
+    self.speedsLabel = [UILabel new];
+    [self.speedsLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.speedsLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.speedsLabel setBackgroundColor:[UIColor whiteColor]];
+    [self.speedsLabel.layer setZPosition:3];
+    [self.speedsLabel.layer setOpacity:0];
+    
+    [self.speedsLabel.layer setShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5].CGColor];
+    [self.speedsLabel.layer setShadowOffset:CGSizeMake(0, -1)];
+    [self.speedsLabel.layer setShadowRadius:1.0f];
+    [self.speedsLabel.layer setShadowOpacity:0.5f];
+    
+    [self.view addSubview:self.speedsLabel];
+    
+    self.speedsLabelTopConstraint = [NSLayoutConstraint constraintWithItem:self.speedsLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:self.speedsLabelHeight];
+    [self.view addConstraint:self.speedsLabelTopConstraint];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.speedsLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.speedsLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.speedsLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:self.speedsLabelHeight]];
+    
+    self.colorLabels = [NSMutableArray new];
+    for (int i = 0; i < [[CalculateSpeed d4Colors] count]; i++) {
+        UILabel *colorLabel = [UILabel new];
+        [colorLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [colorLabel setTextAlignment:NSTextAlignmentCenter];
+        [colorLabel setFont:[UIFont systemFontOfSize:11.0]];
+        [colorLabel setText:@""];
+        [colorLabel setTextColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
+        if (LAY) {
+            [colorLabel.layer setBorderColor:[UIColor blueColor].CGColor];
+            [colorLabel.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
+        }
+        [colorLabel.layer setZPosition:4];
+        
+        [self.speedsLabel addSubview:colorLabel];
+        [self.speedsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.speedsLabel attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+        [self.speedsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.speedsLabel attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+        [self.speedsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.speedsLabel attribute:NSLayoutAttributeWidth multiplier:1.0 / [[CalculateSpeed d4Colors] count] constant:0]];
+        if (i == 0) [self.speedsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.speedsLabel attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+        else [self.speedsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:[self.colorLabels objectAtIndex:i - 1] attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+
+        [self.colorLabels addObject:colorLabel];
+    }
 }
 -(void)initBallLabel {
     self.ballLabel = [UILabel new];
@@ -165,7 +213,7 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.mapView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0.0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.mapView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
 }
--(void)initLogLabel {
+-(void)initTopLabel {
     self.topLabel = [UILabel new];
     [self.topLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.topLabel setBackgroundColor:[UIColor colorWithRed:0 green:0.62 blue:0.45 alpha:1]];
@@ -285,7 +333,7 @@
     [self.runLabel.layer setShadowRadius:2.0f];
     
     [self rotateSpinningView];
-    
+
     [UIView animateWithDuration:0.5f animations:^{
         [self.topLabel.layer setOpacity:1];
         [self.mapView.layer setOpacity:1];
@@ -309,7 +357,8 @@
     [self.loadLabelTopConstant setConstant:self.loadLabelTopConstantColse];
     [self.runLabel.layer setShadowOffset:CGSizeMake(0, 0)];
     [self.runLabel.layer setShadowRadius:0.5f];
-    
+    [self clean];
+
     [UIView animateWithDuration:0.3f animations:^{
         [self.visualTopConstant setConstant:-self.width / 2];
         [self.visualEffectView.layer setOpacity:0];
@@ -349,6 +398,7 @@
                    [self.loadLabel setText:@"已開啟!"];
                    [self open];
                } failure:^{
+                   [self.runLabel.layer removeAnimationForKey:@"SpinAnimation"];
                    [self touchesBegan:nil];
                } gps: self];
     }
@@ -368,6 +418,55 @@
     self.isMapload = YES;
     [self.runLabel.layer setOpacity:1];
     [self.loadLabel setText:@"初始完成！"];
+}
+- (void)viewDidDisappear:(BOOL)animated {
+    [self clean];
+}
+-(void) clean {
+    [self.speedsLabelTopConstraint setConstant:self.speedsLabelHeight];
+    [UIView animateWithDuration:0.5f animations:^{
+        [self.speedsLabel.layer setOpacity:0];
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (void)setMap:(NSArray *)paths {
+    [self.mapView removeOverlays:self.mapView.overlays];
+    
+    if (paths.count <= 0)
+        return;
+
+    NSMutableArray<CLLocation *> *locations = [NSMutableArray new];
+    NSMutableArray *velocity = [NSMutableArray new];
+    
+    for (NSMutableDictionary *path in paths) {
+        [velocity addObject:[NSNumber numberWithFloat:[[path objectForKey:@"sd"] doubleValue]]];
+        [locations addObject:[[CLLocation alloc] initWithLatitude:[[path objectForKey:@"lat"] doubleValue] longitude:[[path objectForKey:@"lng"] doubleValue]]];
+    }
+    
+//    [CalculateSpeed calculate:velocity];
+    CalculateSpeed *calculate = [CalculateSpeed calculate:velocity];
+    [self.mapView addOverlay:[[GradientPolylineOverlay alloc] initWithLocations:locations calculate:calculate]];
+
+    NSMutableArray<NSDictionary *> *speeds = calculate.speeds;
+    for (int i = 0; (i < [self.colorLabels count]) && (i < [speeds count]); i++) {
+        [[self.colorLabels objectAtIndex:i] setBackgroundColor:[[speeds objectAtIndex:i] objectForKey:@"color"]];
+        [[self.colorLabels objectAtIndex:i] setText:[NSString stringWithFormat:@"%d", (unsigned int)round([[[speeds objectAtIndex:i] objectForKey:@"speed"] doubleValue])]];
+    }
+
+    [self.speedsLabelTopConstraint setConstant:0];
+
+    [UIView animateWithDuration:0.5f animations:^{
+        [self.speedsLabel.layer setOpacity:1];
+        [self.view layoutIfNeeded];
+    }];
+}
+
+-(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(GradientPolylineOverlay *)overlay{
+    GradientPolylineRenderer *polylineRenderer = [[GradientPolylineRenderer alloc] initWithOverlay:overlay];
+    polylineRenderer.lineWidth = 8.0f;
+
+    return polylineRenderer;
 }
 
 /*

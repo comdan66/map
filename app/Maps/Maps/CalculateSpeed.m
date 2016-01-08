@@ -10,19 +10,19 @@
 
 @implementation CalculateSpeed
 
-static float max = -1, min = 99999;
-static NSMutableArray<UIColor *> *colors;
-static NSMutableArray<NSDictionary *> *speeds;
+//static float max = -1, min = 99999;
+//static NSMutableArray<UIColor *> *colors;
+//static NSMutableArray<NSDictionary *> *speeds;
 
-+ (float) max { return max; }
-+ (void) setMax:(float)m { max = m; }
-+ (float) min { return min; }
-+ (void) setMin:(float)m { min = m; }
-+ (NSMutableArray<UIColor *> *) colors { return colors; }
-+ (void) setColors:(NSMutableArray<UIColor *> *)c { colors = c; }
-
-+ (NSMutableArray<NSDictionary *> *) speeds { return speeds; }
-+ (void) setSpeeds:(NSMutableArray<NSDictionary *> *)s { speeds = s; }
+//+ (float) max { return max; }
+//+ (void) setMax:(float)m { max = m; }
+//+ (float) min { return min; }
+//+ (void) setMin:(float)m { min = m; }
+//+ (NSMutableArray<UIColor *> *) colors { return colors; }
+//+ (void) setColors:(NSMutableArray<UIColor *> *)c { colors = c; }
+//
+//+ (NSMutableArray<NSDictionary *> *) speeds { return speeds; }
+//+ (void) setSpeeds:(NSMutableArray<NSDictionary *> *)s { speeds = s; }
 
 
 + (NSArray *) d4Colors {
@@ -37,25 +37,29 @@ static NSMutableArray<NSDictionary *> *speeds;
             [UIColor colorWithRed:0.333 green:0 blue:0.533 alpha:1],
             [UIColor colorWithRed:0.467 green:0 blue:0.467 alpha:1],nil];
 }
-+ (void) calculate:(NSMutableArray *)velocity {
-    [CalculateSpeed setMax:[[velocity valueForKeyPath:@"@max.floatValue"] doubleValue]];
-    [CalculateSpeed setMin:[[velocity valueForKeyPath:@"@min.floatValue"] doubleValue]];
++ (CalculateSpeed *) calculate:(NSMutableArray *)velocity {
+    CalculateSpeed *calculateSpeed = [CalculateSpeed new];
     
-    NSArray *d4Colors = [self d4Colors];
-    float unit = (([d4Colors count] - 1) / max);
+    [calculateSpeed setMax:[[velocity valueForKeyPath:@"@max.floatValue"] doubleValue]];
+    [calculateSpeed setMin:[[velocity valueForKeyPath:@"@min.floatValue"] doubleValue]];
+    
+    NSArray *d4Colors = [CalculateSpeed d4Colors];
+    float unit = (([d4Colors count] - 1) / calculateSpeed.max);
     
     NSMutableArray<UIColor *> *colors = [NSMutableArray new];
     for (int i = 0; i < [velocity count]; i++)
         [colors addObject:d4Colors[(unsigned int)round(unit * [velocity[i] doubleValue])]];
-    [self setColors:colors];
-    
+    [calculateSpeed setColors:colors];
+
     NSMutableArray<NSDictionary *> *speeds = [NSMutableArray new];
     for (int i = 0; i < [d4Colors count]; i++)
         [speeds addObject:@{
-                            @"speed":[NSNumber numberWithFloat:max * 3.6 / [d4Colors count] * i],
+                            @"speed":[NSNumber numberWithFloat:calculateSpeed.max * 3.6 / [d4Colors count] * i],
                             @"color": d4Colors[i]
                             }];
-    [self setSpeeds:speeds];
+    [calculateSpeed setSpeeds:speeds];
+    
+    return calculateSpeed;
 }
 
 @end

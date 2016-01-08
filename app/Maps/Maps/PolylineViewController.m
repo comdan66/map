@@ -140,28 +140,26 @@
     [self.mapView removeOverlays:self.mapView.overlays];
 
     if (paths.count > 0) {
-        NSMutableArray<CLLocation *> *coordinates = [NSMutableArray new];
+        NSMutableArray<CLLocation *> *locations = [NSMutableArray new];
         NSMutableArray *velocity = [NSMutableArray new];
         
         for (NSMutableDictionary *path in paths) {
             [velocity addObject:[NSNumber numberWithFloat:[[path objectForKey:@"sd"] doubleValue]]];
-            [coordinates addObject:[[CLLocation alloc] initWithLatitude:[[path objectForKey:@"lat"] doubleValue] longitude:[[path objectForKey:@"lng"] doubleValue]]];
+            [locations addObject:[[CLLocation alloc] initWithLatitude:[[path objectForKey:@"lat"] doubleValue] longitude:[[path objectForKey:@"lng"] doubleValue]]];
         }
-
-        [CalculateSpeed calculate:velocity];
         
         if (!self.user && ([paths count] > 0)) {
-            self.user = [[MyAnnotation alloc] initWithLocation:((CLLocation *)coordinates[0]).coordinate];
+            self.user = [[MyAnnotation alloc] initWithLocation:((CLLocation *)locations[0]).coordinate];
             [self.user setImageUrl:avatar];
             [self.mapView addAnnotation:self.user];
         } else {
-            [self.user setCoordinate:((CLLocation *)coordinates[0]).coordinate];
+            [self.user setCoordinate:((CLLocation *)locations[0]).coordinate];
         }
-        
-        [self.mapView addOverlay:[[GradientPolylineOverlay alloc] initWithCoordinates:coordinates]];
+        CalculateSpeed *calculate = [CalculateSpeed calculate:velocity];
+        [self.mapView addOverlay:[[GradientPolylineOverlay alloc] initWithLocations:locations calculate:calculate]];
         [self.uLocationButton setEnabled:YES];
-        [self setRunTime:[responseObject objectForKey:@"run_time"] length:[responseObject objectForKey:@"length"] speeds:[CalculateSpeed speeds]];
-        if (alert) [self.mapView setRegion:MKCoordinateRegionMake(((CLLocation *)coordinates[0]).coordinate, MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
+        [self setRunTime:[responseObject objectForKey:@"run_time"] length:[responseObject objectForKey:@"length"] speeds:calculate.speeds];
+        if (alert) [self.mapView setRegion:MKCoordinateRegionMake(((CLLocation *)locations[0]).coordinate, MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
     } else {
         [self.uLocationButton setEnabled:NO];
     }
@@ -182,7 +180,6 @@
     GradientPolylineRenderer *polylineRenderer = [[GradientPolylineRenderer alloc] initWithOverlay:overlay];
     polylineRenderer.lineWidth = 8.0f;
     return polylineRenderer;
-    
 }
 - (void)initUI {
     [self.view.layer setBackgroundColor:[UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1].CGColor];

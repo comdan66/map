@@ -24,7 +24,7 @@
     [data setValue:[NSString stringWithFormat:@"%f", coordinate.longitude] forKey:@"lng"];
     [data setValue:[dateFormatter stringFromDate:[NSDate date]] forKey:@"ct"];
 
-    if (DEV) NSLog(@"------->create polyline!");
+    if (DEV) NSLog(@"------->create polyline! %f %f %@", coordinate.latitude, coordinate.longitude, [dateFormatter stringFromDate:[NSDate date]]);
     AFHTTPRequestOperationManager *httpManager = [AFHTTPRequestOperationManager manager];
     [httpManager.responseSerializer setAcceptableContentTypes:[NSSet setWithObject:@"application/json"]];
     [httpManager POST:[NSString stringWithFormat:API_POST_USER_CREATE_POLYLINE, USER_ID]
@@ -35,14 +35,14 @@
                   PathGPS *gps = [super gps];
                   [gps setPolylineId:[NSString stringWithFormat:@"%@", [responseObject objectForKey:@"id"]]];
                   gps.gpsControler = gpsCtr;
-                  
+
                   if (gps.timer) {
                       [gps.timer invalidate];
                       gps.timer = nil;
                       gps.isUploadPaths = NO;
                   }
                   
-                  gps.timer = [NSTimer scheduledTimerWithTimeInterval:UPLOAD_PATHS_TIMER target:gps selector:@selector(fetch) userInfo:nil repeats:YES];
+                  gps.timer = [NSTimer scheduledTimerWithTimeInterval:UPLOAD_PATHS_TIMER target:gps selector:@selector(fetchUploadPaths) userInfo:nil repeats:YES];
                   
                   finish();
               }
@@ -52,10 +52,12 @@
      ];
 }
 
-- (void)fetch {
+- (void)fetchUploadPaths {
     [self uploadPaths:nil];
 }
 - (void) uploadPaths:(void (^)())finish {
+    if ((int)[self.polylineId integerValue] < 0) return;
+    
     if (self.isUploadPaths) {
         if (finish) finish();
         return;
@@ -88,9 +90,10 @@
                   if ((int)[(NSArray *)[responseObject objectForKey:@"ids"] count] > 0)
                       [Path deleteAll:[NSString stringWithFormat:@"id IN (%@)", [[responseObject objectForKey:@"ids"] componentsJoinedByString:@", "]]];
                   
-                      [((GPSViewController *)self.gpsControler) rotateSpinningView];
+                  [((GPSViewController *)self.gpsControler) rotateSpinningView];
                   
                   if (finish) finish();
+                  else [((GPSViewController *)self.gpsControler) setMap:[responseObject objectForKey:@"paths"]];
               }
               failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                   self.isUploadPaths = NO;
@@ -133,27 +136,42 @@
         [gps finish:finish];
     }];
 }
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    CLLocation *location = [locations firstObject];
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+    if (self.lastLocation) {
+        
+        NSMutableArray *velocity = [NSMutableArray new];
+        NSMutableArray<CLLocation *> *ls = [NSMutableArray new];
+        [velocity addObject:[NSNumber numberWithFloat:self.lastLocation.speed]];
+        [velocity addObject:[NSNumber numberWithFloat:[locations firstObject].speed]];
+
+        [ls addObject:self.lastLocation];
+        [ls addObject:[[CLLocation alloc] initWithLatitude:[locations firstObject].coordinate.latitude longitude:[locations firstObject].coordinate.longitude]];
+        
+        [((GPSViewController *)self.gpsControler).mapView addOverlay:[[GradientPolylineOverlay alloc] initWithLocations:ls calculate:[CalculateSpeed calculate:velocity]]];
+    }
+
+    self.lastLocation = [locations firstObject];
 
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
     [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
     
     [Path create:@{
-                   @"lat": [NSString stringWithFormat:@"%f", location.coordinate.latitude],
-                   @"lng": [NSString stringWithFormat:@"%f", location.coordinate.longitude],
-                   @"al": [NSString stringWithFormat:@"%f", location.altitude],
-                   @"ah": [NSString stringWithFormat:@"%f", location.horizontalAccuracy],
-                   @"av": [NSString stringWithFormat:@"%f", location.verticalAccuracy],
-                   @"sd": [NSString stringWithFormat:@"%f", location.speed],
+                   @"lat": [NSString stringWithFormat:@"%f", self.lastLocation.coordinate.latitude],
+                   @"lng": [NSString stringWithFormat:@"%f", self.lastLocation.coordinate.longitude],
+                   @"al": [NSString stringWithFormat:@"%f", self.lastLocation.altitude],
+                   @"ah": [NSString stringWithFormat:@"%f", self.lastLocation.horizontalAccuracy],
+                   @"av": [NSString stringWithFormat:@"%f", self.lastLocation.verticalAccuracy],
+                   @"sd": [NSString stringWithFormat:@"%f", self.lastLocation.speed],
                    @"ct": [dateFormatter stringFromDate:[NSDate date]]
                    }];
-    if (DEV) NSLog(@"=======>Location: %@, %@", [NSString stringWithFormat:@"%f", location.coordinate.latitude], [NSString stringWithFormat:@"%f", location.coordinate.longitude]);
+    if (DEV) NSLog(@"=======>Location: %@, %@", [NSString stringWithFormat:@"%f", self.lastLocation.coordinate.latitude], [NSString stringWithFormat:@"%f", self.lastLocation.coordinate.longitude]);
     
-    [((GPSViewController *)self.gpsControler).lngLable setText:[NSString stringWithFormat:@"經度：%.5f", location.coordinate.latitude]];
-    [((GPSViewController *)self.gpsControler).latLable setText:[NSString stringWithFormat:@"緯度：%.5f", location.coordinate.longitude]];
-    [((GPSViewController *)self.gpsControler).speedLabel setText:[NSString stringWithFormat:@"速度：%.3f Km/H", location.speed]];
-    [((GPSViewController *)self.gpsControler).accuracyLabel setText:[NSString stringWithFormat:@"準度：%.1f 公尺", location.horizontalAccuracy]];
-    [((GPSViewController *)self.gpsControler).mapView setRegion:MKCoordinateRegionMake(location.coordinate, MKCoordinateSpanMake(0.02, 0.02)) animated:YES];
+    [((GPSViewController *)self.gpsControler).lngLable setText:[NSString stringWithFormat:@"經度：%.5f", self.lastLocation.coordinate.latitude]];
+    [((GPSViewController *)self.gpsControler).latLable setText:[NSString stringWithFormat:@"緯度：%.5f", self.lastLocation.coordinate.longitude]];
+    [((GPSViewController *)self.gpsControler).speedLabel setText:[NSString stringWithFormat:@"速度：%.3f Km/H", self.lastLocation.speed]];
+    [((GPSViewController *)self.gpsControler).accuracyLabel setText:[NSString stringWithFormat:@"準度：%.1f 公尺", self.lastLocation.horizontalAccuracy]];
+    [((GPSViewController *)self.gpsControler).mapView setRegion:MKCoordinateRegionMake(self.lastLocation.coordinate, MKCoordinateSpanMake(0.02, 0.02)) animated:YES];
+
+    
 }
 @end

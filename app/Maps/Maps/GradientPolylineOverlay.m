@@ -11,21 +11,23 @@
 
 @implementation GradientPolylineOverlay
 
--(id) initWithCoordinates:(NSMutableArray<CLLocation *> *) coordinates {
+-(id) initWithLocations:(NSMutableArray<CLLocation *> *) locations calculate:(CalculateSpeed *)c {
     self = [super init];
     if (self){
-        self.points = coordinates;
-
-        MKMapPoint origin = MKMapPointForCoordinate([self.points firstObject].coordinate);
-        origin.x -= MKMapSizeWorld.width / 8.0f;
-        origin.y -= MKMapSizeWorld.height / 8.0f;
-        MKMapSize size = MKMapSizeWorld;
-        size.width /= 4.0f;
-        size.height /= 4.0f;
-        boundingMapRect = (MKMapRect) {origin, size};
-        MKMapRect worldRect = MKMapRectMake(0, 0, MKMapSizeWorld.width, MKMapSizeWorld.height);
-        boundingMapRect = MKMapRectIntersection(boundingMapRect, worldRect);
-
+        self.calculate = c;
+        self.locations = locations;
+        
+        if ([self.locations count] > 0) {
+            MKMapPoint origin = MKMapPointForCoordinate([self.locations firstObject].coordinate);
+            origin.x -= MKMapSizeWorld.width / 8.0f;
+            origin.y -= MKMapSizeWorld.height / 8.0f;
+            MKMapSize size = MKMapSizeWorld;
+            size.width /= 4.0f;
+            size.height /= 4.0f;
+            boundingMapRect = (MKMapRect) {origin, size};
+            MKMapRect worldRect = MKMapRectMake(0, 0, MKMapSizeWorld.width, MKMapSizeWorld.height);
+            boundingMapRect = MKMapRectIntersection(boundingMapRect, worldRect);
+        }
         pthread_rwlock_init(&rwLock,NULL);
     }
     return self;
@@ -36,7 +38,7 @@
 }
 
 -(CLLocationCoordinate2D)coordinate{
-    return [self.points firstObject].coordinate;
+    return [self.locations firstObject].coordinate;
 }
 
 -(MKMapRect)boundingMapRect{

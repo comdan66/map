@@ -18,7 +18,7 @@
     if (self) {
         pthread_rwlock_init(&rwLock,NULL);
         
-        self.gradientPolylineOverlay = overlay;
+        self.gradientOverlay = overlay;
         [self createPath];
     }
     return self;
@@ -28,8 +28,8 @@
     CGMutablePathRef path = CGPathCreateMutable();
     BOOL pathIsEmpty = YES;
 
-    for (int i = 0; i < [self.gradientPolylineOverlay.points count]; i++) {
-        CGPoint point = [self pointForMapPoint:MKMapPointForCoordinate ([self.gradientPolylineOverlay.points objectAtIndex:i].coordinate)];
+    for (int i = 0; i < [self.gradientOverlay.locations count]; i++) {
+        CGPoint point = [self pointForMapPoint:MKMapPointForCoordinate ([self.gradientOverlay.locations objectAtIndex:i].coordinate)];
 
         if (pathIsEmpty){
             CGPathMoveToPoint(path, nil, point.x, point.y);
@@ -51,17 +51,17 @@
     CGRect pointsRect = CGPathGetBoundingBox(self.path);
     CGRect mapRectCG = [self rectForMapRect:mapRect];
     if (!CGRectIntersectsRect(pointsRect, mapRectCG))return;
-    
+
     UIColor *pcolor, *ccolor;
-    for (int i = 0; i < [self.gradientPolylineOverlay.points count]; i++) {
-        CGPoint point = [self pointForMapPoint:MKMapPointForCoordinate ([self.gradientPolylineOverlay.points objectAtIndex:i].coordinate)];
+    for (int i = 0; i < [self.gradientOverlay.locations count]; i++) {
+        CGPoint point = [self pointForMapPoint:MKMapPointForCoordinate ([self.gradientOverlay.locations objectAtIndex:i].coordinate)];
         CGMutablePathRef path = CGPathCreateMutable();
-        ccolor = [[CalculateSpeed colors] objectAtIndex:i];
+        ccolor = [self.gradientOverlay.calculate.colors objectAtIndex:i];
 
         if (i == 0){
             CGPathMoveToPoint(path, nil, point.x, point.y);
         } else {
-            CGPoint prevPoint = [self pointForMapPoint:MKMapPointForCoordinate ([self.gradientPolylineOverlay.points objectAtIndex:i - 1].coordinate)];
+            CGPoint prevPoint = [self pointForMapPoint:MKMapPointForCoordinate ([self.gradientOverlay.locations objectAtIndex:i - 1].coordinate)];
             CGPathMoveToPoint(path, nil, prevPoint.x, prevPoint.y);
             CGPathAddLineToPoint(path, nil, point.x, point.y);
             
@@ -87,6 +87,7 @@
             CGGradientRelease(gradient);
             CGContextRestoreGState(context);
         }
+
         pcolor = [UIColor colorWithCGColor:ccolor.CGColor];
     }
 }
