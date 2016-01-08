@@ -24,7 +24,7 @@
 @property BOOL isLoadData;
 @property UILabel *infoLabel;
 @property MyAnnotation *user;
-
+@property NSMutableArray<UILabel *> *colorLabels;
 @property NSTimer *timer;
 
 -(PolylineViewController *)initWithId:(NSString *)id;

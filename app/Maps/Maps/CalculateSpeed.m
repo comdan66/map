@@ -49,7 +49,7 @@ static NSMutableArray<NSDictionary *> *speeds;
         [colors addObject:d4Colors[(unsigned int)round(unit * [velocity[i] doubleValue])]];
     [self setColors:colors];
     
-    NSMutableArray *speeds = [NSMutableArray new];
+    NSMutableArray<NSDictionary *> *speeds = [NSMutableArray new];
     for (int i = 0; i < [d4Colors count]; i++)
         [speeds addObject:@{
                             @"speed":[NSNumber numberWithFloat:max * 3.6 / [d4Colors count] * i],

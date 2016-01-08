@@ -31,7 +31,9 @@ class Polyline_paths extends Api_controller {
       return $this->output_json (array (
           'avatar' => $this->polyline->user->avatar->url ('100x100c'),
           'is_finished' => true,
-          'paths' => array ()
+          'paths' => array (),
+          'run_time' => '0秒',
+          'length' => '0公尺'
         ));
 
     $run_time = $this->polyline->run_time_units ();

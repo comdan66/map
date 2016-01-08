@@ -169,16 +169,18 @@
     [self initInfoLabel];
 }
 - (void)initInfoLabel {
+    float infoLabelHeight = 30, colorsLabelHeight = 20;
+    
     UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
     [visualEffectView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [visualEffectView setOpaque:NO];
     [visualEffectView.layer setZPosition:3];
     
     [self.view addSubview:visualEffectView];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1 constant:0 - (infoLabelHeight + colorsLabelHeight + 5)]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:infoLabelHeight]];
     
     UILabel *bH = [UILabel new];
     [bH setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -206,13 +208,41 @@
     [colorsLabel.layer setShadowOffset:CGSizeMake(0, 0)];
     [colorsLabel.layer setShadowRadius:1.0f];
     [colorsLabel.layer setShadowOpacity:0.5f];
-
+    
+    
     [self.view addSubview:colorsLabel];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:colorsLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:bH attribute:NSLayoutAttributeBottom multiplier:1 constant:-1]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:colorsLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:colorsLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:colorsLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:20]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:colorsLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:colorsLabelHeight]];
+    
+    self.colorLabels = [NSMutableArray new];
+    for (int i = 0; i < [[CalculateSpeed d4Colors] count]; i++) {
+        UILabel *colorLabel = [UILabel new];
+        [colorLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [colorLabel setBackgroundColor:[UIColor redColor]];
+        [colorLabel.layer setBorderColor:[UIColor redColor].CGColor];
+        [colorLabel.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
 
+        [colorLabel.layer setZPosition:2];
+        
+        [colorsLabel addSubview:colorLabel];
+        [colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:colorsLabel attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+        [colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:colorsLabel attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+        [colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:colorsLabel attribute:NSLayoutAttributeWidth multiplier:1.0 / [[CalculateSpeed d4Colors] count] constant:0]];
+        if (i == 0) [colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:colorsLabel attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+        else [colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:[self.colorLabels objectAtIndex:i - 1] attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+        
+        [self.colorLabels addObject:colorLabel];
+    }
+//    for (NSDictionary *speed in [CalculateSpeed speeds]) {
+//        UILabel *colorLabel = [UILabel new];
+//        
+//        [colorsLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+//    }
+//    for (int i = 0; i < [[CalculateSpeed colors] count]; <#increment#>) {
+//        <#statements#>
+//    }
     //    self.kmLabel = [UILabel new];
 //    [self.kmLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 }
