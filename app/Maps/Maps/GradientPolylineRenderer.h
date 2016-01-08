@@ -13,11 +13,8 @@
 
 @interface GradientPolylineRenderer : MKOverlayPathRenderer
 
-//+ (NSArray *) d4Colors;
-//@property NSMutableArray *colors;
--(id) initWithOverlay:(GradientPolylineOverlay *)overlay;
-
 @property GradientPolylineOverlay *gradientPolylineOverlay;
-//@property NSMutableArray<MKMapPoint *> *point;
+
+-(id) initWithOverlay:(GradientPolylineOverlay *)overlay;
 
 @end

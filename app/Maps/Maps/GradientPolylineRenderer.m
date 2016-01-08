@@ -8,11 +8,8 @@
 
 #import "GradientPolylineRenderer.h"
 
-
-
 @implementation GradientPolylineRenderer{
     pthread_rwlock_t rwLock;
-//    GradientPolylineOverlay* polyline;
 }
 
 -(id) initWithOverlay:(GradientPolylineOverlay *)overlay {
@@ -47,13 +44,9 @@
     pthread_rwlock_unlock(&rwLock);
 }
 
-//-(BOOL)canDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale{
-//    CGRect pointsRect = CGPathGetBoundingBox(self.path);
-//    CGRect mapRectCG = [self rectForMapRect:mapRect];
-//    return CGRectIntersectsRect(pointsRect, mapRectCG);
-//}
-
-
+-(void)dealloc{
+    pthread_rwlock_destroy(&rwLock);
+}
 -(void) drawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale inContext:(CGContextRef)context{
     CGRect pointsRect = CGPathGetBoundingBox(self.path);
     CGRect mapRectCG = [self rectForMapRect:mapRect];

@@ -9,28 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
-@interface GradientPolylineOverlay : NSObject <MKOverlay>{
-//    MKMapPoint *points;
-//    NSUInteger pointCount;
-//    NSUInteger pointSpace;
-//    
+@interface GradientPolylineOverlay : NSObject <MKOverlay> {
     MKMapRect boundingMapRect;
     pthread_rwlock_t rwLock;
 }
-//-(id) initWithCenterCoordinate:(CLLocationCoordinate2D)coord;
-
-//-(id) initWithPoints:(CLLocationCoordinate2D*)_points velocity:(float*)_velocity count:(NSUInteger)_count;
--(id) initWithCoordinates:(NSMutableArray *) coordinates;
-//-(MKMapRect)addCoordinate:(CLLocationCoordinate2D)coord;
-
--(void) lockForReading;
-
 @property NSMutableArray<CLLocation *> *points;
 
-//@property (assign) MKMapPoint *points;
-//@property (readonly) NSUInteger pointCount;
-//@property (assign) float *velocity;
-
+-(id) initWithCoordinates:(NSMutableArray *) coordinates;
+-(void) lockForReading;
 -(void) unlockForReading;
-
 @end

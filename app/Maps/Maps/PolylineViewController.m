@@ -119,11 +119,8 @@
     [self.mapView removeOverlays:self.mapView.overlays];
 
     if (paths.count > 0) {
-        
-//        CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * paths.count);
         NSMutableArray<CLLocation *> *coordinates = [NSMutableArray new];
         NSMutableArray *velocity = [NSMutableArray new];
-        int i = 0;
         
         for (NSMutableDictionary *path in paths) {
             [velocity addObject:[NSNumber numberWithFloat:[[path objectForKey:@"sd"] doubleValue]]];
@@ -131,7 +128,6 @@
         }
 
         [CalculateSpeed calculate:velocity];
-
         
         if (!self.user && ([paths count] > 0)) {
             self.user = [[MyAnnotation alloc] initWithLocation:((CLLocation *)coordinates[0]).coordinate];
