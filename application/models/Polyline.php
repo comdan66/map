@@ -81,9 +81,9 @@ class Polyline extends OaModel {
 
     return $this->paths = Path::find ('all', array ('select' => !$select ? 'id, latitude AS lat, longitude AS lng, speed as sd' : $select, 'order' => 'id DESC', 'conditions' => array ('id IN (?)', $path_ids)));
   }
-  public function picture ($size = '60x60', $type = 'client_key', $color = '0x272822', $marker_color = 'red') {
+  public function picture ($size = '60x60', $type = 'client_key', $color = '0x0049be', $marker_color = 'red') {
     if (count ($paths = array_map (function ($path) { return $path->lat . ',' . $path->lng; }, $this->paths ())) > 1)
-      return 'https://maps.googleapis.com/maps/api/staticmap?path=color:' . $color . '|weight:3|' . implode ('|', $paths) . '&size=' . $size . '&markers=color:' . $marker_color . '%7C' . $paths[0] . '&language=zh-TW&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
+      return 'https://maps.googleapis.com/maps/api/staticmap?path=color:' . $color . '|weight:4|' . implode ('|', $paths) . '&size=' . $size . '&markers=color:' . $marker_color . '%7C' . $paths[0] . '&language=zh-TW&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
     else if ($paths && ($paths = array_shift ($paths)))
       return 'https://maps.googleapis.com/maps/api/staticmap?center=' . $paths . '&zoom=13&size=' . $size . '&markers=color:' . $marker_color . '%7C' . $paths . '&language=zh-TW&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
     else
