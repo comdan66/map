@@ -47,8 +47,14 @@
     float unit = (([d4Colors count] - 1) / calculateSpeed.max);
     
     NSMutableArray<UIColor *> *colors = [NSMutableArray new];
-    for (int i = 0; i < [velocity count]; i++)
-        [colors addObject:d4Colors[(unsigned int)round(unit * [velocity[i] doubleValue])]];
+    for (int i = 0; i < [velocity count]; i++) {
+        int j = (unsigned int)round(unit * [velocity[i] doubleValue]);
+        if (j < d4Colors.count)
+            [colors addObject:d4Colors[j]];
+        else
+            [colors addObject:[d4Colors lastObject]];
+    }
+    
     [calculateSpeed setColors:colors];
 
     NSMutableArray<NSDictionary *> *speeds = [NSMutableArray new];

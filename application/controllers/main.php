@@ -8,11 +8,13 @@
 class Main extends Site_controller {
 
   public function x () {
+    delay_job ('main', 'put_cover', array ('id' => 1));
+
       // delay_job ('main', 'put_cover', array ('id' => 7));
-    $p = Polyline::find (3);
-    echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-    print_r ($p->run_time_units ());
-    exit ();
+    // $p = Polyline::find (3);
+    // echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
+    // print_r ($p->run_time_units ());
+    // exit ();
     // foreach (Polyline::all () as $p) {
     //   $p->put_cover ();
     // }

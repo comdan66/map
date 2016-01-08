@@ -18,6 +18,7 @@
 #define FOLLOW_USER_ID 1
 #define PATH_FETCH_TIMER 7 //sec
 #define UPLOAD_PATHS_TIMER 13 //sec
+#define UPLOAD_PATHS_LIMIT 50
 
 #define API_GET_POLYLINE_PATHS (API_URL @"polylines/%d/paths")
 #define API_POST_POLYLINES_PAYHS (API_URL @"polylines/%d/paths")

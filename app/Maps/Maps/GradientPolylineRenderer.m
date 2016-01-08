@@ -56,7 +56,9 @@
     for (int i = 0; i < [self.gradientOverlay.locations count]; i++) {
         CGPoint point = [self pointForMapPoint:MKMapPointForCoordinate ([self.gradientOverlay.locations objectAtIndex:i].coordinate)];
         CGMutablePathRef path = CGPathCreateMutable();
-        ccolor = [self.gradientOverlay.calculate.colors objectAtIndex:i];
+        
+        if (i < self.gradientOverlay.calculate.colors.count) ccolor = [self.gradientOverlay.calculate.colors objectAtIndex:i];
+        else ccolor = [self.gradientOverlay.calculate.colors firstObject];
 
         if (i == 0){
             CGPathMoveToPoint(path, nil, point.x, point.y);

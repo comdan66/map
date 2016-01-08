@@ -67,7 +67,7 @@
     if (DEV) NSLog(@"=======>uploadPaths!");
 
     NSArray *paths = [Path findAll: @{
-         @"limit": @"30"
+         @"limit": @UPLOAD_PATHS_LIMIT
      }];
 
     NSMutableDictionary *parameters = [NSMutableDictionary new];
@@ -85,8 +85,7 @@
            parameters:data
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   self.isUploadPaths = NO;
-                  if (DEV) NSLog(@"=======>Success!");
-                  NSLog(@"%@", [responseObject objectForKey:@"ids"]);
+
                   if ((int)[(NSArray *)[responseObject objectForKey:@"ids"] count] > 0)
                       [Path deleteAll:[NSString stringWithFormat:@"id IN (%@)", [[responseObject objectForKey:@"ids"] componentsJoinedByString:@", "]]];
                   
@@ -166,11 +165,12 @@
                    }];
     if (DEV) NSLog(@"=======>Location: %@, %@", [NSString stringWithFormat:@"%f", self.lastLocation.coordinate.latitude], [NSString stringWithFormat:@"%f", self.lastLocation.coordinate.longitude]);
     
-    [((GPSViewController *)self.gpsControler).lngLable setText:[NSString stringWithFormat:@"經度：%.5f", self.lastLocation.coordinate.latitude]];
-    [((GPSViewController *)self.gpsControler).latLable setText:[NSString stringWithFormat:@"緯度：%.5f", self.lastLocation.coordinate.longitude]];
-    [((GPSViewController *)self.gpsControler).speedLabel setText:[NSString stringWithFormat:@"速度：%.3f Km/H", self.lastLocation.speed]];
-    [((GPSViewController *)self.gpsControler).accuracyLabel setText:[NSString stringWithFormat:@"準度：%.1f 公尺", self.lastLocation.horizontalAccuracy]];
-    [((GPSViewController *)self.gpsControler).mapView setRegion:MKCoordinateRegionMake(self.lastLocation.coordinate, MKCoordinateSpanMake(0.02, 0.02)) animated:YES];
+    GPSViewController *gps = (GPSViewController *)self.gpsControler;
+    [gps.lngLable setText:[NSString stringWithFormat:@"經度：%.5f", self.lastLocation.coordinate.latitude]];
+    [gps.latLable setText:[NSString stringWithFormat:@"緯度：%.5f", self.lastLocation.coordinate.longitude]];
+    [gps.speedLabel setText:[NSString stringWithFormat:@"速度：%.3f Km/H", self.lastLocation.speed]];
+    [gps.accuracyLabel setText:[NSString stringWithFormat:@"準度：%.1f 公尺", self.lastLocation.horizontalAccuracy]];
+    [gps.mapView setRegion:MKCoordinateRegionMake(self.lastLocation.coordinate, gps.mapView.region.span) animated:YES];
 
     
 }
