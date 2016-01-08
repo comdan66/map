@@ -174,6 +174,7 @@
     if (self.isLoading) return;
     
     if ((scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.frame.size.height * 2)) {
+        self.isLoading = YES;
         [self loadData:nil];
     }
 }

@@ -47,6 +47,7 @@ class Polyline_paths extends Api_controller {
     $paths = ($paths = OAInput::post ('paths')) ? $paths : array ();
 
     $paths = array_filter ($paths, array ($this, '_validation_path_posts'));
+    usort ($paths, function ($a, $b) { return $a['sqlite_id'] > $b['sqlite_id']; });
 
     $polyline = $this->polyline;
     $sqlite_ids = array_slice (column_array (array_filter ($paths, function (&$path) use ($polyline) {
