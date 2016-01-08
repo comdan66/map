@@ -120,26 +120,30 @@
 
     if (paths.count > 0) {
         
-        CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * paths.count);
-        float *velocity = malloc(sizeof(float) * paths.count);
+//        CLLocationCoordinate2D *coordinateArray = malloc(sizeof(CLLocationCoordinate2D) * paths.count);
+        NSMutableArray<CLLocation *> *coordinates = [NSMutableArray new];
+        NSMutableArray *velocity = [NSMutableArray new];
+        int i = 0;
         
-        int caIndex = 0;
         for (NSMutableDictionary *path in paths) {
-            velocity[caIndex] = [[path objectForKey:@"sd"] doubleValue];
-            coordinateArray[caIndex++] = CLLocationCoordinate2DMake([[path objectForKey:@"lat"] doubleValue], [[path objectForKey:@"lng"] doubleValue]);
+            [velocity addObject:[NSNumber numberWithFloat:[[path objectForKey:@"sd"] doubleValue]]];
+            [coordinates addObject:[[CLLocation alloc] initWithLatitude:[[path objectForKey:@"lat"] doubleValue] longitude:[[path objectForKey:@"lng"] doubleValue]]];
         }
+
+        [CalculateSpeed calculate:velocity];
+
         
         if (!self.user && ([paths count] > 0)) {
-            self.user = [[MyAnnotation alloc] initWithLocation:coordinateArray[0]];
+            self.user = [[MyAnnotation alloc] initWithLocation:((CLLocation *)coordinates[0]).coordinate];
             [self.user setImageUrl:avatar];
             [self.mapView addAnnotation:self.user];
         } else {
-            [self.user setCoordinate:coordinateArray[0]];
+            [self.user setCoordinate:((CLLocation *)coordinates[0]).coordinate];
         }
         
-        [self.mapView addOverlay:[[GradientPolylineOverlay alloc] initWithPoints:coordinateArray velocity:velocity count:paths.count]];
+        [self.mapView addOverlay:[[GradientPolylineOverlay alloc] initWithCoordinates:coordinates]];
         [self.uLocationButton setEnabled:YES];
-        if (alert) [self.mapView setRegion:MKCoordinateRegionMake(coordinateArray[0], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
+        if (alert) [self.mapView setRegion:MKCoordinateRegionMake(((CLLocation *)coordinates[0]).coordinate, MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
     } else {
         [self.uLocationButton setEnabled:NO];
     }
@@ -156,7 +160,7 @@
     if (alert) [alert dismissViewControllerAnimated:YES completion:nil];
 }
 
--(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay{
+-(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(GradientPolylineOverlay *)overlay{
     GradientPolylineRenderer *polylineRenderer = [[GradientPolylineRenderer alloc] initWithOverlay:overlay];
     polylineRenderer.lineWidth = 8.0f;
     return polylineRenderer;
@@ -166,8 +170,56 @@
     [self.view.layer setBackgroundColor:[UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1].CGColor];
     [self initMapView];
     [self initLocationButton];
+    [self initInfoLabel];
 }
+- (void)initInfoLabel {
+    UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
+    [visualEffectView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [visualEffectView setOpaque:NO];
+    [visualEffectView.layer setZPosition:3];
+    
+    [self.view addSubview:visualEffectView];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30]];
+    
+    UILabel *bH = [UILabel new];
+    [bH setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [bH setBackgroundColor:[UIColor colorWithRed:0.83 green:0.82 blue:0.82 alpha:1]];
+    [bH.layer setZPosition:2];
+    
+    [bH.layer setShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1].CGColor];
+    [bH.layer setShadowOffset:CGSizeMake(0, 0)];
+    [bH.layer setShadowRadius:1.0f];
+    [bH.layer setShadowOpacity:0.5f];
+    
+    [self.view addSubview:bH];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeBottom multiplier:1 constant:-1]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:1]];
+    
+    UILabel *colorsLabel = [UILabel new];
+    
+    [colorsLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [colorsLabel setBackgroundColor:[UIColor colorWithRed:0.83 green:0.82 blue:0.82 alpha:1]];
+    [colorsLabel.layer setZPosition:2];
+    
+    [colorsLabel.layer setShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1].CGColor];
+    [colorsLabel.layer setShadowOffset:CGSizeMake(0, 0)];
+    [colorsLabel.layer setShadowRadius:1.0f];
+    [colorsLabel.layer setShadowOpacity:0.5f];
 
+    [self.view addSubview:colorsLabel];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:colorsLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:bH attribute:NSLayoutAttributeBottom multiplier:1 constant:-1]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:colorsLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:colorsLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:colorsLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:20]];
+
+    //    self.kmLabel = [UILabel new];
+//    [self.kmLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+}
 - (void)goToULocation:(id)sender {
     [self.mapView setRegion:MKCoordinateRegionMake([[self.mapView.overlays lastObject] coordinate], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
 }
@@ -178,7 +230,9 @@
     UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
     [visualEffectView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [visualEffectView setOpaque:NO];
-    [visualEffectView.layer setZPosition:2];
+    [visualEffectView.layer setZPosition:3];
+    
+    
     [self.view addSubview:visualEffectView];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.mapView attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
@@ -189,10 +243,16 @@
     UILabel *bH = [UILabel new];
     [bH setTranslatesAutoresizingMaskIntoConstraints:NO];
     [bH setBackgroundColor:[UIColor colorWithRed:0.83 green:0.82 blue:0.82 alpha:1]];
-    [bH.layer setZPosition:4];
+    [bH.layer setZPosition:2];
     
+    
+    [bH.layer setShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1].CGColor];
+    [bH.layer setShadowOffset:CGSizeMake(0, 0)];
+    [bH.layer setShadowRadius:1.0f];
+    [bH.layer setShadowOpacity:0.5f];
+
     [self.view addSubview:bH];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeTop multiplier:1 constant:-1]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.mapView attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.mapView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:1.0f / [UIScreen mainScreen].scale]];
@@ -200,7 +260,7 @@
     UILabel *bV = [UILabel new];
     [bV setTranslatesAutoresizingMaskIntoConstraints:NO];
     [bV setBackgroundColor:[UIColor colorWithRed:0.83 green:0.82 blue:0.82 alpha:1]];
-    [bV.layer setZPosition:4];
+    [bV.layer setZPosition:5];
     
     [self.view addSubview:bV];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bV attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:bH attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
@@ -232,7 +292,7 @@
     [self.uLocationButton setTitleColor:[UIColor colorWithRed:0 green:0.46 blue:1 alpha:1] forState:UIControlStateHighlighted];
     [self.uLocationButton setTitleColor:[UIColor colorWithRed:0.26 green:0.61 blue:0.99 alpha:.4] forState:UIControlStateDisabled];
     [self.uLocationButton setEnabled:NO];
-    [self.uLocationButton.layer setZPosition:3];
+    [self.uLocationButton.layer setZPosition:4];
     [self.uLocationButton addTarget:self action:@selector(goToULocation:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.uLocationButton];

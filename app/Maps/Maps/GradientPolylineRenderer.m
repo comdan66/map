@@ -7,58 +7,33 @@
 //
 
 #import "GradientPolylineRenderer.h"
-#import <pthread.h>
-#import "GradientPolylineOverlay.h"
+
+
 
 @implementation GradientPolylineRenderer{
     pthread_rwlock_t rwLock;
-    GradientPolylineOverlay* polyline;
-}
-+ (NSArray *) d4Colors {
-    return [[NSArray alloc] initWithObjects:
-            [UIColor colorWithRed:0.8 green:0.867 blue:1 alpha:1],
-            [UIColor colorWithRed:0.6 green:0.733 blue:1 alpha:1],
-            [UIColor colorWithRed:0.333 green:0.6 blue:1 alpha:1],
-            [UIColor colorWithRed:0 green:0.4 blue:1 alpha:1],
-            [UIColor colorWithRed:0 green:0.267 blue:0.733 alpha:1],
-            [UIColor colorWithRed:0 green:0.235 blue:0.616 alpha:1],
-            [UIColor colorWithRed:0 green:0.2 blue:0.467 alpha:1],
-            [UIColor colorWithRed:0.333 green:0 blue:0.533 alpha:1],
-            [UIColor colorWithRed:0.467 green:0 blue:0.467 alpha:1],nil];
+//    GradientPolylineOverlay* polyline;
 }
 
--(id) initWithOverlay:(id<MKOverlay>)overlay{
+-(id) initWithOverlay:(GradientPolylineOverlay *)overlay {
     self = [super initWithOverlay:overlay];
-    if (self){
+    
+    if (self) {
         pthread_rwlock_init(&rwLock,NULL);
-        polyline = ((GradientPolylineOverlay*)self.overlay);
-        [self velocity:polyline.velocity count:(int)polyline.pointCount];
+        
+        self.gradientPolylineOverlay = overlay;
         [self createPath];
     }
     return self;
-}
-
--(void) velocity:(float*)velocity count:(int)count{
-    float max = -1, min = 99999;
-
-    for (int i = 0; i < count; i++) {
-        if (max < velocity[i]) max = velocity[i];
-        if ((velocity[i] > 0) && (min > velocity[i])) min = velocity[i];
-    }
-
-    NSArray *colors = [GradientPolylineRenderer d4Colors];
-
-    self.colors = [NSMutableArray new];
-    float temp = (([colors count] - 1) / max);
-    for (int i = 0; i < count; i++) [self.colors addObject:colors[(unsigned int)round(temp * velocity[i])]];
 }
 
 -(void) createPath{
     CGMutablePathRef path = CGPathCreateMutable();
     BOOL pathIsEmpty = YES;
 
-    for (int i = 0; i < polyline.pointCount; i++) {
-        CGPoint point = [self pointForMapPoint:polyline.points[i]];
+    for (int i = 0; i < [self.gradientPolylineOverlay.points count]; i++) {
+        CGPoint point = [self pointForMapPoint:MKMapPointForCoordinate ([self.gradientPolylineOverlay.points objectAtIndex:i].coordinate)];
+
         if (pathIsEmpty){
             CGPathMoveToPoint(path, nil, point.x, point.y);
             pathIsEmpty = NO;
@@ -83,17 +58,17 @@
     CGRect pointsRect = CGPathGetBoundingBox(self.path);
     CGRect mapRectCG = [self rectForMapRect:mapRect];
     if (!CGRectIntersectsRect(pointsRect, mapRectCG))return;
-
+    
     UIColor *pcolor, *ccolor;
-    for (int i = 0; i < polyline.pointCount; i++) {
-        CGPoint point = [self pointForMapPoint:polyline.points[i]];
+    for (int i = 0; i < [self.gradientPolylineOverlay.points count]; i++) {
+        CGPoint point = [self pointForMapPoint:MKMapPointForCoordinate ([self.gradientPolylineOverlay.points objectAtIndex:i].coordinate)];
         CGMutablePathRef path = CGPathCreateMutable();
-        ccolor = self.colors[i];
+        ccolor = [[CalculateSpeed colors] objectAtIndex:i];
 
         if (i == 0){
             CGPathMoveToPoint(path, nil, point.x, point.y);
         } else {
-            CGPoint prevPoint = [self pointForMapPoint:polyline.points[i-1]];
+            CGPoint prevPoint = [self pointForMapPoint:MKMapPointForCoordinate ([self.gradientPolylineOverlay.points objectAtIndex:i - 1].coordinate)];
             CGPathMoveToPoint(path, nil, prevPoint.x, prevPoint.y);
             CGPathAddLineToPoint(path, nil, point.x, point.y);
             
