@@ -86,7 +86,7 @@
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   self.isUploadPaths = NO;
                   if (DEV) NSLog(@"=======>Success!");
-
+                  NSLog(@"%@", [responseObject objectForKey:@"ids"]);
                   if ((int)[(NSArray *)[responseObject objectForKey:@"ids"] count] > 0)
                       [Path deleteAll:[NSString stringWithFormat:@"id IN (%@)", [[responseObject objectForKey:@"ids"] componentsJoinedByString:@", "]]];
                   

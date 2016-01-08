@@ -49,7 +49,7 @@ class Polyline_paths extends Api_controller {
     $paths = array_filter ($paths, array ($this, '_validation_path_posts'));
 
     $polyline = $this->polyline;
-    $sqlite_ids = column_array (array_filter ($paths, function (&$path) use ($polyline) {
+    $sqlite_ids = array_slice (column_array (array_filter ($paths, function (&$path) use ($polyline) {
       $create = Path::transaction (function () use (&$path, $polyline) {
         if (!(verifyCreateOrm ($path = Path::create (array_intersect_key (array_merge ($path, array ('polyline_id' => $polyline->id)), Path::table ()->columns)))))
           return false;
@@ -60,7 +60,7 @@ class Polyline_paths extends Api_controller {
         return true;
       });
       return $create;
-    }), 'sqlite_id');
+    }), 'sqlite_id'), 0);
     
     delay_job ('main', 'compute_polyline', array ('id' => $this->polyline->id));
 
