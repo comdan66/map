@@ -65,7 +65,9 @@ class Polyline_paths extends Api_controller {
     
     delay_job ('main', 'compute_polyline', array ('id' => $this->polyline->id));
 
-    return $this->output_json (array ('ids' => $sqlite_ids));
+    return $this->output_json (array ('ids' => $sqlite_ids, 'paths' => array_map (function ($path) {
+      return $path->to_array ();
+    }, $polyline->paths ())));
   }
   private function _validation_path_posts (&$posts) {
     if (!(isset ($posts['id']) && is_numeric ($posts['id'] = trim ($posts['id'])))) return false; $posts['sqlite_id'] = $posts['id']; unset ($posts['id']);    

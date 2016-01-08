@@ -76,8 +76,7 @@ class Polyline extends OaModel {
       if ($temp = array_slice ($all_path_ids, $key, 1))
         array_push ($path_ids, array_shift ($temp));
 
-    if (!$path_ids)
-      return $path_ids;
+    if (!$path_ids) return $path_ids;
 
     return $this->paths = Path::find ('all', array ('select' => !$select ? 'id, latitude AS lat, longitude AS lng, speed as sd' : $select, 'order' => 'id DESC', 'conditions' => array ('id IN (?)', $path_ids)));
   }

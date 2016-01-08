@@ -92,12 +92,11 @@ static sqlite3 *db = nil;
 
 + (id)create: (NSDictionary *)params {
     if (!db) return nil;
-    NSString *tableName = [[NSStringFromClass([self class]) lowercaseString] pluralizeString];
     
     NSString *keyFields = [NSString stringWithFormat:@"'%@'", [[params allKeys] componentsJoinedByString:@"', '"]];
     NSString *valueFields = [NSString stringWithFormat:@"'%@'", [[params allValues] componentsJoinedByString:@"', '"]];
     
-    const char *sql = [[NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", tableName, keyFields, valueFields] cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *sql = [[NSString stringWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", [[NSStringFromClass([self class]) lowercaseString] pluralizeString], keyFields, valueFields] cStringUsingEncoding:NSASCIIStringEncoding];
     sqlite3_stmt *statement;
     sqlite3_prepare(db, sql, -1, &statement, NULL);
     if (sqlite3_step(statement) != SQLITE_DONE) return nil;
@@ -110,7 +109,6 @@ static sqlite3 *db = nil;
     if (!db) return nil;
 
     conditions = [[NSMutableDictionary alloc] initWithDictionary:conditions copyItems:YES];
-    NSString *tableName = [[NSStringFromClass([self class]) lowercaseString] pluralizeString];
     NSMutableArray *select;
     
     if (![conditions objectForKey:@"select"]) {
@@ -131,7 +129,7 @@ static sqlite3 *db = nil;
     
     const char *selectSql = [[NSString stringWithFormat:@"SELECT %@ FROM %@%@%@%@%@%@",
                               [conditions objectForKey:@"select"] ? [conditions objectForKey:@"select"] : @"*",
-                              tableName,
+                              [[NSStringFromClass([self class]) lowercaseString] pluralizeString],
                               [conditions objectForKey:@"where"] ? [NSString stringWithFormat:@" WHERE %@", [conditions objectForKey:@"where"]] : @"",
                               [conditions objectForKey:@"group"] ? [NSString stringWithFormat:@" GROUP BY %@", [conditions objectForKey:@"group"]] : @"",
                               [conditions objectForKey:@"having"] ? [NSString stringWithFormat:@" HAVING %@", [conditions objectForKey:@"having"]] : @"",
@@ -202,8 +200,6 @@ static sqlite3 *db = nil;
 + (BOOL)updateAll:(NSDictionary *) params where:(NSString *) where {
     if (!db) return NO;
     
-    NSString *tableName = [[NSStringFromClass([self class]) lowercaseString] pluralizeString];
-    
     NSMutableArray *vars = [self varList:[self class]],
     *set = [NSMutableArray new];
     
@@ -211,10 +207,10 @@ static sqlite3 *db = nil;
         if ((int)[vars indexOfObject:key] > -1)
             [set addObject:[NSString stringWithFormat:@"'%@'='%@'", key, [params objectForKey:key]]];
     
-    const char *updateSql = [[NSString stringWithFormat:@"UPDATE %@ SET %@%@", tableName, [set componentsJoinedByString:@", "], [where length] > 0 ? [NSString stringWithFormat:@" WHERE %@", where] : @""] cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *updateSql = [[NSString stringWithFormat:@"UPDATE %@ SET %@%@", [[NSStringFromClass([self class]) lowercaseString] pluralizeString], [set componentsJoinedByString:@", "], [where length] > 0 ? [NSString stringWithFormat:@" WHERE %@", where] : @""] cStringUsingEncoding:NSASCIIStringEncoding];
     sqlite3_stmt *statement;
     sqlite3_prepare(db, updateSql, -1, &statement, NULL);
-    if (sqlite3_step(statement) != SQLITE_DONE) return nil;
+    if (sqlite3_step(statement) != SQLITE_DONE) return NO;
     sqlite3_finalize(statement);
     
     return YES;
@@ -240,12 +236,10 @@ static sqlite3 *db = nil;
 + (BOOL)deleteAll:(NSString *)where {
     if (!db) return NO;
     
-    NSString *tableName = [[NSStringFromClass([self class]) lowercaseString] pluralizeString];
-
-    const char *deltetSql = [[NSString stringWithFormat:@"DELETE FROM %@%@", tableName, [where length] > 0 ? [NSString stringWithFormat:@" WHERE %@", where] : @""] cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *deltetSql = [[NSString stringWithFormat:@"DELETE FROM %@%@", [[NSStringFromClass([self class]) lowercaseString] pluralizeString], [where length] > 0 ? [NSString stringWithFormat:@" WHERE %@", where] : @""] cStringUsingEncoding:NSASCIIStringEncoding];
     sqlite3_stmt *statement;
     sqlite3_prepare(db, deltetSql, -1, &statement, NULL);
-    if (sqlite3_step(statement) != SQLITE_DONE) return nil;
+    if (sqlite3_step(statement) != SQLITE_DONE) return NO;
     sqlite3_finalize(statement);
     
     return YES;
@@ -258,6 +252,18 @@ static sqlite3 *db = nil;
 - (BOOL)delete {
     if (!(db && [self id])) return NO;
     return [[self class] deleteAll:[NSString stringWithFormat:@"id = %ld", [self id]]];
+}
++ (BOOL)truncate {
+    if (!db) return NO;
+    if (![self deleteAll]) return NO;
+    
+    const char *deltetSql = [[NSString stringWithFormat:@"DELETE FROM sqlite_sequence WHERE name = '%@'", [[NSStringFromClass([self class]) lowercaseString] pluralizeString]] cStringUsingEncoding:NSASCIIStringEncoding];
+    sqlite3_stmt *statement;
+    sqlite3_prepare(db, deltetSql, -1, &statement, NULL);
+    if (sqlite3_step(statement) != SQLITE_DONE) return NO;
+    sqlite3_finalize(statement);
+    
+    return YES;
 }
 
 - (NSDictionary *)toDictionary {

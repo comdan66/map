@@ -48,7 +48,7 @@
     
     [ORM initDB:@"Maps"];
     [PathGPS initGPS];
-
+    
     return YES;
 }
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {

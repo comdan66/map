@@ -12,7 +12,8 @@
 
 + (void)start:(CLLocationCoordinate2D)coordinate success:(void (^)())finish failure:(void (^)())failure gps:(GPSViewController *)gpsCtr {
     if (DEV) NSLog(@"------->start!");
-//    [Path clean];
+
+    [Path truncate];
 
     NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
