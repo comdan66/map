@@ -66,7 +66,7 @@ class Polyline extends OaModel {
     if (!isset ($this->id))
       return $path_ids;
 
-    if (!($all_path_ids = column_array (Path::find ('all', array ('select' => 'id', 'order' => 'id DESC', 'conditions' => array (
+    if (!($all_path_ids = column_array (Path::find ('all', array ('select' => 'id', 'order' => 'sqlite_id DESC', 'conditions' => array (
                                 'polyline_id = ? AND accuracy_horizontal < ?', $this->id, 100
                               ))), 'id')))
       return $path_ids;
@@ -78,7 +78,7 @@ class Polyline extends OaModel {
 
     if (!$path_ids) return $path_ids;
 
-    return $this->paths = Path::find ('all', array ('select' => !$select ? 'id, latitude AS lat, longitude AS lng, speed as sd' : $select, 'order' => 'id DESC', 'conditions' => array ('id IN (?)', $path_ids)));
+    return $this->paths = Path::find ('all', array ('select' => !$select ? 'id, latitude AS lat, longitude AS lng, speed as sd' : $select, 'order' => 'sqlite_id DESC', 'conditions' => array ('id IN (?)', $path_ids)));
   }
   public function picture ($size = '60x60', $type = 'client_key', $color = '0x272822', $marker_color = 'red') {
     if (count ($paths = array_map (function ($path) { return $path->lat . ',' . $path->lng; }, $this->paths ())) > 1)
