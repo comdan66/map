@@ -25,6 +25,8 @@ class Migration_Add_paths extends CI_Migration {
         PRIMARY KEY (`id`),
         KEY `polyline_id_index` (`polyline_id`),
         KEY `polyline_id_accuracy_horizontal_index` (`polyline_id`, `accuracy_horizontal`),
+        KEY `sqlite_id_index` (`sqlite_id`),
+        KEY `sqlite_id_polyline_id_index` (`sqlite_id`, `polyline_id`),
         FOREIGN KEY (`polyline_id`) REFERENCES `polylines` (`id`) ON DELETE CASCADE
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"
     );

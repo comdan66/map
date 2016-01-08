@@ -78,10 +78,8 @@ class Polyline extends OaModel {
         array_push ($path_ids, array_shift ($temp));
 
     if (!$path_ids) return $path_ids;
-echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-var_dump ($path_ids);
-exit ();
-    return $this->paths = Path::find ('all', array ('select' => !$select ? 'id, latitude AS lat, longitude AS lng, speed as sd' : $select, 'order' => 'sqlite_id DESC', 'conditions' => array ('sqlite_id IN (?)', $path_ids)));
+
+    return $this->paths = Path::find ('all', array ('select' => !$select ? 'id, latitude AS lat, longitude AS lng, speed as sd' : $select, 'order' => 'sqlite_id DESC', 'conditions' => array ('polyline_id = ? AND sqlite_id IN (?)', $this->id, $path_ids)));
   }
   public function picture ($size = '60x60', $type = 'client_key', $color = '0x780f79', $marker_color = 'red') {
     if (count ($paths = array_map (function ($path) { return $path->lat . ',' . $path->lng; }, $this->paths ())) > 1)
