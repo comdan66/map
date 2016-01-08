@@ -120,7 +120,7 @@
     
     self.speedLabel = [UILabel new];
     [self.speedLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.speedLabel setText:[NSString stringWithFormat:@"速度：%.3f Km/H", 0.0]];
+    [self.speedLabel setText:[NSString stringWithFormat:@"速度：%.3f km/h", 0.0]];
     [self.speedLabel setFont:[UIFont systemFontOfSize:13]];
     [self.speedLabel setTextAlignment:NSTextAlignmentRight];
     [self.speedLabel setTextColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1]];

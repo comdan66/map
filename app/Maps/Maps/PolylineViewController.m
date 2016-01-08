@@ -111,6 +111,27 @@
     if (alert) [alert dismissViewControllerAnimated:YES completion:^{ [self presentViewController:error animated:YES completion:nil]; }];
     else self.isLoadData = NO;
 }
+- (void)setRunTime:(NSString *) runTime length:(NSString *)length speeds:(NSMutableArray <NSDictionary *>*)speeds{
+    [self.runTimeLabel setText:[NSString stringWithFormat:@"耗時：%@", runTime]];
+    [self.lengthLabel setText:[NSString stringWithFormat:@"長度：%@", length]];
+    for (int i = 0; (i < [self.colorLabels count]) && (i < [speeds count]); i++) {
+        [[self.colorLabels objectAtIndex:i] setBackgroundColor:[[speeds objectAtIndex:i] objectForKey:@"color"]];
+        [[self.colorLabels objectAtIndex:i] setText:[NSString stringWithFormat:@"%d", (unsigned int)round([[[speeds objectAtIndex:i] objectForKey:@"speed"] doubleValue])]];
+    }
+
+    if (self.infoLabelConstraintTop.constant >= 0) return;
+
+    [UIView animateWithDuration:0.5f animations:^{
+        [self.infoLabelConstraintTop setConstant:0];
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [self.colorLabelsConstraintTop setConstant:-1];
+        [UIView animateWithDuration:0.3f animations:^{
+            [self.colorsLabel.layer setOpacity:1];
+            [self.view layoutIfNeeded];
+        }];
+    }];
+}
 - (void)setMap:(NSDictionary *)responseObject alert:(UIAlertController *)alert {
     NSArray *paths = [responseObject objectForKey:@"paths"];
     NSURL *avatar = [NSURL URLWithString:[responseObject objectForKey:@"avatar"]];
@@ -139,6 +160,7 @@
         
         [self.mapView addOverlay:[[GradientPolylineOverlay alloc] initWithCoordinates:coordinates]];
         [self.uLocationButton setEnabled:YES];
+        [self setRunTime:[responseObject objectForKey:@"run_time"] length:[responseObject objectForKey:@"length"] speeds:[CalculateSpeed speeds]];
         if (alert) [self.mapView setRegion:MKCoordinateRegionMake(((CLLocation *)coordinates[0]).coordinate, MKCoordinateSpanMake(0.01, 0.01)) animated:YES];
     } else {
         [self.uLocationButton setEnabled:NO];
@@ -177,7 +199,10 @@
     [visualEffectView.layer setZPosition:3];
     
     [self.view addSubview:visualEffectView];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1 constant:0 - (infoLabelHeight + colorsLabelHeight + 5)]];
+    self.infoLabelConstraintTop = [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1 constant:0 - (infoLabelHeight + colorsLabelHeight + 5)];
+//    self.infoLabelConstraintTop = [NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
+
+    [self.view addConstraint:self.infoLabelConstraintTop];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:visualEffectView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:infoLabelHeight]];
@@ -196,55 +221,96 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeBottom multiplier:1 constant:-1]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:1]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bH attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:1.0f / [UIScreen mainScreen].scale]];
     
-    UILabel *colorsLabel = [UILabel new];
+    UILabel *bV = [UILabel new];
+    [bV setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [bV setBackgroundColor:[UIColor colorWithRed:0.83 green:0.82 blue:0.82 alpha:.8]];
+    [bV.layer setZPosition:3];
     
-    [colorsLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [colorsLabel setBackgroundColor:[UIColor colorWithRed:0.83 green:0.82 blue:0.82 alpha:1]];
-    [colorsLabel.layer setZPosition:2];
+    [self.view addSubview:bV];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bV attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bV attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bV attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeRight multiplier:1.0 / 2 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bV attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:1.0f / [UIScreen mainScreen].scale]];
     
-    [colorsLabel.layer setShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1].CGColor];
-    [colorsLabel.layer setShadowOffset:CGSizeMake(0, 0)];
-    [colorsLabel.layer setShadowRadius:1.0f];
-    [colorsLabel.layer setShadowOpacity:0.5f];
+    self.lengthLabel = [UILabel new];
+    [self.lengthLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.lengthLabel.layer setZPosition:3];
+    [self.lengthLabel setFont:[UIFont systemFontOfSize:14.0]];
+    [self.lengthLabel setTextColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.7]];
+    [self.lengthLabel setTextAlignment:NSTextAlignmentCenter];
     
     
-    [self.view addSubview:colorsLabel];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:colorsLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:bH attribute:NSLayoutAttributeBottom multiplier:1 constant:-1]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:colorsLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:colorsLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:colorsLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:colorsLabelHeight]];
+    [visualEffectView addSubview:self.lengthLabel];
+    [visualEffectView addConstraint:[NSLayoutConstraint constraintWithItem:self.lengthLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+    [visualEffectView addConstraint:[NSLayoutConstraint constraintWithItem:self.lengthLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+    [visualEffectView addConstraint:[NSLayoutConstraint constraintWithItem:self.lengthLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+    [visualEffectView addConstraint:[NSLayoutConstraint constraintWithItem:self.lengthLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeWidth multiplier:1.0 / 2 constant:0]];
+    
+
+    
+    self.runTimeLabel = [UILabel new];
+    [self.runTimeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.runTimeLabel.layer setZPosition:3];
+    [self.runTimeLabel setFont:[UIFont systemFontOfSize:14.0]];
+    [self.runTimeLabel setTextColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.7]];
+    [self.runTimeLabel setTextAlignment:NSTextAlignmentCenter];
+    
+    [visualEffectView addSubview:self.runTimeLabel];
+    [visualEffectView addConstraint:[NSLayoutConstraint constraintWithItem:self.runTimeLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+    [visualEffectView addConstraint:[NSLayoutConstraint constraintWithItem:self.runTimeLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+    [visualEffectView addConstraint:[NSLayoutConstraint constraintWithItem:self.runTimeLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+    [visualEffectView addConstraint:[NSLayoutConstraint constraintWithItem:self.runTimeLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeWidth multiplier:1.0 / 2 constant:0]];
+    
+    self.colorsLabel = [UILabel new];
+    
+    [self.colorsLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.colorsLabel setBackgroundColor:[UIColor colorWithRed:0.83 green:0.82 blue:0.82 alpha:1]];
+    [self.colorsLabel.layer setZPosition:2];
+    [self.colorsLabel.layer setOpacity:0];
+    
+    [self.colorsLabel.layer setShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1].CGColor];
+    [self.colorsLabel.layer setShadowOffset:CGSizeMake(0, 0)];
+    [self.colorsLabel.layer setShadowRadius:2.0f];
+    [self.colorsLabel.layer setShadowOpacity:0.8f];
+    
+    
+    [self.view addSubview:self.colorsLabel];
+    self.colorLabelsConstraintTop = [NSLayoutConstraint constraintWithItem:self.colorsLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:bH attribute:NSLayoutAttributeBottom multiplier:1 constant:-1 - colorsLabelHeight];
+    [self.view addConstraint:self.colorLabelsConstraintTop];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorsLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorsLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:visualEffectView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.colorsLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:colorsLabelHeight]];
     
     self.colorLabels = [NSMutableArray new];
     for (int i = 0; i < [[CalculateSpeed d4Colors] count]; i++) {
         UILabel *colorLabel = [UILabel new];
         [colorLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [colorLabel setBackgroundColor:[UIColor redColor]];
-        [colorLabel.layer setBorderColor:[UIColor redColor].CGColor];
-        [colorLabel.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
-
+        [colorLabel setTextAlignment:NSTextAlignmentCenter];
+        [colorLabel setFont:[UIFont systemFontOfSize:11.0]];
+        [colorLabel setTextColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
+        if (LAY) {
+            [colorLabel.layer setBorderColor:[UIColor redColor].CGColor];
+            [colorLabel.layer setBorderWidth:1.0f / [UIScreen mainScreen].scale];
+        }
         [colorLabel.layer setZPosition:2];
         
-        [colorsLabel addSubview:colorLabel];
-        [colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:colorsLabel attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
-        [colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:colorsLabel attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
-        [colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:colorsLabel attribute:NSLayoutAttributeWidth multiplier:1.0 / [[CalculateSpeed d4Colors] count] constant:0]];
-        if (i == 0) [colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:colorsLabel attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
-        else [colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:[self.colorLabels objectAtIndex:i - 1] attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+        [self.colorsLabel addSubview:colorLabel];
+        [self.colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.colorsLabel attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+        [self.colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.colorsLabel attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+        [self.colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.colorsLabel attribute:NSLayoutAttributeWidth multiplier:1.0 / [[CalculateSpeed d4Colors] count] constant:0]];
+        if (i == 0) [self.colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.colorsLabel attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+        else [self.colorsLabel addConstraint:[NSLayoutConstraint constraintWithItem:colorLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:[self.colorLabels objectAtIndex:i - 1] attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
         
         [self.colorLabels addObject:colorLabel];
     }
-//    for (NSDictionary *speed in [CalculateSpeed speeds]) {
-//        UILabel *colorLabel = [UILabel new];
-//        
-//        [colorsLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-//    }
-//    for (int i = 0; i < [[CalculateSpeed colors] count]; <#increment#>) {
-//        <#statements#>
-//    }
-    //    self.kmLabel = [UILabel new];
-//    [self.kmLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+}
+-(UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+- (BOOL)prefersStatusBarHidden {
+    return NO;
 }
 - (void)goToULocation:(id)sender {
     [self.mapView setRegion:MKCoordinateRegionMake([[self.mapView.overlays lastObject] coordinate], MKCoordinateSpanMake(0.01, 0.01)) animated:YES];

@@ -22,8 +22,9 @@
 @property MKMapView *mapView;
 @property UIButton *myLocationButton, *uLocationButton;
 @property BOOL isLoadData;
-@property UILabel *infoLabel;
+@property UILabel *runTimeLabel, *lengthLabel, *colorsLabel;
 @property MyAnnotation *user;
+@property NSLayoutConstraint *infoLabelConstraintTop, *colorLabelsConstraintTop;
 @property NSMutableArray<UILabel *> *colorLabels;
 @property NSTimer *timer;
 
