@@ -423,6 +423,7 @@
     [self clean];
 }
 -(void) clean {
+    [self.mapView removeOverlays:self.mapView.overlays];
     [self.speedsLabelTopConstraint setConstant:self.speedsLabelHeight];
     [UIView animateWithDuration:0.5f animations:^{
         [self.speedsLabel.layer setOpacity:0];
