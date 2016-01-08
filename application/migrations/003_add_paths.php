@@ -24,7 +24,6 @@ class Migration_Add_paths extends CI_Migration {
         `create_time` datetime NOT NULL DEFAULT '" . date ('Y-m-d H:i:s') . "' COMMENT '新增時間',
         PRIMARY KEY (`id`),
         KEY `polyline_id_index` (`polyline_id`),
-        KEY `sqlite_id_index` (`sqlite_id`),
         KEY `polyline_id_accuracy_horizontal_index` (`polyline_id`, `accuracy_horizontal`),
         FOREIGN KEY (`polyline_id`) REFERENCES `polylines` (`id`) ON DELETE CASCADE
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"
