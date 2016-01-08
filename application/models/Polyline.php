@@ -82,11 +82,11 @@ class Polyline extends OaModel {
   }
   public function picture ($size = '60x60', $type = 'client_key', $color = '0x272822', $marker_color = 'red') {
     if (count ($paths = array_map (function ($path) { return $path->lat . ',' . $path->lng; }, $this->paths ())) > 1)
-      return 'https://maps.googleapis.com/maps/api/staticmap?path=color:' . $color . '|weight:3|' . implode ('|', $paths) . '&size=' . $size . '&markers=color:' . $marker_color . '%7C' . $paths[0] . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
+      return 'https://maps.googleapis.com/maps/api/staticmap?path=color:' . $color . '|weight:3|' . implode ('|', $paths) . '&size=' . $size . '&markers=color:' . $marker_color . '%7C' . $paths[0] . '&language=zh-TW&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
     else if ($paths && ($paths = array_shift ($paths)))
-      return 'https://maps.googleapis.com/maps/api/staticmap?center=' . $paths . '&zoom=13&size=' . $size . '&markers=color:' . $marker_color . '%7C' . $paths . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
+      return 'https://maps.googleapis.com/maps/api/staticmap?center=' . $paths . '&zoom=13&size=' . $size . '&markers=color:' . $marker_color . '%7C' . $paths . '&language=zh-TW&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
     else
-      return 'https://maps.googleapis.com/maps/api/staticmap?center=' . Polyline::D4_START_LAT . ',' . Polyline::D4_START_LNG . '&zoom=13&size=' . $size . '&markers=color:' . $marker_color . '%7C' . Polyline::D4_START_LAT . ',' . Polyline::D4_START_LNG . '&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
+      return 'https://maps.googleapis.com/maps/api/staticmap?center=' . Polyline::D4_START_LAT . ',' . Polyline::D4_START_LNG . '&zoom=13&size=' . $size . '&markers=color:' . $marker_color . '%7C' . Polyline::D4_START_LAT . ',' . Polyline::D4_START_LNG . '&language=zh-TW&key=' . Cfg::setting ('google', ENVIRONMENT, $type);
   }
   public function put_cover () {
     if ($url = $this->picture ('1200x1200', 'server_key'))
