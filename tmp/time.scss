@@ -1,0 +1,52 @@
+/**
+ * @author      OA Wu <comdan66@gmail.com>
+ * @copyright   Copyright (c) 2016 OA Wu Design
+ */
+
+@import "_oa";
+
+#time_table {
+  border-spacing: 0;
+  width: 100%;
+
+  > tbody {
+    > tr {
+      > td {
+        border: 1px solid rgba(127, 127, 127, 1.00) !important;
+        background-color: rgba(255, 255, 255, 1.00) !important;
+        padding: 10px !important;
+        &:first-child {
+          width: 100px;
+          background-color: rgba(216, 216, 216, 1.00) !important;
+        }
+
+        > table {
+          border-spacing: 0;
+          width: 100%;
+
+          > thead {
+            > tr {
+              > th {
+                font-weight: normal;
+                background-color: rgba(242, 242, 242, 1.00);
+                border: 1px solid rgba(80, 80, 80, 1.00);
+                padding: 5px;
+                text-align: center;
+              }
+            }
+          }
+          > tbody {
+            > tr {
+              > td {
+                background-color: rgba(255, 255, 255, 1.00);
+                border: 1px solid rgba(80, 80, 80, 1.00);
+                padding: 5px;
+                text-align: center;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
